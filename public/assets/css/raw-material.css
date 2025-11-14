@@ -1,139 +1,176 @@
+/* -----------------------------------------------------------
+   GLOBAL THEME — Coffee (#3e2f2f) + Caramel (#db770c)
+----------------------------------------------------------- */
 
-/* Card and Table */
+/* ---- CARD ---- */
 .card {
-    background-color: #4b3a2f;
+    background-color: #4b3a2f;       /* coffee */
     color: #f5f5f5;
-    border-radius: 12px;
+    border-radius: 14px;
     border: 1px solid #3a2b27;
-}
-.card-header {
-    background-color: #db770c;
-    color: #fff;
-    font-weight: bold;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.35);
 }
 
-/* Table */
-table th {
+.card-header {
+    background-color: #db770c;       /* caramel */
+    color: #fff;
+    font-weight: 700;
+    padding: 15px 20px;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+}
+
+/* ---- RAW HEADER ---- */
+.raw-header h4 {
+    font-weight: 700;
+}
+
+/* -----------------------------------------------------------
+   TABLE STYLING
+----------------------------------------------------------- */
+
+.raw-table thead th {
     background-color: #4b3a2f;
     color: #fff;
+    padding: 12px;
+    letter-spacing: 0.4px;
+    font-weight: 700;
 }
-table td {
+
+.raw-table tbody td {
     background-color: #3e2f2f;
     color: #f5f5f5;
+    padding: 12px;
 }
-table tr:hover td {
+
+.raw-table tbody tr:hover td {
     background-color: #5a3d30;
 }
 
-/* Buttons */
+/* Better border look */
+.raw-table th,
+.raw-table td {
+    border: 1px solid #6b4c3b;
+    vertical-align: middle !important;
+}
+
+/* -----------------------------------------------------------
+   BADGES
+----------------------------------------------------------- */
+
+.badge {
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 12px;
+}
+
+/* OK Status */
+.bg-success {
+    background-color: #27ae60 !important;
+}
+
+/* Low Status */
+.bg-danger {
+    background-color: #c0392b !important;
+}
+
+/* -----------------------------------------------------------
+   BUTTONS (UNIFIED THEME)
+----------------------------------------------------------- */
+
+/* GENERAL BUTTON */
 .btn {
     border-radius: 8px;
-    font-weight: bold;
-    color: #fff;
-}
-
-/* Primary actions (Add, Update) */
-.btn.btn-success, .btn.btn-primary {
-    background-color: #db770c;
-    border: none;
-}
-.btn.btn-success:hover, .btn.btn-primary:hover {
-    background-color: #b36208;
-}
-
-/* Reduce (minor action) */
-.btn.btn-warning {
-    background-color: #f1c40f;
-    border: none;
-    color: #000;
-}
-.btn.btn-warning:hover {
-    background-color: #d4ac0d;
-}
-
-/* Delete (danger) */
-.btn.btn-danger {
-    background-color: #c0392b;
-    border: none;
-}
-.btn.btn-danger:hover {
-    background-color: #922b21;
-}
-
-/* Badges */
-.badge.bg-danger { background-color: #c0392b; }
-.badge.bg-success { background-color: #27ae60; }
-/* ------------------------- Table ------------------------- */
-.table-hover tbody tr:hover {
-    background-color: rgba(219, 119, 12, 0.1); /* subtle hover effect */
-}
-
-.table th, .table td {
-    vertical-align: middle !important;
-    border: 1px solid #6b4c3b;
-    padding: 0.75rem 1rem;
-}
-
-/* Table header */
-.table thead {
-    font-weight: bold;
-    letter-spacing: 0.5px;
-}
-
-/* ------------------------- Badges ------------------------- */
-.badge {
     font-weight: 600;
-    font-size: 0.9rem;
-    padding: 0.4rem 0.8rem;
-    border-radius: 1rem;
+    padding: 8px 14px;
+    border: none !important;
+    transition: 0.25s;
+}
+
+/* --- Add New Raw Ingredient Button --- */
+.btn-add-material {
+    background-color: #db770c;
+    color: #fff;
+    border-radius: 10px;
+}
+.btn-add-material:hover {
+    background-color: #b36208;
+    transform: scale(1.03);
+}
+
+/* ACTION BUTTONS IN TABLE */
+.btn-action {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Add Stock */
+.btn-success {
+    background-color: #db770c !important;
     color: #fff !important;
 }
-
-.bg-success {
-    background-color: #28a745 !important;
+.btn-success:hover {
+    background-color: #b36208 !important;
 }
 
-.bg-danger {
-    background-color: #b02a37 !important;
+/* Reduce */
+.btn-warning {
+    background-color: #f1c40f !important;
+    color: #000 !important;
+}
+.btn-warning:hover {
+    background-color: #d4ac0d !important;
 }
 
-/* ------------------------- Buttons ------------------------- */
-.btn-add-quantity,
-.btn-update-stock {
-    border-radius: 50px;
-    font-size: 0.85rem;
-    padding: 0.3rem 0.8rem;
-    transition: all 0.2s;
+/* Update Material */
+.btn-primary {
+    background-color: #db770c !important;
+    color: #fff !important;
+}
+.btn-primary:hover {
+    background-color: #b36208 !important;
 }
 
-.btn-add-quantity:hover,
-.btn-update-stock:hover {
-    transform: scale(1.05);
-    opacity: 0.9;
+/* Delete */
+.btn-danger {
+    background-color: #c0392b !important;
+    color: #fff !important;
+}
+.btn-danger:hover {
+    background-color: #922b21 !important;
 }
 
-.btn-outline-success {
-    border: 1px solid #28a745;
-    color: #28a745;
+/* -----------------------------------------------------------
+   BACK BUTTON
+----------------------------------------------------------- */
+.btn-outline-light {
+    border: 2px solid #fff !important;
+    color: #fff !important;
+    border-radius: 10px;
+}
+.btn-outline-light:hover {
+    background-color: #fff !important;
+    color: #3e2f2f !important;
 }
 
-.btn-outline-success:hover {
-    background-color: #28a745;
-    color: #fff;
-}
-
-/* ------------------------- Responsive ------------------------- */
+/* -----------------------------------------------------------
+   RESPONSIVE
+----------------------------------------------------------- */
 @media (max-width: 768px) {
-    .table-responsive {
+    .btn-action {
+        width: 32px;
+        height: 32px;
+        font-size: 0.9rem;
+    }
+
+    .raw-table {
         font-size: 0.85rem;
     }
-
-    .btn-add-quantity,
-    .btn-update-stock {
-        padding: 0.2rem 0.5rem;
-        font-size: 0.75rem;
-    }
-}
-.table-hover tbody tr:hover {
-    background-color: rgba(219, 119, 12, 0.15); /* soft caramel hover */
 }

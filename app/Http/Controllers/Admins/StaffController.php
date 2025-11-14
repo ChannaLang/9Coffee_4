@@ -56,14 +56,24 @@ class StaffController extends Controller
 
                 // Deduct raw materials
                 foreach ($product->rawMaterials as $material) {
-                    $requiredQty = $material->pivot->quantity_required * $item['quantity'];
+                    // Get pivot entry for the selected size
+                    $pivot = $product->rawMaterials()
+                        ->where('raw_material_id', $material->id)
+                        ->where('size', $item['size'] ?? 'S')
+                        ->first();
+
+                    if (!$pivot) continue;
+
+                    $requiredQty = $pivot->pivot->quantity_required * $item['quantity'];
+
                     if ($material->quantity < $requiredQty) {
-                        throw new \Exception("Not enough {$material->name} for {$product->name}");
+                        throw new \Exception("Not enough {$material->name} for {$product->name} ({$item['size']})");
                     }
-                    // Update material quantity and save to avoid calling a protected decrement
-                    $material->quantity = $material->quantity - $requiredQty;
+
+                    $material->quantity -= $requiredQty;
                     $material->save();
                 }
+
 
                 // Create order
                 $lineTotal = $item['unit_price'] * $item['quantity'];
@@ -86,9 +96,9 @@ class StaffController extends Controller
             }
 
             // Update staff balance
-            $user = Auth::user();
-            $user->balance = ($user->balance ?? 0) + $totalAmount;
-            $user->save();
+            // $user = Auth::user();
+            // $user->balance = ($user->balance ?? 0) + $totalAmount;
+            // $user->save();
 
             DB::commit();
 

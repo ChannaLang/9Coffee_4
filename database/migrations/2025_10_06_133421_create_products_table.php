@@ -14,14 +14,13 @@ return new class extends Migration
             $table->string('image');
             $table->decimal('price', 10, 2);
             $table->text('description')->nullable();
-            $table->unsignedBigInteger('product_type_id'); // relation to ProductType
-            $table->unsignedBigInteger('sub_type_id')->nullable(); // optional
+            $table->unsignedBigInteger('product_type_id')->nullable(); // <--- added
+            $table->foreign('product_type_id')->references('id')->on('product_types')->onDelete('set null');
             $table->integer('quantity')->default(0); // stock quantity
             $table->enum('status', ['draft','active','inactive'])->default('draft'); // workflow status
             $table->timestamps();
 
-            $table->foreign('product_type_id')->references('id')->on('product_types')->onDelete('cascade');
-            $table->foreign('sub_type_id')->references('id')->on('sub_types')->onDelete('set null');
+
         });
     }
 

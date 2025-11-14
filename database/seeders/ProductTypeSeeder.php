@@ -2,16 +2,17 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\ProductType;
 
 class ProductTypeSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        //
+        $types = ['Coffee', 'Tea', 'Snack'];
+
+        foreach ($types as $type) {
+            ProductType::firstOrCreate(['name' => $type]);
+        }
     }
 }

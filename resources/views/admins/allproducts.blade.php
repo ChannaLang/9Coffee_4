@@ -66,14 +66,15 @@ $types = App\Models\ProductType::all();
             <td>${{ number_format($product->price, 2) }}</td>
             <td>{{ $product->productType ? $product->productType->name : 'N/A' }}</td>
             <td>
-                <button type="button"
-                    class="btn btn-info btn-sm rounded-pill btn-edit"
-                    data-id="{{ $product->id }}"
-                    data-name="{{ $product->name }}"
-                    data-price="{{ $product->price }}"
-                    data-type="{{ $product->productType ? $product->productType->name : '' }}">
+            <button type="button"
+                class="btn btn-info btn-sm rounded-pill btn-edit"
+                data-id="{{ $product->id }}"
+                data-name="{{ $product->name }}"
+                data-price="{{ $product->price }}"
+                data-type-id="{{ $product->productType ? $product->productType->id : '' }}">
                 Edit
             </button>
+
             </td>
             <td>
                 <button type="button"
@@ -83,16 +84,12 @@ $types = App\Models\ProductType::all();
                     Delete
                 </button>
             </td>
-            <td>
-    <button class="btn btn-primary btn-sm btnAssignRecipe"
-        data-product-id="{{ $product->id }}">
-        Assign Recipe
-    </button>
+        <td>
+            <a href="{{ route('admin.product.assignPage', $product->id) }}"
+            class="btn btn-primary btn-sm">
+                Assign Recipe
+            </a>
 
-<button class="btn btn-sm btn-info btnViewRecipe"
-        data-url="{{ route('admin.product.getAssignedMaterials', $product->id) }}">
-    View Assigned
-</button>
 
         </td>
         </tr>

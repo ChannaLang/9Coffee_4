@@ -49,7 +49,6 @@ Route::middleware(['auth:admin', 'superadmin'])->prefix('admin')->group(function
     Route::delete('/delete-admin/{id}', [AdminsController::class, 'deleteAdmin'])->name('delete.admin');
 });
 
-
 // ✅ Stock Management Routes
     Route::get('/stock', [RawMaterialController::class, 'viewRawMaterials'])->name('admin.raw-material.stock');
     Route::post('/raw-material/store', [RawMaterialController::class, 'store'])->name('raw-material.store');
@@ -87,6 +86,8 @@ Route::get('admin/expenses/download', function () {
     Route::delete('/products/{id}/delete-products', [ProductController::class, 'DeleteProducts'])->name('ajax.delete.products');
 
 Route::prefix('product')->name('admin.product.')->group(function () {
+    Route::get('{id}/assign', [ProductController::class, 'showAssignPage'])->name('assignPage');
+
     // Get all materials for a product (with assigned qty)
     Route::get('{id}/get-materials', [ProductController::class, 'getMaterials'])->name('getMaterials');
 
@@ -95,6 +96,9 @@ Route::prefix('product')->name('admin.product.')->group(function () {
 
     // Save assigned materials
     Route::post('{id}/add-materials', [ProductController::class, 'addMaterials'])->name('addMaterials');
+    Route::post('{id}/edit-assigned', [ProductController::class, 'editAssigned'])
+        ->name('editAssigned');
+
 });
 
     Route::get('raw-materials/list', [RawMaterialController::class, 'listMaterials']);

@@ -1,105 +1,10 @@
+
     @extends('layouts.admin')
     @section('content')
 
     <body>
         <div class="container">
-        <div class="navigation">
-        <ul>
-            <li>
-                <a href="{{ route('all.admins') }}">
-                    <span class="icon">
-                        <ion-icon name="people"></ion-icon>
-                    </span>
-                    <span class="title">Admin</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('all.bookings') }}">
-                    <span class="icon">
-                        <ion-icon name="calendar-outline"></ion-icon>
-                    </span>
-                    <span class="title">Bookings Management</span>
-                </a>
-            </li>
-                <li>
-                <a href="{{ route('all.orders') }}">
-                    <span class="icon">
-                        <ion-icon name="receipt-outline"></ion-icon>
-                    </span>
-                    <span class="title">Order Management</span>
-                </a>
-            </li>
-                <li>
-            <a href="{{ route('admin.raw-material.stock') }}">
-            <span class="icon"><ion-icon name="cube-outline"></ion-icon></span>
-            <span class="title">Ingredients Management</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('all.products') }}">
-                    <span class="icon">
-                        <ion-icon name="cart-outline"></ion-icon>
-                    </span>
-                    <span class="title">Products Management</span>
-                </a>
-            </li>
-             <li>
-                <a href="{{ route('admin.low.stock') }}">
-                    <span class="icon">
-                        <ion-icon name="warning-outline"></ion-icon>
-                    </span>
-                    <span class="title">Stock Product Management</span>
-                </a>
-            </li>
-                    <li>
-                <a href="{{ route('admins.help') }}">
-                    <span class="icon">
-                        <ion-icon name="help-outline"></ion-icon>
-                    </span>
-                    <span class="title">Help </span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('staff.sell.form') }}">
-                    <span class="icon">
-                        <ion-icon name="cash-outline"></ion-icon>
-                    </span>
-                    <span class="title">Sell Product</span>
-                </a>
-            </li>
-
-
-                <li>
-        <a href="{{ route('admin.sales.report') }}">
-            <span class="icon">
-                <ion-icon name="bar-chart-outline"></ion-icon>
-            </span>
-            <span class="title">Total Sales Report</span>
-        </a>
-        </li>
-        <li>
-            <a href="{{ route('admin.expenses') }}">
-                <span class="icon">
-                    <ion-icon name="cash-outline"></ion-icon>
-                </span>
-                <span class="title">Expenses</span>
-            </a>
-        </li>
-            <li>
-                <a href="{{ route('admin.logout') }}"
-                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    <span class="icon">
-                        <ion-icon name="log-out-outline"></ion-icon>
-                    </span>
-                    <span class="title">Logout</span>
-                </a>
-                <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" class="d-none">
-                    @csrf
-                </form>
-            </li>
-        </ul>
-    </div>
-    <div class="cardBox">
+        <div class="cardBox">
         <a href="{{ route('all.admins') }}" class="card" style="background-color:#6c5ce7; color:#fff;">
             <div>
                 <div class="numbers" style="font-size:2rem; font-weight:bold;">{{ $usersCount }}</div>
@@ -150,67 +55,82 @@
     </div>
 
                 <!-- ================ Order Details List ================= -->
-                <div class="details">
-                    <div class="recentOrders">
-            <div class="cardHeader">
-        <h2>Recent Orders</h2>
-        <a href="{{ route('all.orders') }}" class="btn">View All</a>
+             <div class="details row" style="display:flex; gap:30px; align-items:flex-start;">
+        <div class="details row" style="display:flex; gap:30px; align-items:flex-start;">
+            <div class="recentOrders card flex-fill" id="recentOrdersCard"
+                style="background-color:#5a3d30; border-radius:10px; overflow:hidden; box-shadow:0 4px 20px rgba(0,0,0,0.3); display:flex; flex-direction:column;">
+                <!-- Header -->
+        <div class="cardHeader recent-orders-header" style="display:flex; justify-content:space-between; align-items:center; padding:15px 20px;">
+            <h2 class="fw-bold mb-0">☕ Recent Orders</h2>
+            <a href="{{ route('all.orders') }}" class="btn-view-all" style="color:#fff; text-decoration:none; font-weight:600;">View All</a>
+        </div>
+        <!-- Table -->
+        <div class="recent-orders-table mt-0" style="overflow-y:auto;">
+            <table class="table table-hover text-white mb-0" style="background-color:#5a3d30;">
+                <thead>
+                    <tr style="background-color:#3e2f2f;">
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Payment</th>
+                        <th>Status</th>
+                        <th>Order Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($recentOrders as $order)
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
+                        <td>{{ $order->product->name ?? 'N/A' }}</td>
+                        <td>${{ $order->price }}</td>
+                        <td>{{ $order->payment_status ?? 'Pending' }}</td>
+                        <td>
+                            <span class="badge
+                                @if(strtolower($order->status)=='pending') bg-warning
+                                @elseif(strtolower($order->status)=='cancelled') bg-danger
+                                @else bg-success
+                                @endif px-3 py-1 rounded-pill">
+                                {{ ucfirst($order->status) }}
+                            </span>
+                        </td>
+                        <td>{{ $order->created_at->timezone('Asia/Phnom_Penh')->format('d M Y H:i') }}</td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-3">No recent orders</td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="analytics card flex-fill" id="analyticsCard"
+         style="background-color:#2c2c2c; color:white; display:flex; flex-direction:column;">
+        <div class="card-header" style="background-color:#3e2f2f; padding:10px 15px;">
+            <h4 class="mb-0">Analytics Overview</h4>
+        </div>
+        <div class="card-body" style="flex:1; display:flex; align-items:center; justify-content:center;">
+            <canvas id="analyticsChart" style="width:100%; height:100%;"></canvas>
+        </div>
     </div>
 
- <div class="recent-orders-table">
-    <table>
-        <thead>
-            <tr>
-                <td>Product</td>
-                <td>Price</td>
-                <td>Payment</td>
-                <td>Status</td>
-                <td>Order Date</td>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($recentOrders as $order)
-            <tr>
-                <td>{{ $order->product->name ?? 'N/A' }}</td>
-                <td>${{ $order->price }}</td>
-                <td>{{ $order->payment_status ?? 'Pending' }}</td>
-                <td>
-                    <span class="badge
-    @if(strtolower($order->status)=='pending') bg-warning
-    @elseif(strtolower($order->status)=='cancelled') bg-danger
-    @else bg-success-custom
-    @endif px-3 py-1 rounded-pill">
-    {{ $order->status }}
-</span>
-
-                </td>
-                <td>{{ $order->created_at->timezone('Asia/Phnom_Penh')->format('d M Y H:i') }}</td>
-            </tr>
-            @empty
-            <tr>
-                <td colspan="5" class="text-center">No recent orders</td>
-            </tr>
-            @endforelse
-        </tbody>
-    </table>
 </div>
 
+<script>
+    // Make chart height equal to table height
+    function matchChartHeight() {
+        const tableCard = document.getElementById('recentOrdersCard');
+        const chartCard = document.getElementById('analyticsCard');
 
-        </div>
-            <!-- ================= Analytics Charts ================= -->
-            <div class="analytics col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <canvas id="analyticsChart" style="width:100%; height:500px;"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </tbody>
-                    </table>
-                </div>
-                    </div>
-                </div>
-            </div>
+        if(tableCard && chartCard){
+            const tableHeight = tableCard.offsetHeight;
+            chartCard.style.height = tableHeight + 'px';
+        }
+    }
+
+    // Run on load and on window resize
+    window.addEventListener('load', matchChartHeight);
+    window.addEventListener('resize', matchChartHeight);
+</script>
+</div>
 
         <!-- =========== Scripts =========  -->
         <script src="assets/js/main.js"></script>
@@ -219,7 +139,7 @@
         <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
+  <script>
         const ctx = document.getElementById('analyticsChart').getContext('2d');
         const analyticsChart = new Chart(ctx, {
             type: 'bar', // can change to 'line', 'pie', etc.
@@ -266,3 +186,4 @@
     </script>
     </body>
     @endsection
+

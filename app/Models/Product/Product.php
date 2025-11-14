@@ -41,23 +41,32 @@ class Product extends Model
         return $this->belongsTo(SubType::class, 'sub_type_id');
     }
 
-    // Raw Materials pivot relationship
+
+// Raw Materials pivot relationship (with size support)
 public function rawMaterials()
 {
-    return $this->belongsToMany(RawMaterial::class, 'product_raw_material', 'product_id', 'raw_material_id')
-                ->withPivot('quantity_required')
-                ->withTimestamps();
+    return $this->belongsToMany(
+        RawMaterial::class,          // related model
+        'product_raw_material',      // pivot table
+        'product_id',                // foreign key on pivot table for this model
+        'raw_material_id'            // foreign key on pivot table for related model
+    )
+    ->withPivot('quantity_required', 'size')  // include size column
+    ->withTimestamps();
 }
 
 
+
+
     // Deduct ingredients after a product is sold
-    public function deductIngredients(int $qty)
-    {
-        foreach ($this->rawMaterials as $raw) {
-            $requiredQty = $raw->pivot->quantity_required * $qty;
-            $raw->decrement('quantity', $requiredQty);
-        }
+public function deductIngredients(int $qty, string $size)
+{
+    foreach ($this->rawMaterials->where('pivot.size', $size) as $raw) {
+        $requiredQty = $raw->pivot->quantity_required * $qty;
+        $raw->decrement('quantity', $requiredQty);
     }
+}
+
 
     // Orders relationship
     public function orders()

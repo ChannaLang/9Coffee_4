@@ -154,39 +154,69 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!btn) return;
 
         // --- EDIT PRODUCT ---
-        if (btn.classList.contains('btn-edit')) {
-            const { id, name, price, type } = btn.dataset;
-            Swal.fire({
-                title: `Edit "${name}"`,
-                html: `
-                    <input id="swal-name" class="swal2-input" value="${name}">
-                    <input id="swal-price" type="number" class="swal2-input" value="${price}">
-                `,
-                showCancelButton: true,
-                confirmButtonText: 'Update'
-            }).then(async result => {
-                if (!result.isConfirmed) return;
-                const formData = {
-                    name: document.getElementById('swal-name').value,
-                    price: document.getElementById('swal-price').value,
-                    type: type || ''
-                };
-                try {
-                    const res = await fetch(`/admin/products/${id}/edit-products`, {
-                        method: 'POST',
-                        headers: { 'X-CSRF-TOKEN': csrfToken, 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                        body: JSON.stringify(formData)
-                    });
-                    const data = await res.json();
-                    if (data.success) {
-                        Swal.fire('Updated!', data.message, 'success');
-                        const row = btn.closest('tr');
-                        row.cells[1].textContent = formData.name;
-                        row.cells[3].textContent = `$${parseFloat(formData.price).toFixed(2)}`;
-                    } else Swal.fire('Error', data.message, 'error');
-                } catch { Swal.fire('Error', 'Request failed or token invalid.', 'error'); }
-            });
+if (btn.classList.contains('btn-edit')) {
+    const { id, name, price, type } = btn.dataset;
+
+    const typeOptions = window.productTypes.map(t =>
+        `<option value="${t.id}" ${t.name === type ? 'selected' : ''}>${t.name}</option>`
+    ).join('');
+
+    Swal.fire({
+        title: `Edit "${name}"`,
+        html: `
+            <input id="swal-name" class="swal2-input" value="${name}">
+            <input id="swal-price" type="number" class="swal2-input" value="${price}">
+            <select id="swal-type" class="swal2-input">
+                <option value="" disabled>Select Type</option>
+                ${typeOptions}
+            </select>
+        `,
+        showCancelButton: true,
+        confirmButtonText: 'Update',
+        preConfirm: () => {
+            const newName = document.getElementById('swal-name').value.trim();
+            const newPrice = parseFloat(document.getElementById('swal-price').value);
+            const typeId = document.getElementById('swal-type').value;
+
+            if (!newName) Swal.showValidationMessage('Enter product name');
+            if (isNaN(newPrice) || newPrice <= 0) Swal.showValidationMessage('Enter valid price');
+            if (!typeId) Swal.showValidationMessage('Select a product type');
+
+            return { name: newName, price: newPrice, product_type_id: typeId };
         }
+    }).then(async result => {
+        if (!result.isConfirmed) return;
+
+        const formData = result.value;
+
+        try {
+            const res = await fetch(`/admin/products/${id}/edit-products`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+            const data = await res.json();
+
+            if (data.success) {
+                Swal.fire('Updated!', data.message, 'success');
+                const row = btn.closest('tr');
+                row.cells[1].textContent = formData.name;
+                row.cells[3].textContent = `$${formData.price.toFixed(2)}`;
+                row.cells[4].textContent = window.productTypes.find(t => t.id == formData.product_type_id).name;
+                btn.dataset.name = formData.name;
+                btn.dataset.price = formData.price;
+                btn.dataset.type = window.productTypes.find(t => t.id == formData.product_type_id).name;
+            } else Swal.fire('Error', data.message, 'error');
+        } catch (err) {
+            Swal.fire('Error', 'Request failed or token invalid.', 'error');
+        }
+    });
+}
+
 
         // --- DELETE PRODUCT ---
         if (btn.classList.contains('btn-delete')) {
