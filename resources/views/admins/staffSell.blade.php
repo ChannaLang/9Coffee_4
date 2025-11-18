@@ -77,15 +77,16 @@
                                         </div>
 
                                         {{-- Sugar selection (single, inside main card) --}}
-                                        <div class="mt-2 sugar-wrapper">
-                                            <select class="form-select sugar-select d-none">
-                                                <option value="0">No Sweet</option>
-                                                <option value="25">Less Sweet</option>
-                                                <option value="50" selected>Normal Sweet</option>
-                                                <option value="75">Sweet</option>
-                                                <option value="100">Extra Sweet</option>
-                                            </select>
-                                        </div>
+                                            <div class="mt-2 sugar-wrapper">
+                                                <select class="form-select sugar-select">
+                                                    <option value="0">No Sugar</option>
+                                                    <option value="25">Less Sweet</option>
+                                                    <option value="50" selected>Normal Sweet</option>
+                                                    <option value="75">Sweet</option>
+                                                    <option value="100">Extra Sweet</option>
+                                                </select>
+                                            </div>
+
 
                                         {{-- Add button --}}
                                         <div class="mt-3 d-flex justify-content-center gap-2">
@@ -128,7 +129,7 @@
                         <thead style="background-color: #5a3d30;" class="text-center sticky-top">
                             <tr>
                                 <th>Product</th>
-                                <th>Size</th>
+                                <th>Option</th>
                                 <th>Sugar</th>
                                 <th>Qty</th>
                                 <th>Price</th>

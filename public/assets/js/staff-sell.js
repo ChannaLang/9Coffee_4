@@ -82,16 +82,14 @@ staffSellSection.addEventListener('click', function (e) {
     const target = e.target;
     const card = target.closest('.product-card');
 
-    // ===== Variant Toggle =====
+    // Variant Toggle
     if(target.classList.contains('select-variant-btn') && card) {
         const variantGroup = card.querySelector('.variant-group');
-        variantGroup.classList.toggle('d-none'); // show/hide
+        variantGroup.classList.toggle('d-none');
         return;
     }
 
-
-
-    // ===== Variant Select =====
+    // Variant Select
     if(target.classList.contains('variant-btn') && card) {
         card.querySelectorAll('.variant-btn').forEach(btn => btn.classList.remove('active'));
         target.classList.add('active');
@@ -108,46 +106,46 @@ staffSellSection.addEventListener('click', function (e) {
         target.parentElement.classList.add('d-none');
 
         // ===== Show sugar only for Drinks =====
-        const sugarSelect = card.querySelector('select.sugar-select');
-        const productType = card.dataset.type.toLowerCase(); // from dataset-type="Drink" or "Food"
+        const sugarWrapper = card.querySelector('.sugar-wrapper');
+        const productType = card.dataset.type.toLowerCase();
 
-        if(sugarSelect) {
-            if(productType === 'drink') sugarSelect.parentElement.classList.remove('d-none');
-            else sugarSelect.parentElement.classList.add('d-none');
+        if(sugarWrapper) {
+            if(productType === 'drink') sugarWrapper.classList.remove('d-none');
+            else sugarWrapper.classList.add('d-none');
         }
 
         return;
     }
+    // ===== Add to Cart =====
+if (target.closest('.btn-add-to-cart') && card) {
+    const id = card.dataset.variantId;
+    const name = card.dataset.name;
+    const variant = card.dataset.variant;
+    const unit_price = parseFloat(card.dataset.variantPrice);
 
-
-
-
-    // ===== Existing Add to Cart =====
-    const addBtn = target.closest('.btn-add-to-cart');
-    if (addBtn && card) {
-        const id = card.dataset.variantId; // now sends variant ID to backend
-        const name = card.dataset.name;
-        const variant = card.dataset.variant; // variant name
-        const unit_price = parseFloat(card.dataset.variantPrice);
-
-
-        if (!variant) {
-            showToast('Please select a variant first', 'error');
-            return;
-        }
-
-        const sugarSelect = card.querySelector('select');
-        const sugar = sugarSelect ? sugarSelect.value : null;
-
-        const key = `${id}_${variant}_${sugar}`;
-
-        if(cart[key]) cart[key].quantity++;
-        else cart[key] = { id, name, variant, sugar, unit_price, quantity: 1 };
-
-        renderCart();
+    if (!variant) {
+        showToast('Please select a variant first', 'error');
+        return;
     }
 
+    // Only include sugar for drinks
+    const productType = card.dataset.type.toLowerCase();
+    let sugar = null;
+    if (productType === 'drink') {
+        const sugarSelect = card.querySelector('select.sugar-select');
+        sugar = sugarSelect ? sugarSelect.value : null;
+    }
+
+    const key = `${id}_${variant}_${sugar}`;
+
+    if (cart[key]) cart[key].quantity++;
+    else cart[key] = { id, name, variant, sugar, unit_price, quantity: 1 };
+
+    renderCart();
+}
+
 });
+
 
     // ===== Render Cart =====
     function renderCart() {
@@ -162,7 +160,7 @@ staffSellSection.addEventListener('click', function (e) {
             tbody.innerHTML += `
                 <tr data-key="${item.id}_${item.size}_${item.sugar}">
                     <td>${item.name}</td>
-                    <td>${item.size}</td>
+                    <td>${item.variant}</td>
                     <td>${item.sugar}</td>
                     <td>
                         <button class="btn btn-sm btn-outline-light qty-btn" data-action="decrease">-</button>
@@ -219,12 +217,19 @@ staffSellSection.addEventListener('click', function (e) {
             title: '🧾 Checkout Confirmation',
             html: `<div style="max-height:300px;overflow-y:auto;text-align:left;">
                 <table class="table table-sm">
-                    <thead><tr><th>Product</th><th>Variant</th><th>Sugar</th><th>Qty</th><th>Price</th></tr></thead>
+                    <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Option</th>
+                        <th>Sugar</th>
+                        <th>Qty</th>
+                        <th>Price</th>
+                    </tr></thead>
                     <tbody>
                         ${Object.values(cart).map(item => `
                             <tr>
                                 <td>${item.name}</td>
-                                <td>${item.size}</td>
+                                <td>${item.variant}</td>
                                 <td>${item.sugar}</td>
                                 <td>${item.quantity}</td>
                                 <td>$${(item.unit_price*item.quantity).toFixed(2)}</td>
@@ -285,9 +290,20 @@ staffSellSection.addEventListener('click', function (e) {
                 <p><strong>Invoice #:</strong> ${invoiceNumber}</p>
                 <p><strong>Date/Time:</strong> ${dateTime}</p>
                 <table class="table table-bordered text-center mt-3">
-                    <thead class="table-light"><tr><th>Product</th><th>Variant</th><th>Sugar</th><th>Qty</th><th>Price</th></tr></thead>
+                    <thead class="table-light"><tr>
+                    <th>Product</th>
+                    <th>Option</th>
+                    <th>Sugar</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    </tr></thead>
                     <tbody>
-                        ${Object.values(cart).map(i => `<tr><td>${i.name}</td><td>${i.size}</td><td>${i.sugar}</td><td>${i.quantity}</td><td>$${(i.unit_price*i.quantity).toFixed(2)}</td></tr>`).join('')}
+                        ${Object.values(cart).map(i => `<tr>
+                            <td>${i.name}</td>
+                            <td>${i.variant}</td>
+                            <td>${i.sugar}</td>
+                            <td>${i.quantity}</td>
+                            <td>$${(i.unit_price*i.quantity).toFixed(2)}</td></tr>`).join('')}
                         <tr class="fw-bold"><td colspan="4">Total (USD)</td><td>$${total.toFixed(2)}</td></tr>
                         <tr class="fw-bold text-warning"><td colspan="4">Total (KHR)</td><td>៛${totalKHR.toLocaleString()}</td></tr>
                     </tbody>
