@@ -1,4 +1,15 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // Show sugar for drinks initially
+document.querySelectorAll('.product-card').forEach(card => {
+    const sugarSelect = card.querySelector('select.sugar-select');
+    const productType = card.dataset.type?.toLowerCase() || 'food';
+    if(sugarSelect) {
+        if(productType === 'drink') sugarSelect.classList.remove('d-none');
+        else sugarSelect.classList.add('d-none');
+    }
+});
+
+
     const staffSellSection = document.querySelector('.staff-sell-section');
     if (!staffSellSection) return;
 
@@ -87,16 +98,27 @@ staffSellSection.addEventListener('click', function (e) {
 
         const selectBtn = card.querySelector('.select-variant-btn');
 
-        // set selected variant on card
-        card.dataset.variantId = target.dataset.variantId; // <- ADD THIS
+        // set selected variant info
+        card.dataset.variantId = target.dataset.variantId;
         card.dataset.variant = target.dataset.variantName;
         card.dataset.variantPrice = target.dataset.variantPrice;
         card.dataset.available = target.dataset.available;
 
         selectBtn.textContent = target.dataset.variantName;
         target.parentElement.classList.add('d-none');
+
+        // ===== Show sugar only for Drinks =====
+        const sugarSelect = card.querySelector('select.sugar-select');
+        const productType = card.dataset.type.toLowerCase(); // from dataset-type="Drink" or "Food"
+
+        if(sugarSelect) {
+            if(productType === 'drink') sugarSelect.parentElement.classList.remove('d-none');
+            else sugarSelect.parentElement.classList.add('d-none');
+        }
+
         return;
     }
+
 
 
 

@@ -49,22 +49,21 @@
                                     <div class="product-card p-3 rounded"
                                         data-id="{{ $product->id }}"
                                         data-name="{{ $product->name }}"
+                                        data-type="{{ strtolower($product->type->name ?? 'food') }}"
                                         style="background:#4b3a2f; border:1px solid #6b4c3b;">
 
-                                        <img src="{{ asset('assets/images/'.$product->image) }}"
-                                            class="img-fluid rounded mb-2" style="height:120px; object-fit:cover;">
-
+                                        <img src="{{ asset('assets/images/'.$product->image) }}" class="img-fluid rounded mb-2" style="height:120px; object-fit:cover;">
                                         <div class="fw-bold">{{ $product->name }}</div>
                                         <div class="fw-bold product-price">${{ $product->price }}</div>
 
-                                        {{-- Button to show variants --}}
+                                        {{-- Variant button --}}
                                         <div class="mt-2">
                                             <button type="button" class="btn btn-outline-light btn-sm w-100 select-variant-btn">
                                                 Select Option
                                             </button>
                                         </div>
 
-                                        {{-- Variant buttons (hidden initially) --}}
+                                        {{-- Variant group --}}
                                         <div class="variant-group mt-2 d-none">
                                             @foreach($product->variants as $variant)
                                                 <button class="btn btn-outline-warning btn-sm variant-btn mb-1"
@@ -77,23 +76,25 @@
                                             @endforeach
                                         </div>
 
-                                        {{-- Sugar selection --}}
-                                        <div class="mt-2">
-                                            <select class="form-select sugar-select">
-                                                <option value="0" selected>No Sweet</option>
-                                                <option value="50">Less Sweet</option>
-                                                <option value="100">Sweet</option>
+                                        {{-- Sugar selection (single, inside main card) --}}
+                                        <div class="mt-2 sugar-wrapper">
+                                            <select class="form-select sugar-select d-none">
+                                                <option value="0">No Sweet</option>
+                                                <option value="25">Less Sweet</option>
+                                                <option value="50" selected>Normal Sweet</option>
+                                                <option value="75">Sweet</option>
+                                                <option value="100">Extra Sweet</option>
                                             </select>
                                         </div>
 
-                                        {{-- Add Button --}}
+                                        {{-- Add button --}}
                                         <div class="mt-3 d-flex justify-content-center gap-2">
                                             <button type="button" class="btn btn-success btn-add-to-cart">
                                                 <i class="bi bi-plus-circle"></i> Add
                                             </button>
                                         </div>
-
                                     </div>
+
                                 </div>
                             @endforeach
                         </div>
