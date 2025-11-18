@@ -36,7 +36,7 @@ class StaffController extends Controller
             return response()->json(['success' => false, 'message' => 'Cart is empty or invalid!']);
         }
 
-        $updatedStock = [];
+
         $totalAmount = 0;
 
         DB::beginTransaction();
@@ -50,28 +50,11 @@ class StaffController extends Controller
 
                 $product = $variant->product; // parent product
 
-                // Check & deduct variant stock
-                if ($item['quantity'] > $variant->quantity) {
-                    throw new \Exception("Not enough stock for variant {$variant->name}");
-                }
-
-                $variant->quantity -= $item['quantity'];
                 $variant->save();
 
                 // Deduct raw materials
-                foreach ($variant->rawMaterials as $material) {
+                $variant->deductIngredients($item['quantity']);
 
-                    $requiredQty = $material->pivot->quantity_required * $item['quantity'];
-
-                    if ($material->quantity < $requiredQty) {
-                        throw new \Exception(
-                            "Not enough {$material->name} for {$product->name} ({$variant->name})"
-                        );
-                    }
-
-                    $material->quantity -= $requiredQty;
-                    $material->save();
-                }
 
                 // Create order
                 $lineTotal = $item['unit_price'] * $item['quantity'];

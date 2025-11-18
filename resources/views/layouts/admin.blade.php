@@ -87,12 +87,7 @@
                     <span class="title">Products Management</span>
                 </a>
             </li>
-            <li class="{{ Request::routeIs('admin.low.stock') ? 'active' : '' }}">
-                <a href="{{ route('admin.low.stock') }}">
-                    <span class="icon"><ion-icon name="warning-outline"></ion-icon></span>
-                    <span class="title">Stock Product Management</span>
-                </a>
-            </li>
+
             <li class="{{ Request::routeIs('admins.help') ? 'active' : '' }}">
                 <a href="{{ route('admins.help') }}">
                     <span class="icon"><ion-icon name="help-outline"></ion-icon></span>

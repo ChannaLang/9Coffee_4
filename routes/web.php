@@ -37,7 +37,7 @@ Route::get('/', function () {return redirect()->route('view.login');});
     Route::post('/logout', [AdminsController::class, 'logout'])->name('admin.logout');
     Route::get('/all-users', [AdminsController::class, 'DisplayAllUsers'])->name('all.users');
     Route::get('/help', [AdminsController::class, 'Help'])->name('admins.help');
-    Route::get('admin/low-stock', [ReportController::class, 'lowStock'])->name('admin.low.stock');
+    
     Route::get('admin/reports/sales', [ReportController::class, 'salesReport'])->name('admin.sales.report');
     Route::patch('/products/update-stock/{id}', [ReportController::class, 'updateStock'])->name('admin.product.update-stock');
 Route::middleware(['auth:admin', 'superadmin'])->prefix('admin')->group(function () {

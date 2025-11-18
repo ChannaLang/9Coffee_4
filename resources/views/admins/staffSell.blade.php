@@ -68,12 +68,12 @@
                                         <div class="variant-group mt-2 d-none">
                                             @foreach($product->variants as $variant)
                                                 <button class="btn btn-outline-warning btn-sm variant-btn mb-1"
-                                                    data-variant-name="{{ $variant['name'] }}"
-                                                    data-variant-price="{{ $variant['price'] }}"
-                                                    data-available="{{ $variant['stock'] }}">
+                                                        data-variant-id="{{ $variant['id'] }}"
+                                                        data-variant-name="{{ $variant['name'] }}"
+                                                        data-variant-price="{{ $variant['price'] }}"
+                                                        data-available="{{ $variant['stock'] }}">
                                                     {{ $variant['name'] }}
                                                 </button>
-
                                             @endforeach
                                         </div>
 

@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // ===== Helper: Toast =====
     function showToast(msg, icon = 'success') {
-        Swal.fire({ title: msg, icon, timer: 1400, showConfirmButton: false, position: 'center' });
+        Swal.fire({ title: msg, icon, timer: 10000000000, showConfirmButton: false, position: 'center' });
     }
 
     // ===== Product Filter =====
@@ -78,33 +78,53 @@ staffSellSection.addEventListener('click', function (e) {
         return;
     }
 
-   
+
+
     // ===== Variant Select =====
     if(target.classList.contains('variant-btn') && card) {
-        // deselect other variants
         card.querySelectorAll('.variant-btn').forEach(btn => btn.classList.remove('active'));
         target.classList.add('active');
 
         const selectBtn = card.querySelector('.select-variant-btn');
 
         // set selected variant on card
-        card.dataset.variant = target.dataset.variantName;   // <- use variant name
+        card.dataset.variantId = target.dataset.variantId; // <- ADD THIS
+        card.dataset.variant = target.dataset.variantName;
         card.dataset.variantPrice = target.dataset.variantPrice;
         card.dataset.available = target.dataset.available;
 
-        // update button text to show chosen variant name
         selectBtn.textContent = target.dataset.variantName;
-
-        // hide variants after selection
         target.parentElement.classList.add('d-none');
         return;
     }
 
 
+
     // ===== Existing Add to Cart =====
     const addBtn = target.closest('.btn-add-to-cart');
-    if (!addBtn) return;
-    // ... your existing Add to Cart logic ...
+    if (addBtn && card) {
+        const id = card.dataset.variantId; // now sends variant ID to backend
+        const name = card.dataset.name;
+        const variant = card.dataset.variant; // variant name
+        const unit_price = parseFloat(card.dataset.variantPrice);
+
+
+        if (!variant) {
+            showToast('Please select a variant first', 'error');
+            return;
+        }
+
+        const sugarSelect = card.querySelector('select');
+        const sugar = sugarSelect ? sugarSelect.value : null;
+
+        const key = `${id}_${variant}_${sugar}`;
+
+        if(cart[key]) cart[key].quantity++;
+        else cart[key] = { id, name, variant, sugar, unit_price, quantity: 1 };
+
+        renderCart();
+    }
+
 });
 
     // ===== Render Cart =====
