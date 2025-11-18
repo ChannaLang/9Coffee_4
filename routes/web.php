@@ -16,7 +16,7 @@ use App\Http\Controllers\Admins\RawMaterialController;
 use App\Http\Controllers\Admins\ReportController;
 use App\Http\Controllers\Admins\StaffController;
 use App\Exports\ExpensesExport;
-
+use App\Http\Controllers\Admins\VariantController;
 
 // 🟢 Default Laravel auth
 Auth::routes();
@@ -88,11 +88,31 @@ Route::get('admin/expenses/download', function () {
 Route::prefix('product')->name('admin.product.')->group(function () {
     Route::get('{id}/assign', [ProductController::class, 'showAssignPage'])->name('assignPage');
 
+    // Show form to create a variant for a product
+    Route::get('products/{product}/variants/create', [VariantController::class, 'create'])
+        ->name('variants.create');
+
+    // Store a new variant
+    Route::post('products/{product}/variants', [VariantController::class, 'store'])
+        ->name('variants.store');
+
+    // Show form to assign raw materials for a variant
+    Route::get('variants/{variant}/assign-materials', [VariantController::class, 'assignMaterials'])
+        ->name('variants.assignMaterials');
+
+    // Store assigned raw materials
+    Route::post('variants/{variant}/store-materials', [VariantController::class, 'storeMaterials'])
+        ->name('variants.storeMaterials');
+
+    // Delete a variant
+    Route::delete('variants/{variant}', [VariantController::class, 'destroy'])
+        ->name('variants.destroy');
+
     // Get all materials for a product (with assigned qty)
-    Route::get('{id}/get-materials', [ProductController::class, 'getMaterials'])->name('getMaterials');
+    Route::post('{id}/get-materials', [ProductController::class, 'getMaterials'])->name('getMaterials');
 
     // Get only assigned materials
-    Route::get('{id}/get-assigned-materials', [ProductController::class, 'getAssignedMaterials'])->name('getAssignedMaterials');
+    Route::post('{id}/get-assigned-materials', [ProductController::class, 'getAssignedMaterials'])->name('getAssignedMaterials');
 
     // Save assigned materials
     Route::post('{id}/add-materials', [ProductController::class, 'addMaterials'])->name('addMaterials');

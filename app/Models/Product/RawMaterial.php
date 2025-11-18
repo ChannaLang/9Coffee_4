@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Models;
-
-use App\Models\Product\Product;
+namespace App\Models\Product;
 use Illuminate\Database\Eloquent\Model;
 
 class RawMaterial extends Model
@@ -13,12 +11,13 @@ class RawMaterial extends Model
         'unit'
     ];
 
-public function products()
+public function variants()
 {
-    return $this->belongsToMany(Product::class, 'product_raw_material', 'raw_material_id', 'product_id')
+    return $this->belongsToMany(\App\Models\Product\Variant::class, 'variant_raw_material', 'raw_material_id', 'variant_id')
                 ->withPivot('quantity_required')
                 ->withTimestamps();
 }
+
 
 
 }

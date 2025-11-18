@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\Admins;
-
+use App\Models\Product\Variant;
 use App\Models\Product\Product;
-use App\Models\ProductType;
-use App\Models\SubType;
+use App\Models\Product\ProductType;
+use App\Models\Product\SubType;
 use App\Models\Product\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,7 +15,10 @@ class StaffController extends Controller
 {
     public function StaffSellForm()
     {
-        $products = Product::with('type', 'subType', 'rawMaterials')->orderBy('id', 'asc')->get();
+        $products = Product::with(['type', 'subType', 'variants.rawMaterials'])
+                    ->orderBy('id', 'asc')
+                    ->get();
+
         $productsType = $products->groupBy(fn($p) => strtolower($p->type->name ?? 'others'));
         $types = ProductType::all();
         $subTypes = SubType::all();
@@ -40,48 +43,45 @@ class StaffController extends Controller
 
         try {
             foreach ($cart as $item) {
-                $product = Product::with('rawMaterials')->find($item['id']);
-                if (!$product) continue;
 
-                if ($item['quantity'] > $product->quantity) {
-                    throw new \Exception("Not enough stock for {$product->name}");
+                // Load VARIANT not product
+                $variant = Variant::with(['rawMaterials', 'product'])->find($item['id']);
+                if (!$variant) continue;
+
+                $product = $variant->product; // parent product
+
+                // Check & deduct variant stock
+                if ($item['quantity'] > $variant->quantity) {
+                    throw new \Exception("Not enough stock for variant {$variant->name}");
                 }
 
-                // Deduct product stock
-                $product->quantity = $product->quantity - $item['quantity'];
-                if ($product->quantity < 0) {
-                    throw new \Exception("Not enough stock for {$product->name}");
-                }
-                $product->save();
+                $variant->quantity -= $item['quantity'];
+                $variant->save();
 
                 // Deduct raw materials
-                foreach ($product->rawMaterials as $material) {
-                    // Get pivot entry for the selected size
-                    $pivot = $product->rawMaterials()
-                        ->where('raw_material_id', $material->id)
-                        ->where('size', $item['size'] ?? 'S')
-                        ->first();
+                foreach ($variant->rawMaterials as $material) {
 
-                    if (!$pivot) continue;
-
-                    $requiredQty = $pivot->pivot->quantity_required * $item['quantity'];
+                    $requiredQty = $material->pivot->quantity_required * $item['quantity'];
 
                     if ($material->quantity < $requiredQty) {
-                        throw new \Exception("Not enough {$material->name} for {$product->name} ({$item['size']})");
+                        throw new \Exception(
+                            "Not enough {$material->name} for {$product->name} ({$variant->name})"
+                        );
                     }
 
                     $material->quantity -= $requiredQty;
                     $material->save();
                 }
 
-
                 // Create order
                 $lineTotal = $item['unit_price'] * $item['quantity'];
-                $product->orders()->create([
+
+                Order::create([
                     'user_id'        => Auth::id(),
                     'product_id'     => $product->id,
+                    'variant_id'     => $variant->id,
                     'quantity'       => $item['quantity'],
-                    'size'           => $item['size'] ?? 'S',
+                    'size'           => $variant->name,
                     'sugar'          => $item['sugar'] ?? '50',
                     'price'          => $lineTotal,
                     'status'         => 'Paid Successfully',
@@ -91,14 +91,9 @@ class StaffController extends Controller
                     'last_name'      => 'Customer',
                 ]);
 
-                $updatedStock[$product->id] = $product->quantity;
+                $updatedStock[$variant->id] = $variant->quantity;
                 $totalAmount += $lineTotal;
             }
-
-            // Update staff balance
-            // $user = Auth::user();
-            // $user->balance = ($user->balance ?? 0) + $totalAmount;
-            // $user->save();
 
             DB::commit();
 
@@ -114,4 +109,5 @@ class StaffController extends Controller
             return response()->json(['success' => false, 'message' => $e->getMessage()]);
         }
     }
+
 }

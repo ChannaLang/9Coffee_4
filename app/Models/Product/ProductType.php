@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Product; // <-- add this
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,5 +14,4 @@ class ProductType extends Model
     {
         return $this->hasMany(\App\Models\Product\Product::class, 'product_type_id');
     }
-
 }

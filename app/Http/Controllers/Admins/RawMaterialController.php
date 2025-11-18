@@ -1,11 +1,11 @@
 <?php
 
 namespace App\Http\Controllers\Admins;
-
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use App\Models\RawMaterial;
+use App\Models\Product\RawMaterial;
+
 
 class RawMaterialController extends Controller
 {

@@ -10,84 +10,98 @@
         <div class="col-md-8">
             <div class="card shadow-sm border-0 rounded-4 staff-sell-section" style="background-color: #3e2f2f; color: #f5f5f5;">
 
-                {{-- Header --}}
-                <div class="d-flex justify-content-between mb-2">
-                        <a href="{{ route('admins.dashboard') }}" class="btn btn-outline-light fw-bold">
-                                <i class="bi bi-arrow-left-circle"></i> Back
+                        {{-- Header --}}
+                        <div class="d-flex justify-content-between mb-2">
+                                <a href="{{ route('admins.dashboard') }}" class="btn btn-outline-light fw-bold">
+                                        <i class="bi bi-arrow-left-circle"></i> Back
+                                    </a>
+                                    <a href="{{ route('admin.raw-material.stock')}}" class="btn btn-outline-light fw-bold">
+                                <i class="bi bi-exclamation-triangle"></i> Ingredients Management
                             </a>
-                            <a href="{{ route('admin.raw-material.stock')}}" class="btn btn-outline-light fw-bold">
-                        <i class="bi bi-exclamation-triangle"></i> Ingredients Management
-                    </a>
-                    <a href="{{ route('admin.low.stock') }}" class="btn btn-outline-light fw-bold">
-                        <i class="bi bi-exclamation-triangle"></i> Stock Management
-                    </a>
-                </div>
 
-                <div class="card-header text-center" style="background-color: #db770cff; color: #fff;">
-                    <h4 class="mb-0">Staff Sell POS</h4>
-                </div>
-
-                {{-- Sub-Type Filters --}}
-                <div class="row mt-3 mb-2">
-                    <div class="col-md-12">
-                        <div class="mb-2">
-                            <strong class="text-warning me-2">Filter Sub-Type:</strong>
-                            <button class="btn btn-outline-warning filter-sub-btn active" data-subtype="all">All</button>
-                            @foreach($subTypes as $sub)
-                                <button class="btn btn-outline-warning filter-sub-btn" data-subtype="{{ strtolower($sub->name) }}">{{ $sub->name }}</button>
-                            @endforeach
                         </div>
-                    </div>
-                </div>
 
-                {{-- Products Grid --}}
-                <div class="row mt-3" id="products-container">
-                    @foreach($products as $product)
-                        <div class="col-md-3 text-center mb-3 product-wrapper"
-                             data-type="{{ $product->product_type_id }}"
-                             data-subtype="{{ strtolower($product->name) }}">
-                            <div class="product-card p-3 rounded"
-                                 data-id="{{ $product->id }}"
-                                 data-name="{{ $product->name }}"
-                                 data-price="{{ $product->price }}"
-                                 data-quantity="{{ $product->available_stock }}"
-                                 style="background:#4b3a2f; border:1px solid #6b4c3b;">
-                                <img src="{{ asset('assets/images/'.$product->image) }}" class="img-fluid rounded mb-2" style="height:120px; object-fit:cover;">
-                                <div class="fw-bold">{{ $product->name }}</div>
-                                <div class="fw-bold product-price">${{ $product->price }}</div>
-                                <div class="fw-bold mt-1">Available: <span class="available-stock">{{ $product->available_stock }}</span></div>
-                                @if($product->available_stock < 5)
-                                    <div class="badge bg-danger mt-1">Low Stock</div>
-                                @endif
+                        <div class="card-header text-center" style="background-color: #db770cff; color: #fff;">
+                            <h4 class="mb-0">Staff Sell POS</h4>
+                        </div>
 
-                                {{-- Size --}}
-                                <div class="btn-group btn-group-sm mt-2 size-buttons" role="group">
-                                    <button class="btn btn-outline-light size-btn active" data-size="S">S</button>
-                                    <button class="btn btn-outline-light size-btn" data-size="M">M</button>
-                                    <button class="btn btn-outline-light size-btn" data-size="L">L</button>
-                                </div>
-
-                                {{-- Sugar --}}
-                                <div class="mt-2">
-                                    <select class="form-select sugar-select">
-    <option value="0" selected>No Sweet</option>
-    <option value="50">Less Sweet</option>
-    <option value="100">Sweet</option>
-</select>
-
-                                </div>
-
-                                {{-- Buttons --}}
-                                <div class="mt-3 d-flex justify-content-center gap-2">
-                                    <button type="button" class="btn btn-success btn-add-to-cart"><i class="bi bi-plus-circle"></i> Add</button>
-                                    <button type="button" class="btn btn-danger btn-remove-from-cart"><i class="bi bi-dash-circle"></i> Remove</button>
+                        {{-- Sub-Type Filters --}}
+                        <div class="row mt-3 mb-2">
+                            <div class="col-md-12">
+                                <div class="mb-2">
+                                    <strong class="text-warning me-2">Filter Sub-Type:</strong>
+                                    <button class="btn btn-outline-warning filter-sub-btn active" data-subtype="all">All</button>
+                                    @foreach($subTypes as $sub)
+                                        <button class="btn btn-outline-warning filter-sub-btn" data-subtype="{{ strtolower($sub->name) }}">{{ $sub->name }}</button>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
-                    @endforeach
+
+                        {{-- Products Grid --}}
+                        <div class="row mt-3" id="products-container">
+                            @foreach($products as $product)
+                                <div class="col-md-3 text-center mb-3 product-wrapper"
+                                    data-type="{{ $product->product_type_id }}"
+                                    data-subtype="{{ strtolower($product->name) }}"
+                                    data-name="{{ strtolower($product->name) }}">
+
+                                    <div class="product-card p-3 rounded"
+                                        data-id="{{ $product->id }}"
+                                        data-name="{{ $product->name }}"
+                                        style="background:#4b3a2f; border:1px solid #6b4c3b;">
+
+                                        <img src="{{ asset('assets/images/'.$product->image) }}"
+                                            class="img-fluid rounded mb-2" style="height:120px; object-fit:cover;">
+
+                                        <div class="fw-bold">{{ $product->name }}</div>
+                                        <div class="fw-bold product-price">${{ $product->price }}</div>
+
+                                        {{-- Button to show variants --}}
+                                        <div class="mt-2">
+                                            <button type="button" class="btn btn-outline-light btn-sm w-100 select-variant-btn">
+                                                Select Option
+                                            </button>
+                                        </div>
+
+                                        {{-- Variant buttons (hidden initially) --}}
+                                        <div class="variant-group mt-2 d-none">
+                                            @foreach($product->variants as $variant)
+                                                <button class="btn btn-outline-warning btn-sm variant-btn mb-1"
+                                                    data-variant-name="{{ $variant['name'] }}"
+                                                    data-variant-price="{{ $variant['price'] }}"
+                                                    data-available="{{ $variant['stock'] }}">
+                                                    {{ $variant['name'] }}
+                                                </button>
+
+                                            @endforeach
+                                        </div>
+
+                                        {{-- Sugar selection --}}
+                                        <div class="mt-2">
+                                            <select class="form-select sugar-select">
+                                                <option value="0" selected>No Sweet</option>
+                                                <option value="50">Less Sweet</option>
+                                                <option value="100">Sweet</option>
+                                            </select>
+                                        </div>
+
+                                        {{-- Add Button --}}
+                                        <div class="mt-3 d-flex justify-content-center gap-2">
+                                            <button type="button" class="btn btn-success btn-add-to-cart">
+                                                <i class="bi bi-plus-circle"></i> Add
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+
+
                 </div>
             </div>
-        </div>
+
 
         {{-- ========== Right: Cart & Checkout ========== --}}
         <div class="col-md-4">
@@ -128,12 +142,11 @@
                     <label for="payment_method" class="form-label">Payment Method</label>
                     <select name="payment_method" id="payment_method" class="form-select" required>
                         <option value="cash" selected>Cash</option>
-                        <option value="qr">QR Code</option>
                     </select>
                 </div>
 
                 {{-- Checkout --}}
-<form id="checkout-form" action="{{ route('staff.checkout') }}" method="POST">
+                <form id="checkout-form" action="{{ route('staff.checkout') }}" method="POST">
                     @csrf
                     <input type="hidden" name="cart_data" id="cart_data">
                     <button type="button" id="checkout" class="btn btn-warning w-100 py-2 fw-bold">
