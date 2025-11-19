@@ -1,0 +1,69 @@
+/* Add Variant Form Styled like Variant Cards */
+.variant-form-card {
+    background: #ffffffcb;
+    padding: 20px;
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    border: 1px solid #e7e7e7;
+    transition: 1s ease;
+    margin-bottom: 20px;
+
+    /* FIXED WIDTH — change as you like */
+    max-width: 500px;
+    width: 100%;
+    margin-left: 100;
+    margin-right: auto;
+}
+
+
+/* On hover, same as your variant cards */
+.variant-form-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+}
+
+/* Inputs */
+.variant-form-card input.form-control {
+    height: 42px;
+    border-radius: 10px;
+    border: 1px solid #ffffffcb;
+}
+
+/* Variant Page Custom Styles */
+
+.variant-card {
+    background: #ffffffcb;
+    padding: 18px;
+    border-radius: 14px;
+    transition: 0.25s;
+    border: 1px solid #ffffffcb;
+}
+
+.variant-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+.variant-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.variant-price {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #777;
+    margin-bottom: 12px;
+}
+
+/* Buttons inside card */
+.variant-card .btn-sm {
+    padding: 6px 10px;
+    border-radius: 8px;
+}
+
+/* Smooth spacing */
+h2, h3 {
+    font-weight: 600;
+}

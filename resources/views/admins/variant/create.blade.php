@@ -2,6 +2,8 @@
 
 @section('content')
 
+<link rel="stylesheet" href="{{ asset('assets/css/variant.css') }}">
+
 <h2>Create Variant for {{ $product->name }}</h2>
 
 {{-- Flash Messages --}}
@@ -12,37 +14,76 @@
     <p class="alert alert-danger">{{ session('delete') }}</p>
 @endif
 
-{{-- Create Variant Form --}}
-<form action="{{ route('admin.product.variants.store', $product->id) }}" method="POST">
-    @csrf
-    <div class="mb-2">
-        <input type="text" name="name" placeholder="Variant Name" class="form-control" required>
-    </div>
-    <div class="mb-2">
-        <input type="number" name="price" placeholder="Price" class="form-control" required>
-    </div>
-    <button type="submit" class="btn btn-success">Create Variant</button>
-</form>
+{{-- Add Variant Button --}}
+<button id="btnShowForm" class="btn btn-success mb-3">
+    Add Variant
+</button>
 
-<hr>
+{{-- Hidden Form --}}
+<div id="variantForm" style="display: none;">
+    <form action="{{ route('admin.product.variants.store', $product->id) }}"
+          method="POST"
+          class="variant-form-card">
+        @csrf
 
-<h3>Existing Variants</h3>
-<ul>
+        <div class="mb-2">
+            <input type="text" name="name" placeholder="Variant Name" class="form-control" required>
+        </div>
+
+        <div class="mb-2">
+            <input type="number" name="price" placeholder="Price" class="form-control" required>
+        </div>
+
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Save</button>
+
+            <button type="button" id="btnHideForm" class="btn btn-outline-secondary">
+                Cancel
+            </button>
+        </div>
+    </form>
+</div>
+
+
+{{-- Toggle Script --}}
+<script>
+document.getElementById('btnShowForm').addEventListener('click', function () {
+   $('#variantForm').slideDown();
+    this.style.display = 'none';
+});
+
+document.getElementById('btnHideForm').addEventListener('click', function () {
+    $('#variantForm').slideUp();
+    document.getElementById('btnShowForm').style.display = 'inline-block';
+});
+</script>
+
+
+<h3 class="mt-4">Variants</h3>
+
+<div class="row mt-2">
     @foreach($product->variants as $variant)
-        <li>
-            {{ $variant->name }} - ${{ $variant->price }}
+        <div class="col-md-4 mb-3">
+            <div class="variant-card shadow-sm">
 
-            {{-- Delete Variant --}}
-            <form action="{{ route('admin.product.variants.destroy', $variant->id) }}" method="POST" style="display:inline-block;">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-            </form>
+                <div class="variant-title">{{ $variant->name }}</div>
+                <div class="variant-price">${{ number_format($variant->price, 2) }}</div>
 
-            {{-- Assign Recipe --}}
-            <a href="{{ route('admin.product.variants.assignMaterials', $variant->id) }}" class="btn btn-primary btn-sm">Assign Recipe</a>
-        </li>
+                <div class="d-flex gap-2 mb-2">
+                    <form action="{{ route('admin.product.variants.destroy', $variant->id) }}"
+                          method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn btn-danger btn-sm w-100">🗑 Delete</button>
+                    </form>
+
+                    <a href="{{ route('admin.product.variants.assignMaterials', $variant->id) }}"
+                       class="btn btn-primary btn-sm w-10">📦 Recipe</a>
+                </div>
+
+            </div>
+        </div>
     @endforeach
-</ul>
+</div>
 
 @endsection
