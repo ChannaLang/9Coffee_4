@@ -52,23 +52,23 @@
                 });
             }
 
-            // --- REDUCE STOCK ---
-            if (btnReduce) {
-                btnReduce.addEventListener('click', () => {
-                    const { id, name, unit } = btnReduce.dataset;
-                    Swal.fire({
-    title: `Reduce Stock: ${name}`,
-    input: 'number',
-    inputLabel: `Enter amount to reduce (${unit})`,
-    inputAttributes: { min: 0.01, step: 0.01 }, // <-- allow decimals
-    showCancelButton: true,
-    confirmButtonText: 'Reduce',
-    preConfirm: qty => {
-        if (!qty || parseFloat(qty) <= 0) Swal.showValidationMessage('Enter a valid quantity');
-        return parseFloat(qty);
-    }
-})
-.then(result => {
+                // --- REDUCE STOCK ---
+                        if (btnReduce) {
+                            btnReduce.addEventListener('click', () => {
+                            const { id, name, unit } = btnReduce.dataset;
+                            Swal.fire({
+                        title: `Reduce Stock: ${name}`,
+                        input: 'number',
+                        inputLabel: `Enter amount to reduce (${unit})`,
+                        inputAttributes: { min: 0.01, step: 0.01 }, // <-- allow decimals
+                        showCancelButton: true,
+                        confirmButtonText: 'Reduce',
+                        preConfirm: qty => {
+                            if (!qty || parseFloat(qty) <= 0) Swal.showValidationMessage('Enter a valid quantity');
+                            return parseFloat(qty);
+                        }
+                    })
+                        .then(result => {
                         if (!result.isConfirmed) return;
                         fetch(`/admin/raw-material/reduce/${id}`, {
                             method: 'POST',

@@ -48,38 +48,37 @@
                                 <span class="badge {{ $material->quantity < 5 ? 'bg-danger' : 'bg-success' }}">
                                     {{ $material->quantity < 5 ? 'Low' : 'OK' }}
                                 </span>
-                            </td>
-
-                            <td>
-                                <div class="btn-group">
-                                    <button class="btn btn-action btn-success btnAddStock"
+                                <td>
+                                    <button class="btn btn-success btnAddStock"
                                             data-id="{{ $material->id }}"
                                             data-name="{{ $material->name }}"
                                             data-unit="{{ $material->unit }}">
-                                        ➕
+                                        ➕ Add
                                     </button>
 
-                                    <button class="btn btn-action btn-warning btnReduceStock"
+                                    <button class="btn btn-warning btnReduceStock"
                                             data-id="{{ $material->id }}"
                                             data-name="{{ $material->name }}"
                                             data-unit="{{ $material->unit }}">
-                                        ➖
+                                        ➖ Reduce
                                     </button>
 
-                                    <button class="btn btn-action btn-primary btnUpdateMaterial"
+                                    <button class="btn btn-primary btnUpdateMaterial"
                                             data-id="{{ $material->id }}"
                                             data-name="{{ $material->name }}"
                                             data-unit="{{ $material->unit }}">
-                                        🔄
+                                        🔄 Update
                                     </button>
 
-                                    <button class="btn btn-action btn-danger btnDeleteMaterial"
+                                    <button class="btn btn-danger btnDeleteMaterial"
                                             data-id="{{ $material->id }}"
                                             data-name="{{ $material->name }}">
-                                        🗑
+                                        🗑 Delete
                                     </button>
-                                </div>
+                                </td>
+
                             </td>
+
                         </tr>
                         @endforeach
                     </tbody>
