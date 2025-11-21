@@ -5,18 +5,6 @@
     <body>
         <div class="container">
         <div class="cardBox">
-        <a href="{{ route('all.admins') }}" class="card" style="background-color:#6c5ce7; color:#fff;">
-            <div>
-                <div class="numbers" style="font-size:2rem; font-weight:bold;">{{ $usersCount }}</div>
-                <div class="cardName" style="font-size:1rem; font-weight:600; color:#fff; text-shadow:1px 1px 2px rgba(0,0,0,0.5);">
-                    Total Admin
-                </div>
-            </div>
-            <div class="iconBx">
-                <ion-icon name="people-outline" style="color:#fff; font-size:2rem;"></ion-icon>
-            </div>
-        </a>
-
         <a href="{{ route('all.bookings') }}" class="card" style="background-color:#fdcb6e; color:#000;">
             <div>
                 <div class="numbers" style="font-size:2rem; font-weight:bold;">{{ $productsCount }}</div>
@@ -131,59 +119,53 @@
     window.addEventListener('resize', matchChartHeight);
 </script>
 </div>
-
-        <!-- =========== Scripts =========  -->
         <script src="assets/js/main.js"></script>
 
         <!-- ====== ionicons ======= -->
         <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script>
-        const ctx = document.getElementById('analyticsChart').getContext('2d');
-        const analyticsChart = new Chart(ctx, {
-            type: 'bar', // can change to 'line', 'pie', etc.
-            data: {
-                labels: ['SaleTotal', 'Orders', 'Expense', 'Earnings'],
-                datasets: [{
-    label: 'Statistics',
-    data: [{{ $totalSales ?? 0 }}, {{ $ordersCount ?? 0 }}, {{ $totalExpenses ?? 0 }}, {{ $earning ?? 0 }}],
-    backgroundColor: [
-        'rgba(54, 162, 235, 0.7)',
-        'rgba(255, 99, 132, 0.7)',
-        'rgba(255, 206, 86, 0.7)',
-        'rgba(75, 192, 192, 0.7)'
-    ],
-    borderColor: [
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 99, 132, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)'
-    ],
-    borderWidth: 1,
-    borderRadius: 8,
-}]
-
-            },
-            options: {
-    responsive: true,
-    scales: {
-        y: {
-            min: 1,
-            beginAtZero: false,
-            ticks: {
-                stepSize: 1
-            }
-        },
-        x: {
-            grid: {
-                display: false
+<script>
+    const ctx = document.getElementById('analyticsChart').getContext('2d');
+    const analyticsChart = new Chart(ctx, {
+    type: 'pie',  // <-- Changed from 'bar' to 'pie'
+    data: {
+        labels: ['Sales', 'Orders', 'Cost', 'Profit'],
+        datasets: [{
+            label: 'Statistics',
+            data: [
+                {{ $totalSales ?? 0 }},
+                {{ $ordersCount ?? 0 }},
+                {{ $totalExpenses ?? 0 }},
+                {{ $earning ?? 0 }}
+            ],
+            backgroundColor: [
+                'rgba(54, 162, 235, 0.7)',
+                'rgba(255, 99, 132, 0.7)',
+                'rgba(255, 206, 86, 0.7)',
+                'rgba(75, 192, 192, 0.7)'
+            ],
+            borderColor: '#fff',
+            borderWidth: 2
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'bottom',
+                labels: {
+                    font: {
+                        size: 14
+                    }
+                }
             }
         }
     }
-}
-        });
-    </script>
+});
+</script>
+
+
     </body>
     @endsection
 

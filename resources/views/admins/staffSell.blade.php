@@ -77,15 +77,31 @@
                                         </div>
 
                                         {{-- Sugar selection (single, inside main card) --}}
-                                            <div class="mt-2 sugar-wrapper">
-                                                <select class="form-select sugar-select">
-                                                    <option value="0">No Sugar</option>
-                                                    <option value="25">Less Sweet</option>
-                                                    <option value="50" selected>Normal Sweet</option>
-                                                    <option value="75">Sweet</option>
-                                                    <option value="100">Extra Sweet</option>
-                                                </select>
+                                       
+                                            <div class="mt-2 sugar-wrapper d-none">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-outline-secondary dropdown-toggle w-100 sugar-dropdown-btn"
+                                                            type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        Sugar %
+                                                    </button>
+
+                                                    <ul class="dropdown-menu w-100">
+                                                        <li><button class="dropdown-item sugar-option" data-value="0">0%</button></li>
+                                                        <li><button class="dropdown-item sugar-option" data-value="25">25%</button></li>
+                                                        <li><button class="dropdown-item sugar-option" data-value="50">50%</button></li>
+                                                        <li><button class="dropdown-item sugar-option" data-value="75">75%</button></li>
+                                                        <li><button class="dropdown-item sugar-option" data-value="100">100%</button></li>
+
+                                                        <li>
+                                                            <input type="number" class="form-control mt-2 sugar-custom-input"
+                                                                placeholder="Custom %" min="0" max="100">
+                                                        </li>
+                                                    </ul>
+                                                </div>
+
+                                                <input type="hidden" class="sugar-select" value="0">
                                             </div>
+
 
 
                                         {{-- Add button --}}
@@ -168,12 +184,18 @@
     </div>
 </div>
 <meta name="csrf-token" content="{{ csrf_token() }}">
+
 <script>
     const checkoutUrl = "{{ route('staff.checkout') }}";
 </script>
 
+{{-- Bootstrap needed for dropdowns --}}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 {{-- JS + SweetAlert --}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{{ asset('assets/js/staff-sell.js') }}"></script>
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
 @endsection

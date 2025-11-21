@@ -133,3 +133,48 @@
 #cart-table td {
     vertical-align: middle;
 }
+/* Fix table layout and column widths */
+#cart-table {
+    width: fixed;
+    table-layout: auto; /* keeps columns stable */
+}
+
+#cart-table td:nth-child(1) { /* Product Name */
+    width: auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#cart-table td:nth-child(2) { /* Variant */
+    width: auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#cart-table td:nth-child(3) { /* Sugar */
+    width: auto;
+}
+
+#cart-table td:nth-child(4) { /* Qty buttons */
+    width: auto;
+    text-align: center;
+    white-space: nowrap;
+}
+
+#cart-table td:nth-child(5) { /* Price */
+    width: auto;
+    text-align: right;
+}
+
+/* Keep quantity buttons small and aligned */
+.qty-btn {
+    min-width: 30px;
+    display: inline-block;
+}
+.sugar-wrapper .form-select {
+    height: 38px; /* smaller height for card */
+    font-size: 0.9rem;
+    padding: 0.25rem 0.5rem;
+}

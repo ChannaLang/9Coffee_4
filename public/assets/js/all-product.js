@@ -57,6 +57,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     <td>${p.product_type_name || 'N/A'}</td>
                     <td><button class="btn btn-info btn-sm rounded-pill btn-edit" data-id="${p.id}" data-name="${p.name}" data-price="${p.price}" data-type="${p.product_type_name || ''}">Edit</button></td>
                     <td><button class="btn btn-danger btn-sm rounded-pill btn-delete" data-id="${p.id}" data-name="${p.name}" data-price="${p.price}">Delete</button></td>
+                    <td>
+                        <button class="btn btn-success btn-sm rounded-pill btn-create-variant" data-id="${p.id}">
+                            Create Variant
+                        </button>
+                    </td>
                 `;
                 tableBody.prepend(newRow);
             }

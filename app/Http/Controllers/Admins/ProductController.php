@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 // Correct import
 use App\Models\Product\Product;
 use Illuminate\Support\Facades\File;
-use App\Models\RawMaterial;
 
 
 class ProductController extends Controller

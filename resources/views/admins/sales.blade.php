@@ -16,6 +16,14 @@
             <h4 class="mb-0">📈 Sales Report (Last 30 Days)</h4>
         </div>
         <div class="card-body">
+            <hr class="my-4">
+
+<h4 class="text-center mb-3">📊 Sales Distribution (Last 30 Days)</h4>
+
+<div style="max-width: 300px; margin: 0 auto;">
+    <canvas id="salesPieChart"></canvas>
+</div>
+
             <table class="table table-bordered table-striped table-hover" style="color:#f5f5f5;">
                 <thead style="background-color:#5a3d30;">
                     <tr class="text-center">
@@ -39,4 +47,49 @@
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const pieCtx = document.getElementById('salesPieChart').getContext('2d');
+
+    new Chart(pieCtx, {
+        type: 'pie',
+        data: {
+            labels: [
+                @foreach ($sales as $row)
+                    '{{ $row->date }}',
+                @endforeach
+            ],
+            datasets: [{
+                label: 'Sales ($)',
+                data: [
+                    @foreach ($sales as $row)
+                        {{ $row->total_sales }},
+                    @endforeach
+                ],
+                backgroundColor: [
+                    '#db770c',
+                    '#ffb74d',
+                    '#6b4c3b',
+                    '#4b3a2f',
+                    '#ff9800',
+                    '#795548',
+                    '#c57a44'
+                ],
+                borderColor: '#3e2f2f',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    labels: { color: '#fff' }
+                }
+            }
+        }
+    });
+</script>
+
 @endsection

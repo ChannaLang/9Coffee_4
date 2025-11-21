@@ -69,19 +69,41 @@ document.getElementById('btnHideForm').addEventListener('click', function () {
                 <div class="variant-title">{{ $variant->name }}</div>
                 <div class="variant-price">${{ number_format($variant->price, 2) }}</div>
 
-                <div class="d-flex gap-2 mb-2">
-                    <form action="{{ route('admin.product.variants.destroy', $variant->id) }}"
-                          method="POST">
+                {{-- Show assigned ingredients --}}
+                @if($variant->rawMaterials->count() > 0)
+                    <div class="assigned-materials mt-2">
+                        <strong>Ingredients:</strong>
+                            <ul class="mb-0">
+                            @foreach($variant->rawMaterials->take(5) as $material)
+                                <li>{{ $material->name }}: {{ $material->pivot->quantity_required }} {{ $material->unit }}</li>
+                            @endforeach
+                            @if($variant->rawMaterials->count() > 5)
+                                <li>+{{ $variant->rawMaterials->count() - 5 }} more...</li>
+                            @endif
+                            </ul>
+
+                    </div>
+                @else
+                    <div class="assigned-materials mt-2 text-muted">
+                        No ingredients assigned yet.
+                    </div>
+                @endif
+
+                <div class="d-flex gap-2 mt-2">
+                    <form action="{{ route('admin.product.variants.destroy', $variant->id) }}" method="POST">
                         @csrf
                         @method('DELETE')
                         <button class="btn btn-danger btn-sm w-100">🗑 Delete</button>
                     </form>
 
                     <a href="{{ route('admin.product.variants.assignMaterials', $variant->id) }}"
-                       class="btn btn-primary btn-sm w-10">📦 Recipe</a>
+                    class="btn btn-primary btn-sm w-10">
+                    📦 Recipe
+                    </a>
                 </div>
 
             </div>
+
         </div>
     @endforeach
 </div>

@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/icomoon.css') }}">
 
     <!-- JS -->
-    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
@@ -63,6 +63,14 @@
                     <span class="title">Admin</span>
                 </a>
             </li>
+
+            <li class="{{ Request::routeIs('admins.dashboard') ? 'active' : '' }}">
+                <a href="{{ route('admins.dashboard') }}">
+                    <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+                    <span class="title">Dashboard</span>
+                </a>
+            </li>
+
             <li class="{{ Request::routeIs('all.bookings') ? 'active' : '' }}">
                 <a href="{{ route('all.bookings') }}">
                     <span class="icon"><ion-icon name="calendar-outline"></ion-icon></span>

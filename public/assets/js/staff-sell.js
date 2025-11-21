@@ -1,13 +1,50 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Show sugar for drinks initially
+    // ===== Sugar Dropdown Logic =====
 document.querySelectorAll('.product-card').forEach(card => {
-    const sugarSelect = card.querySelector('select.sugar-select');
-    const productType = card.dataset.type?.toLowerCase() || 'food';
-    if(sugarSelect) {
-        if(productType === 'drink') sugarSelect.classList.remove('d-none');
-        else sugarSelect.classList.add('d-none');
+    const sugarWrapper = card.querySelector('.sugar-wrapper');
+    if (!sugarWrapper) return;
+
+    const hiddenInput = sugarWrapper.querySelector('.sugar-select');
+    const dropdownBtn = sugarWrapper.querySelector('.dropdown-toggle');
+
+    // Preset sugar buttons
+    sugarWrapper.querySelectorAll('.sugar-option').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const value = btn.dataset.value;
+            hiddenInput.value = value;
+            if (dropdownBtn) dropdownBtn.textContent = value + '%';
+        });
+    });
+
+    // Custom sugar input
+    const customInput = sugarWrapper.querySelector('.sugar-custom-input');
+    if (customInput) {
+        customInput.addEventListener('input', () => {
+            let value = parseInt(customInput.value);
+            if (isNaN(value) || value < 0) value = 0;
+            if (value > 100) value = 100;
+
+            hiddenInput.value = value;
+            if (dropdownBtn) dropdownBtn.textContent = value + '%';
+        });
     }
 });
+
+
+
+
+    // Show sugar-wrapper only for drinks
+    document.querySelectorAll('.product-card').forEach(card => {
+        const sugarWrapper = card.querySelector('.sugar-wrapper');
+        const productType = card.dataset.type?.toLowerCase() || 'food';
+
+        if (!sugarWrapper) return;
+
+        if (productType === 'drink') sugarWrapper.classList.remove('d-none');
+        else sugarWrapper.classList.add('d-none');
+    });
+
+
 
 
     const staffSellSection = document.querySelector('.staff-sell-section');
@@ -129,12 +166,14 @@ if (target.closest('.btn-add-to-cart') && card) {
     }
 
     // Only include sugar for drinks
+
     const productType = card.dataset.type.toLowerCase();
     let sugar = null;
     if (productType === 'drink') {
-        const sugarSelect = card.querySelector('select.sugar-select');
-        sugar = sugarSelect ? sugarSelect.value : null;
+        const sugarInput = card.querySelector('.sugar-select');
+        sugar = sugarInput ? parseInt(sugarInput.value) : 0; // always a number
     }
+
 
     const key = `${id}_${variant}_${sugar}`;
 
@@ -158,10 +197,10 @@ if (target.closest('.btn-add-to-cart') && card) {
             total += lineTotal;
 
             tbody.innerHTML += `
-                <tr data-key="${item.id}_${item.size}_${item.sugar}">
+                <tr data-key="${item.id}_${item.variant}_${item.sugar}">
                     <td>${item.name}</td>
                     <td>${item.variant}</td>
-                    <td>${item.sugar}</td>
+                    <td>${item.sugar || 'None'}</td>
                     <td>
                         <button class="btn btn-sm btn-outline-light qty-btn" data-action="decrease">-</button>
                         <span class="mx-1">${item.quantity}</span>
@@ -230,7 +269,7 @@ if (target.closest('.btn-add-to-cart') && card) {
                             <tr>
                                 <td>${item.name}</td>
                                 <td>${item.variant}</td>
-                                <td>${item.sugar}</td>
+                                <td>${item.sugar || 'None'}</td>
                                 <td>${item.quantity}</td>
                                 <td>$${(item.unit_price*item.quantity).toFixed(2)}</td>
                             </tr>`).join('')}
@@ -301,9 +340,11 @@ if (target.closest('.btn-add-to-cart') && card) {
                         ${Object.values(cart).map(i => `<tr>
                             <td>${i.name}</td>
                             <td>${i.variant}</td>
-                            <td>${i.sugar}</td>
+                            <td>${i.sugar !== null ? i.sugar + '%' : 'None'}</td>
                             <td>${i.quantity}</td>
-                            <td>$${(i.unit_price*i.quantity).toFixed(2)}</td></tr>`).join('')}
+                            <td>$${(i.unit_price*i.quantity).toFixed(2)}</td>
+                        </tr>`).join('')}
+
                         <tr class="fw-bold"><td colspan="4">Total (USD)</td><td>$${total.toFixed(2)}</td></tr>
                         <tr class="fw-bold text-warning"><td colspan="4">Total (KHR)</td><td>៛${totalKHR.toLocaleString()}</td></tr>
                     </tbody>
