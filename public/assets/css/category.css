@@ -1,4 +1,4 @@
-/* Overall wrapper for categories */
+/* ================= Overall Wrapper ================= */
 .categories-container {
     display: flex;
     flex-wrap: wrap;
@@ -6,7 +6,7 @@
     margin-top: 20px;
 }
 
-/* Individual type card */
+/* ================= Individual Type Card ================= */
 .category-card {
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -14,6 +14,8 @@
     width: 300px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
 }
 
 .category-card:hover {
@@ -21,7 +23,7 @@
     box-shadow: 0 8px 20px rgba(0,0,0,0.5);
 }
 
-/* Card header: type name */
+/* Card Header */
 .category-card .card-header {
     background: rgba(0, 0, 0, 0.5);
     padding: 12px 16px;
@@ -32,9 +34,18 @@
     text-align: center;
 }
 
-/* List of subtypes */
+/* Card Body Flex: push delete to bottom */
+.category-card .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+/* List of Subtypes */
 .category-card .list-group {
-    margin: 0;
+    flex-grow: 1;
+    margin-bottom: 10px;
     padding: 0;
     list-style: none;
 }
@@ -54,20 +65,19 @@
     background: rgba(255, 255, 255, 0.1);
 }
 
-/* Delete button */
+/* Delete Button */
 .category-card .btn-danger {
-    font-size: 0.8rem;
-    padding: 4px 8px;
+    font-size: 0.9rem;
+    padding: 6px 10px;
     border-radius: 6px;
 }
 
-/* Add new subtype form */
+/* ================= Add Subtype Form ================= */
 .add-subtype-form {
     display: flex;
     margin-top: 10px;
     padding: 0 10px 10px 10px;
-    max-width: 400px; /* Limit overall form width */
-
+    max-width: 400px;
 }
 
 .add-subtype-form input[type="text"] {
@@ -76,7 +86,7 @@
     border-radius: 6px 0 0 6px;
     border: none;
     outline: none;
-    width: auto; /* Let flex manage width */
+    width: auto;
 }
 
 .add-subtype-form button {
@@ -91,4 +101,195 @@
 
 .add-subtype-form button:hover {
     background-color: #a0340d;
+}
+
+/* ================= Remove Type Modal ================= */
+#removeTypeModal .modal-body {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 15px;
+}
+
+#removeTypeModal .checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+/* ✅ Add this for horizontal alignment */
+#removeTypeModal .checkbox-group .form-check {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* space between checkbox and label */
+    padding: 6px 10px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    margin-bottom: 5px;
+}
+#removeTypeModal .checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.05);
+    padding: 8px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+#removeTypeModal .checkbox-group input[type="checkbox"] {
+    accent-color: #b7410e;
+}
+
+#removeTypeModal .checkbox-group label:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+/* ================= MODAL STYLING ================= */
+.modal-content {
+    background-color: rgba(50, 50, 50, 0.95);
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+}
+
+.modal-header {
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    background-color: rgba(0,0,0,0.5);
+    color: #fff;
+}
+
+.modal-title {
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.modal-footer {
+    border-top: 1px solid rgba(255,255,255,0.2);
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* ================= FORM ELEMENTS ================= */
+.modal-body input,
+.modal-body select {
+    background-color: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 6px;
+    color: #fff;
+    padding: 8px 12px;
+    outline: none;
+    width: 100%;
+}
+
+.modal-body input::placeholder {
+    color: rgba(255,255,255,0.5);
+}
+
+.modal-body select {
+    color: #fff;
+}
+
+.modal-body select option {
+    color: #000;
+}
+
+/* ================= CHECKBOXES ================= */
+.modal-body .form-check-label {
+    color: #fff;
+    margin-left: 6px;
+}
+
+.modal-body .form-check-input {
+    accent-color: #b7410e;
+}
+
+/* ================= BUTTONS ================= */
+.modal-body .btn {
+    font-weight: 600;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+}
+
+.modal-body .btn-success {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.modal-body .btn-success:hover {
+    background-color: #218838;
+    color: #fff;
+}
+
+.modal-body .btn-warning {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.modal-body .btn-warning:hover {
+    background-color: #e0a800;
+    color: #000;
+}
+
+.modal-body .btn-danger {
+    background-color: #b7410e;
+    color: #fff;
+}
+
+.modal-body .btn-danger:hover {
+    background-color: #a0340d;
+    color: #fff;
+}
+
+/* ================= CLOSE BUTTON ================= */
+.modal-header .btn-close {
+    filter: invert(1);
+}
+
+/* ================= SPACING ================= */
+.modal-body .mb-3 {
+    margin-bottom: 1rem;
+}
+
+/* ================= TABS ================= */
+.nav-tabs .nav-link {
+    font-weight: 500;
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+    border-radius: 8px 8px 0 0;
+    margin-right: 5px;
+    transition: background 0.2s ease;
+}
+
+.nav-tabs .nav-link.active {
+    background: #b7410e;
+    color: #fff;
+}
+
+/* Tab content panel */
+.tab-pane {
+    padding: 15px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 0 12px 12px 12px;
+    margin-top: -1px;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+    .category-card {
+        width: 100%;
+    }
+    .add-subtype-form {
+        flex-direction: column;
+    }
+    .add-subtype-form input[type="text"], .add-subtype-form button {
+        border-radius: 6px;
+        width: 100%;
+        margin-bottom: 5px;
+    }
 }

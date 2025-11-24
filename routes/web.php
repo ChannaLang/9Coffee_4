@@ -38,6 +38,9 @@ Route::get('/', function () {return redirect()->route('view.login');});
     // ✅ Category Management Routes
     Route::get('/categories', [CategoryController::class, 'index'])->name('admin.categories');
     Route::post('/categories/store-type', [CategoryController::class, 'storeType'])->name('admin.categories.storeType');
+    // Delete a product type
+    Route::delete('/categories/delete-type/{id}', [CategoryController::class, 'deleteType'])->name('admin.categories.deleteType');
+
     Route::post('/categories/store-subtype', [CategoryController::class, 'storeSubtype'])->name('admin.categories.storeSubtype');
     // Delete a subtype
     Route::delete('/categories/delete-subtype/{id}', [CategoryController::class, 'deleteSubtype'])->name('admin.categories.deleteSubtype');

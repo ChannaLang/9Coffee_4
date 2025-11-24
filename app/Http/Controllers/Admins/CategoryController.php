@@ -20,17 +20,46 @@ class CategoryController extends Controller
     // Store new product type
     public function storeType(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|unique:product_types,name'
         ]);
 
-        $type = ProductType::create(['name' => $request->name]);
+        $type = ProductType::create(['name' => $validated['name']]);
 
         return response()->json([
             'success' => true,
             'type' => $type
         ]);
     }
+    // Delete a single type
+    public function deleteType($id)
+    {
+        $type = ProductType::find($id);
+
+        if(!$type) {
+            return response()->json(['success' => false, 'message' => 'Type not found']);
+        }
+
+        $type->delete();
+
+        return response()->json(['success' => true]);
+    }
+
+    // Delete multiple types
+    public function deleteMultipleTypes(Request $request)
+    {
+        $request->validate([
+            'type_ids' => 'required|array',
+            'type_ids.*' => 'exists:product_types,id'
+        ]);
+
+        ProductType::whereIn('id', $request->type_ids)->delete();
+
+        return response()->json(['success' => true]);
+    }
+
+
+
 
     // Store new product subtype
     public function storeSubtype(Request $request)

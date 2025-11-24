@@ -1,81 +1,79 @@
 // ===== Create Add Subtype Modal via JS =====
-function createAddSubtypeModal(productTypes) {
-    // Check if modal already exists
-    if(document.getElementById('addSubtypeModal')) return;
+function initAddSubtypeModal() {
+    const btnAddSubtype = document.getElementById('btnAddSubtype');
+    const modalEl = document.getElementById('addSubtypeModal');
+    const form = document.getElementById('add-subtype-form');
 
-    // Create modal container
-    const modalDiv = document.createElement('div');
-    modalDiv.className = 'modal fade';
-    modalDiv.id = 'addSubtypeModal';
-    modalDiv.tabIndex = -1;
-    modalDiv.setAttribute('aria-hidden', 'true');
+    if (!btnAddSubtype || !modalEl || !form) return;
 
-    // Modal inner HTML
-    modalDiv.innerHTML = `
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Add New Subtype</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="add-subtype-form">
-                    <div class="mb-3">
-                        <label for="productTypeSelect" class="form-label">Product Type</label>
-                        <select class="form-select" id="productTypeSelect" name="product_type_id" required>
-                            ${productTypes.map(type => `<option value="${type.id}">${type.name}</option>`).join('')}
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="subtypeName" class="form-label">Subtype Name</label>
-                        <input type="text" class="form-control" id="subtypeName" name="name" placeholder="e.g., Ice" required>
-                    </div>
-                    <button type="submit" class="btn btn-success w-100">Add Subtype</button>
-                </form>
-            </div>
-        </div>
-    </div>
-    `;
+    const modal = new bootstrap.Modal(modalEl);
 
-    document.body.appendChild(modalDiv);
+    // Show modal on button click
+    btnAddSubtype.addEventListener('click', () => modal.show());
 
     // Handle form submission
-    document.getElementById('add-subtype-form').addEventListener('submit', async function(e){
+    form.addEventListener('submit', async function(e) {
         e.preventDefault();
-        const formData = new FormData(this);
-        try {
-            const response = await fetch("/subtypes/store", { // Your Laravel route
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: formData
-            });
-            const data = await response.json();
-            if(data.success){
-                // Close modal
-                bootstrap.Modal.getInstance(document.getElementById('addSubtypeModal')).hide();
 
-                // Append new button dynamically
-                const container = document.querySelector('.filter-sub-btn-container');
-                const btn = document.createElement('button');
-                btn.className = 'btn btn-outline-warning filter-sub-btn';
-                btn.dataset.subtype = data.subtype.name.toLowerCase();
-                btn.textContent = data.subtype.name;
-                container.appendChild(btn);
+        const formData = new FormData(this);
+
+        try {
+            const response = await fetch("/admin/categories/store-subtype", {
+            method: 'POST',
+            headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') },
+            body: formData
+        });
+
+            const data = await response.json();
+
+            if (data.success) {
+                // Close modal
+                modal.hide();
+
+                // Clear input
+                form.reset();
+
+                const subtype = data.subtype;
+
+                // Find the correct tab content based on product_type_id
+                const tabContent = document.getElementById(`type-${subtype.product_type_id}`);
+                if (tabContent) {
+                    // Create new subtype card
+                    const div = document.createElement('div');
+                    div.className = 'col-md-4 mb-3';
+                    div.innerHTML = `
+                        <div class="card category-card">
+                            <div class="card-header">${subtype.name}</div>
+                            <div class="card-body">
+                                <ul class="list-group mb-2">
+                                    <li class="list-group-item text-muted">No products yet.</li>
+                                </ul>
+                                <form action="/categories/subtype/${subtype.id}/delete" method="POST" class="mt-2" onsubmit="return confirm('Delete this subtype?');">
+                                    <input type="hidden" name="_token" value="${document.querySelector('meta[name="csrf-token"]').getAttribute('content')}">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button class="btn btn-sm btn-danger w-100">Delete Subtype</button>
+                                </form>
+                            </div>
+                        </div>
+                    `;
+                    tabContent.querySelector('.row')?.appendChild(div);
+                }
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Subtype added!',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
             } else {
-                alert(data.message);
+                Swal.fire('Error', data.message || 'Failed to add subtype', 'error');
             }
-        } catch(err) {
+        } catch (err) {
             console.error(err);
+            Swal.fire('Error', err.message, 'error');
         }
     });
 }
 
-// ===== Attach to Add Subtype button =====
-document.getElementById('btnAddSubtype').addEventListener('click', function(e){
-    e.preventDefault();
-    createAddSubtypeModal(window.productTypes); // create modal if not exists
-    const modal = new bootstrap.Modal(document.getElementById('addSubtypeModal'));
-    modal.show(); // show modal
-});
+// Initialize
+document.addEventListener('DOMContentLoaded', initAddSubtypeModal);
