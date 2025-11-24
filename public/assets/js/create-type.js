@@ -72,6 +72,23 @@ document.getElementById('add-type-form').addEventListener('submit', async functi
 const removeTypeModalEl = document.getElementById('removeTypeModal');
 const removeTypeModal = new bootstrap.Modal(removeTypeModalEl);
 
+
+
+// Disable checkboxes for types that have subtypes
+document.querySelectorAll('#typeCheckboxes input[type="checkbox"]').forEach(checkbox => {
+    const typeId = checkbox.value;
+    const tabContent = document.getElementById(`type-${typeId}`);
+    const hasSubtypes = tabContent.querySelectorAll('.category-card').length > 0;
+
+    if(hasSubtypes) {
+        checkbox.disabled = true;
+        checkbox.nextElementSibling.title = "Cannot delete because this type has subtypes";
+        checkbox.nextElementSibling.style.opacity = 0.6;
+    }
+});
+
+document.getElementById('btnRemoveType').addEventListener('click', () => removeTypeModal.show());
+
 document.getElementById('btnRemoveType').addEventListener('click', () => removeTypeModal.show());
 
 document.getElementById('remove-type-form').addEventListener('submit', async function(e){
@@ -89,6 +106,16 @@ document.getElementById('remove-type-form').addEventListener('submit', async fun
         for (const checkbox of checkboxes) {
             const typeId = checkbox.value;
 
+            // Check if the type has subtypes
+            const tabContent = document.getElementById(`type-${typeId}`);
+            const hasSubtypes = tabContent.querySelectorAll('.category-card').length > 0;
+
+            if(hasSubtypes) {
+                Swal.fire('Warning', `Cannot delete type "${checkbox.nextElementSibling.textContent}" because it has subtypes.`, 'warning');
+                continue; // Skip this type
+            }
+
+            // Proceed to delete
             const response = await fetch(`/admin/categories/delete-type/${typeId}`, {
                 method: 'DELETE',
                 headers: {
@@ -102,7 +129,6 @@ document.getElementById('remove-type-form').addEventListener('submit', async fun
             if(data.success){
                 // Remove tab and content
                 const tab = document.getElementById(`type-tab-${typeId}`);
-                const tabContent = document.getElementById(`type-${typeId}`);
                 tab?.parentNode.remove();
                 tabContent?.remove();
 
@@ -126,3 +152,4 @@ document.getElementById('remove-type-form').addEventListener('submit', async fun
         Swal.fire('Error', err.message || 'Error removing types', 'error');
     }
 });
+

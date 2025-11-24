@@ -151,7 +151,7 @@
                     <tr data-key="${item.id}_${item.variant}_${item.sugar}">
                         <td>${item.name}</td>
                         <td>${item.variant}</td>
-                        <td>${item.sugar}</td>
+                        <td>${item.sugar || 'None'}</td>
                         <td>
                             <button class="btn btn-sm btn-outline-light qty-btn" data-action="decrease">-</button>
                             <span class="mx-1">${item.quantity}</span>
@@ -213,7 +213,7 @@
                                 <tr>
                                     <td>${item.name}</td>
                                     <td>${item.variant}</td>
-                                    <td>${item.sugar}</td>
+                                    <td>${item.sugar || 'None'}</td>
                                     <td>${item.quantity}</td>
                                     <td>$${(item.unit_price*item.quantity).toFixed(2)}</td>
                                 </tr>`).join('')}
@@ -282,7 +282,7 @@
                             ${Object.values(cart).map(i => `<tr>
                                 <td>${i.name}</td>
                                 <td>${i.variant}</td>
-                                <td>${i.sugar}</td>
+                                <td>${item.sugar || 'None'}</td>
                                 <td>${i.quantity}</td>
                                 <td>$${(i.unit_price*i.quantity).toFixed(2)}</td></tr>`).join('')}
                             <tr class="fw-bold"><td colspan="4">Total (USD)</td><td>$${total.toFixed(2)}</td></tr>

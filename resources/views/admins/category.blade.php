@@ -40,7 +40,8 @@
                 <div class="row">
                     @forelse($type->subTypes as $subtype)
                         <div class="col-md-4 mb-3">
-                            <div class="card category-card">
+                            <div class="card category-card"
+                                data-product-count="{{ $subtype->products->count() }}">
                                 <div class="card-header">{{ $subtype->name }}</div>
                                 <div class="card-body">
                                     <ul class="list-group mb-2">
@@ -56,13 +57,14 @@
 
                                     {{-- Delete Subtype --}}
                                     <form action="{{ route('admin.categories.deleteSubtype', $subtype->id) }}"
-                                          method="POST" class="mt-2">
+                                        method="POST" class="mt-2 delete-subtype-form">
                                         @csrf
                                         @method('DELETE')
                                         <button class="btn btn-sm btn-danger w-100">Delete Subtype</button>
                                     </form>
                                 </div>
                             </div>
+
                         </div>
                     @empty
                         <p>No subtypes for this type yet.</p>
