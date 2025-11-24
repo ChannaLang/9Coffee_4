@@ -12,7 +12,7 @@
             <a href="javascript:history.back()" class="btn btn-outline-light fw-bold">
                 <i class="bi bi-arrow-left-circle"></i> Back
             </a>
-            <h4 class="mb-0 text-center flex-grow-1">Orders List</h4>
+            <h4 class="mb-0 text-center grow">Orders List</h4>
             <div></div> {{-- Empty div to balance flex spacing --}}
         </div>
 

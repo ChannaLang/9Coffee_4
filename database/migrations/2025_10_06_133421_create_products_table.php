@@ -8,22 +8,27 @@ return new class extends Migration
 {
     public function up()
     {
-            Schema::create('products', function (Blueprint $table) {
-                $table->id();
-                $table->string('name');
-                $table->string('image');
-                $table->decimal('price', 10, 2)->nullable(); // <-- FIXED
-                $table->text('description')->nullable();
-                $table->unsignedBigInteger('product_type_id')->nullable();
+        Schema::create('products', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('image');
+            $table->decimal('price', 10, 2)->nullable();
+            $table->text('description')->nullable();
+            $table->unsignedBigInteger('product_type_id')->nullable();
+            $table->foreign('product_type_id')
+                ->references('id')->on('product_types')
+                ->onDelete('set null');
 
-                $table->foreign('product_type_id')
-                    ->references('id')->on('product_types')
-                    ->onDelete('set null');
+            $table->unsignedBigInteger('sub_type_id')->nullable();
+            $table->foreign('sub_type_id')
+                ->references('id')->on('sub_types')
+                ->onDelete('set null');
 
-                $table->integer('quantity')->default(0);
-                $table->enum('status', ['draft','active','inactive'])->default('draft');
-                $table->timestamps();
-            });
+            $table->integer('quantity')->default(0);
+            $table->enum('status', ['draft','active','inactive'])->default('draft');
+            $table->timestamps();
+        });
+
 
     }
 

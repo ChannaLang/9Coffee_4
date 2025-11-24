@@ -2,12 +2,33 @@
 
 @section('content')
 @php
+$types = App\Models\Product\ProductType::with('subTypes')->get();
 
-$types = App\Models\Product\ProductType::all();
+// Prepare product types array
+$productTypesArr = $types->map(function($t) {
+    return [
+        'id' => $t->id,
+        'name' => $t->name
+    ];
+});
+
+// Prepare subtypes array grouped by type_id
+$subTypesArr = [];
+foreach($types as $t) {
+    $subTypesArr[$t->id] = $t->subTypes->map(function($s) {
+        return [
+            'id' => $s->id,
+            'name' => $s->name
+        ];
+    })->toArray();
+}
 @endphp
+
 <script>
-    window.productTypes = @json($types);
+    window.productTypes = @json($productTypesArr);
+    window.subTypes = @json($subTypesArr);
 </script>
+
 
 <div class="container-fluid py-4">
 
@@ -16,10 +37,15 @@ $types = App\Models\Product\ProductType::all();
     {{-- Page Header --}}
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="text-cafe-title">☕ Product Management</h2>
-        <a href="#" id="btnAddProduct" class="btn btn-create btn-lg">
-    <i class="bi bi-plus-circle"></i> Add Product
-    </a>
+        <div>
+            <a href="#" id="btnAddProduct" class="btn btn-create btn-lg me-2">
+                <i class="bi bi-plus-circle"></i> Add Product
+            </a>
+        </div>
     </div>
+
+
+
     {{-- Products Card --}}
     <div class="card shadow-sm rounded-4 cafe-card">
         <div class="card-body">
@@ -48,6 +74,7 @@ $types = App\Models\Product\ProductType::all();
                                 <th>Image</th>
                                 <th>Price</th>
                                 <th>Type</th>
+                                <th>Subtype</th>
                                 <th>Edit</th>
                                 <th>Delete</th>
                                 <th>Option</th>
@@ -66,30 +93,34 @@ $types = App\Models\Product\ProductType::all();
                                             </td>
                                             <td>${{ number_format($product->price, 2) }}</td>
                                             <td>{{ $product->productType ? $product->productType->name : 'N/A' }}</td>
+                                            <td>{{ $product->subType ? $product->subType->name : 'N/A' }}</td>
+
                                             <td>
                                                 <button type="button"
-                                                    class="btn btn-info btn-sm rounded-pill btn-edit"
-                                                    data-id="{{ $product->id }}"
-                                                    data-name="{{ $product->name }}"
-                                                    data-price="{{ $product->price }}"
-                                                    data-type-id="{{ $product->productType ? $product->productType->id : '' }}">
-                                                    Edit
+                                                        class="btn btn-info btn-sm rounded-pill btn-edit"
+                                                        data-id="{{ $product->id }}"
+                                                        data-name="{{ $product->name }}"
+                                                        data-price="{{ $product->price }}"
+                                                        data-type-id="{{ $product->productType ? $product->productType->id : '' }}"
+                                                        data-subtype-id="{{ $product->subType ? $product->subType->id : '' }}">
+
+                                                        Edit
                                                 </button>
+
                                             </td>
                                             <td>
-                                                    <button type="button"
-                                                                class="btn btn-danger btn-sm rounded-pill btn-delete"
-                                                                data-id="{{ $product->id }}"
-                                                                data-name="{{ $product->name }}">
-                                                            Delete
-                                                    </button>
+                                                <button type="button"
+                                                        class="btn btn-danger btn-sm rounded-pill btn-delete"
+                                                        data-id="{{ $product->id }}"
+                                                        data-name="{{ $product->name }}">
+                                                        Delete
+                                                </button>
                                             </td>
                                             <td>
                                                 <button class="btn btn-success btn-sm rounded-pill btn-create-variant"
                                                         data-id="{{ $product->id }}">
-                                                    Create Variant
+                                                        Create Variant
                                                 </button>
-
                                             </td>
 
 
@@ -104,6 +135,7 @@ $types = App\Models\Product\ProductType::all();
 </div>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 <link rel="stylesheet" href="{{ asset('assets/css/allproduct.css') }}">
+
 <script src="{{ asset('assets/js/all-product.js') }}"></script>
 <script>
     window.variantCreateUrl = "{{ url('/admin/product/products') }}";

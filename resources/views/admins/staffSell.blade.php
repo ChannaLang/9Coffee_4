@@ -24,26 +24,34 @@
                         <div class="card-header text-center" style="background-color: #db770cff; color: #fff;">
                             <h4 class="mb-0">Staff Sell POS</h4>
                         </div>
-
-                        {{-- Sub-Type Filters --}}
-                        <div class="row mt-3 mb-2">
-                            <div class="col-md-12">
-                                <div class="mb-2">
-                                    <strong class="text-warning me-2">Filter Sub-Type:</strong>
-                                    <button class="btn btn-outline-warning filter-sub-btn active" data-subtype="all">All</button>
-                                    @foreach($subTypes as $sub)
-                                        <button class="btn btn-outline-warning filter-sub-btn" data-subtype="{{ strtolower($sub->name) }}">{{ $sub->name }}</button>
-                                    @endforeach
-                                </div>
-                            </div>
+                        {{-- Type Filters --}}
+                        <div class="mb-2">
+                            <strong class="text-warning me-2">Filter Type:</strong>
+                            <button class="btn btn-outline-warning filter-type-btn active" data-type="all">All</button>
+                            @foreach(App\Models\Product\ProductType::all() as $type)
+                                <button class="btn btn-outline-warning filter-type-btn" data-type="{{ strtolower($type->name) }}">
+                                    {{ $type->name }}
+                                </button>
+                            @endforeach
                         </div>
+                        {{-- Sub-Type Filters --}}
+                        <div class="mb-2">
+                            <strong class="text-warning me-2">Filter Menu:</strong>
+                            <button class="btn btn-outline-warning filter-sub-btn active" data-subtype="all">All</button>
+                            @foreach(App\Models\Product\SubType::all() as $sub)
+                                <button class="btn btn-outline-warning filter-sub-btn" data-subtype="{{ strtolower($sub->name) }}">
+                                    {{ $sub->name }}
+                                </button>
+                            @endforeach
+                        </div>
+
 
                         {{-- Products Grid --}}
                         <div class="row mt-3" id="products-container">
                             @foreach($products as $product)
                                 <div class="col-md-3 text-center mb-3 product-wrapper"
-                                    data-type="{{ $product->product_type_id }}"
-                                    data-subtype="{{ strtolower($product->name) }}"
+                                    data-type="{{ strtolower($product->type->name ?? 'food') }}"
+                                    data-subtype="{{ strtolower($product->subType->name ?? 'other') }}"
                                     data-name="{{ strtolower($product->name) }}">
 
                                     <div class="product-card p-3 rounded"
@@ -51,18 +59,15 @@
                                         data-name="{{ $product->name }}"
                                         data-type="{{ strtolower($product->type->name ?? 'food') }}"
                                         style="background:#4b3a2f; border:1px solid #6b4c3b;">
-
                                         <img src="{{ asset('assets/images/'.$product->image) }}" class="img-fluid rounded mb-2" style="height:120px; object-fit:cover;">
                                         <div class="fw-bold">{{ $product->name }}</div>
                                         <div class="fw-bold product-price">${{ $product->price }}</div>
-
                                         {{-- Variant button --}}
                                         <div class="mt-2">
                                             <button type="button" class="btn btn-outline-light btn-sm w-100 select-variant-btn">
                                                 Select Option
                                             </button>
                                         </div>
-
                                         {{-- Variant group --}}
                                         <div class="variant-group mt-2 d-none">
                                             @foreach($product->variants as $variant)
@@ -75,35 +80,17 @@
                                                 </button>
                                             @endforeach
                                         </div>
-
                                         {{-- Sugar selection (single, inside main card) --}}
-                                       
-                                            <div class="mt-2 sugar-wrapper d-none">
-                                                <div class="dropdown">
-                                                    <button class="btn btn-outline-secondary dropdown-toggle w-100 sugar-dropdown-btn"
-                                                            type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        Sugar %
-                                                    </button>
+                                            <div class="mt-2 sugar-wrapper">
+                                                <select class="sugar-select btn btn-outline-light btn-sm w-100">
 
-                                                    <ul class="dropdown-menu w-100">
-                                                        <li><button class="dropdown-item sugar-option" data-value="0">0%</button></li>
-                                                        <li><button class="dropdown-item sugar-option" data-value="25">25%</button></li>
-                                                        <li><button class="dropdown-item sugar-option" data-value="50">50%</button></li>
-                                                        <li><button class="dropdown-item sugar-option" data-value="75">75%</button></li>
-                                                        <li><button class="dropdown-item sugar-option" data-value="100">100%</button></li>
-
-                                                        <li>
-                                                            <input type="number" class="form-control mt-2 sugar-custom-input"
-                                                                placeholder="Custom %" min="0" max="100">
-                                                        </li>
-                                                    </ul>
-                                                </div>
-
-                                                <input type="hidden" class="sugar-select" value="0">
+                                                    <option value="0">No Sugar</option>
+                                                    <option value="25">Less Sweet</option>
+                                                    <option value="50" selected>Normal Sweet</option>
+                                                    <option value="75">Sweet</option>
+                                                    <option value="100">Extra Sweet</option>
+                                                </select>
                                             </div>
-
-
-
                                         {{-- Add button --}}
                                         <div class="mt-3 d-flex justify-content-center gap-2">
                                             <button type="button" class="btn btn-success btn-add-to-cart">
@@ -184,18 +171,12 @@
     </div>
 </div>
 <meta name="csrf-token" content="{{ csrf_token() }}">
-
 <script>
     const checkoutUrl = "{{ route('staff.checkout') }}";
 </script>
 
-{{-- Bootstrap needed for dropdowns --}}
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
 {{-- JS + SweetAlert --}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{{ asset('assets/js/staff-sell.js') }}"></script>
-
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-
 @endsection

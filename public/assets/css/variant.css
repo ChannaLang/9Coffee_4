@@ -5,7 +5,7 @@
     border-radius: 14px;
     box-shadow: 0 6px 18px rgba(0,0,0,0.08);
     border: 1px solid #e7e7e7;
-    transition: 1s ease;
+    transition: 0.25s ease;
     margin-bottom: 20px;
 
     /* FIXED WIDTH — change as you like */

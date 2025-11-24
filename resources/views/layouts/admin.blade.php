@@ -11,8 +11,12 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ asset('assets/css/admin.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('assets/css/icomoon.css') }}">
+    <!-- In layouts/admin.blade.php, inside <head> -->
+    <link rel="stylesheet" href="{{ asset('assets/css/category.css') }}">
+
 
     <!-- JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -95,6 +99,13 @@
                     <span class="title">Products Management</span>
                 </a>
             </li>
+            <li class="{{ Request::routeIs('admin.categories') ? 'active' : '' }}">
+                <a href="{{ route('admin.categories') }}">
+                    <span class="icon"><ion-icon name="layers-outline"></ion-icon></span>
+                    <span class="title">Categories</span>
+                </a>
+            </li>
+
 
             <li class="{{ Request::routeIs('admins.help') ? 'active' : '' }}">
                 <a href="{{ route('admins.help') }}">

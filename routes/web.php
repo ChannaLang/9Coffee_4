@@ -1,5 +1,6 @@
 
 <?php
+
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Products\ProductsController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\Admins\ReportController;
 use App\Http\Controllers\Admins\StaffController;
 use App\Exports\ExpensesExport;
 use App\Http\Controllers\Admins\VariantController;
+use App\Http\Controllers\Admins\CategoryController;
 
 // 🟢 Default Laravel auth
 Auth::routes();
@@ -33,11 +35,19 @@ Route::get('/', function () {return redirect()->route('view.login');});
 
 // 🔒 Protected admin routes
     Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
+    // ✅ Category Management Routes
+    Route::get('/categories', [CategoryController::class, 'index'])->name('admin.categories');
+    Route::post('/categories/store-type', [CategoryController::class, 'storeType'])->name('admin.categories.storeType');
+    Route::post('/categories/store-subtype', [CategoryController::class, 'storeSubtype'])->name('admin.categories.storeSubtype');
+    // Delete a subtype
+    Route::delete('/categories/delete-subtype/{id}', [CategoryController::class, 'deleteSubtype'])->name('admin.categories.deleteSubtype');
+
+
     Route::get('/dashboard', [AdminsController::class, 'index'])->name('admins.dashboard');
     Route::post('/logout', [AdminsController::class, 'logout'])->name('admin.logout');
     Route::get('/all-users', [AdminsController::class, 'DisplayAllUsers'])->name('all.users');
     Route::get('/help', [AdminsController::class, 'Help'])->name('admins.help');
-    
+
     Route::get('admin/reports/sales', [ReportController::class, 'salesReport'])->name('admin.sales.report');
     Route::patch('/products/update-stock/{id}', [ReportController::class, 'updateStock'])->name('admin.product.update-stock');
 Route::middleware(['auth:admin', 'superadmin'])->prefix('admin')->group(function () {
