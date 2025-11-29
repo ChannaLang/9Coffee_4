@@ -76,47 +76,43 @@
             walletEl.dataset.balance = current.toFixed(2);
             walletEl.textContent = '$' + current.toFixed(2);
         }
+// ===== Add to Cart / Variant Select =====
+staffSellSection.addEventListener('click', function (e) {
+    const target = e.target;
+    const card = target.closest('.product-card');
+    if (!card) return;
 
-        // ===== Add to Cart =====
-    staffSellSection.addEventListener('click', function (e) {
-        const target = e.target;
-        const card = target.closest('.product-card');
+    // ----- Variant Select (all variants visible instantly) -----
+    if (target.classList.contains('variant-btn')) {
+        // Remove 'active' from other variants in the card
+        card.querySelectorAll('.variant-btn').forEach(btn => btn.classList.remove('active'));
+        target.classList.add('active');
 
-        // Variant Toggle
-        if(target.classList.contains('select-variant-btn') && card) {
-            const variantGroup = card.querySelector('.variant-group');
-            variantGroup.classList.toggle('d-none');
-            return;
+        // Set selected variant info directly on the card
+        card.dataset.variantId = target.dataset.variantId;
+        card.dataset.variant = target.dataset.variantName;
+        card.dataset.variantPrice = target.dataset.variantPrice;
+        card.dataset.available = target.dataset.available;
+
+        // ===== Update displayed price instantly =====
+        const priceDiv = card.querySelector('.product-price');
+        if (priceDiv) {
+            priceDiv.textContent = `$${Number(target.dataset.variantPrice).toFixed(2)}`;
         }
 
-        // Variant Select
-        if(target.classList.contains('variant-btn') && card) {
-            card.querySelectorAll('.variant-btn').forEach(btn => btn.classList.remove('active'));
-            target.classList.add('active');
+        // ===== Show sugar only for Drinks =====
+        const sugarWrapper = card.querySelector('.sugar-wrapper');
+        const productType = card.dataset.type.toLowerCase();
 
-            const selectBtn = card.querySelector('.select-variant-btn');
-
-            // set selected variant info
-            card.dataset.variantId = target.dataset.variantId;
-            card.dataset.variant = target.dataset.variantName;
-            card.dataset.variantPrice = target.dataset.variantPrice;
-            card.dataset.available = target.dataset.available;
-
-            selectBtn.textContent = target.dataset.variantName;
-            target.parentElement.classList.add('d-none');
-
-            // ===== Show sugar only for Drinks =====
-            const sugarWrapper = card.querySelector('.sugar-wrapper');
-            const productType = card.dataset.type.toLowerCase();
-
-            if(sugarWrapper) {
-                if(productType === 'drink') sugarWrapper.classList.remove('d-none');
-                else sugarWrapper.classList.add('d-none');
-            }
-            return;
+        if (sugarWrapper) {
+            if (productType === 'drink') sugarWrapper.classList.remove('d-none');
+            else sugarWrapper.classList.add('d-none');
         }
-        // ===== Add to Cart =====
-    if (target.closest('.btn-add-to-cart') && card) {
+        return; // stop further processing
+    }
+
+    // ----- Add to Cart -----
+    if (target.closest('.btn-add-to-cart')) {
         const id = card.dataset.variantId;
         const name = card.dataset.name;
         const variant = card.dataset.variant;
@@ -126,19 +122,24 @@
             showToast('Please select a variant first', 'error');
             return;
         }
-        // Only include sugar for drinks
+
+        // Include sugar only for drinks
         const productType = card.dataset.type.toLowerCase();
         let sugar = null;
         if (productType === 'drink') {
             const sugarSelect = card.querySelector('select.sugar-select');
             sugar = sugarSelect ? sugarSelect.value : null;
         }
+
         const key = `${id}_${variant}_${sugar}`;
         if (cart[key]) cart[key].quantity++;
         else cart[key] = { id, name, variant, sugar, unit_price, quantity: 1 };
+
         renderCart();
     }
-    });
+});
+
+
         // ===== Render Cart =====
         function renderCart() {
             const tbody = document.querySelector('#cart-table tbody');
@@ -282,7 +283,7 @@
                             ${Object.values(cart).map(i => `<tr>
                                 <td>${i.name}</td>
                                 <td>${i.variant}</td>
-                                <td>${item.sugar || 'None'}</td>
+                                <td>${i.sugar || 'None'}</td>
                                 <td>${i.quantity}</td>
                                 <td>$${(i.unit_price*i.quantity).toFixed(2)}</td></tr>`).join('')}
                             <tr class="fw-bold"><td colspan="4">Total (USD)</td><td>$${total.toFixed(2)}</td></tr>

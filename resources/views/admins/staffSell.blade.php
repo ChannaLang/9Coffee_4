@@ -62,14 +62,9 @@
                                         <img src="{{ asset('assets/images/'.$product->image) }}" class="img-fluid rounded mb-2" style="height:120px; object-fit:cover;">
                                         <div class="fw-bold">{{ $product->name }}</div>
                                         <div class="fw-bold product-price">${{ $product->price }}</div>
-                                        {{-- Variant button --}}
-                                        <div class="mt-2">
-                                            <button type="button" class="btn btn-outline-light btn-sm w-100 select-variant-btn">
-                                                Select Option
-                                            </button>
-                                        </div>
+
                                         {{-- Variant group --}}
-                                        <div class="variant-group mt-2 d-none">
+                                        <div class="variant-group mt-2">
                                             @foreach($product->variants as $variant)
                                                 <button class="btn btn-outline-warning btn-sm variant-btn mb-1"
                                                         data-variant-id="{{ $variant['id'] }}"
