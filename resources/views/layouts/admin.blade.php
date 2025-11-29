@@ -18,36 +18,113 @@
     <!-- JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
-    <style>
-        /* Fix for sidebar & main content layout */
-        #wrapper {
-            display: flex;
-            min-height: 100vh;
-            background: rgba(0,0,0,0.6);
-        }
+<style>
+:root {
+    --sidebar-collapsed: 40px; /* width when collapsed */
+    --sidebar-expanded: 250px; /* width when expanded on hover */
+}
 
-        .navigation {
-            width: 250px;
-            flex-shrink: 0;
-            position: sticky;
-            top: 0;
-            height: 100vh;
-            background: rgba(0,0,0,0.8);
-            overflow-y: auto;
-        }
+/* Ensure full-page layout */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    scroll-behavior: smooth;
+    background-image: url('{{ asset('assets/images/bg_1.jpg') }}');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
 
-        .main-content {
-            flex: 1;
-            padding: 20px;
-            overflow-x: auto;
-            color: #fff;
-        }
-    </style>
+/* Wrapper */
+#wrapper {
+    display: flex;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Sidebar */
+.navigation {
+    width: var(--sidebar-collapsed);
+    position: fixed; /* overlay */
+    top: 0;
+    left: 0;
+    height: 100vh;
+    background: rgba(0,0,0,0.85);
+    overflow-y: auto;
+    overflow-x: hidden;
+    transition: width 0.3s;
+    z-index: 1000;
+}
+
+/* Expand on hover */
+.navigation:hover {
+    width: var(--sidebar-expanded);
+}
+
+/* Sidebar items */
+.navigation ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.navigation ul li a {
+    display: flex;
+    align-items: center;
+    padding: 15px 10px;
+    color: #fff;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.navigation ul li a:hover,
+.navigation ul li a.active {
+    background: rgba(255,255,255,0.1);
+}
+
+.navigation ul li a .icon {
+    font-size: 1.5rem;
+    width: 40px;
+    text-align: center;
+}
+
+.navigation ul li a .title {
+    margin-left: 10px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+/* Show text when hovering */
+.navigation:hover ul li a .title {
+    opacity: 1;
+}
+
+/* Main content */
+.main-content {
+    flex: 1;
+    padding: 20px;
+    color: #fff;
+    min-height: 100vh;
+    margin-left: var(--sidebar-collapsed); /* leave space for collapsed sidebar */
+    transition: margin-left 0.3s;
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+/* Ensure content doesn’t shift when sidebar expands */
+.navigation:hover ~ .main-content {
+    margin-left: var(--sidebar-collapsed);
+}
+
+</style>
+
 </head>
 <body style="background-image: url('{{ asset('assets/images/bg_1.jpg') }}');
              background-size: cover;

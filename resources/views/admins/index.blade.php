@@ -2,7 +2,7 @@
     @extends('layouts.admin')
     @section('content')
 
-    <body>
+
         <div class="container">
         <div class="cardBox">
         <a href="{{ route('all.bookings') }}" class="card" style="background-color:#fdcb6e; color:#000;">
@@ -166,6 +166,5 @@
 </script>
 
 
-    </body>
     @endsection
 
