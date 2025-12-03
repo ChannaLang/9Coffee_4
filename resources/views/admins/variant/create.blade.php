@@ -27,11 +27,12 @@
         @csrf
 
         <div class="mb-2">
-            <input type="text" name="name" placeholder="Variant Name" class="form-control" required>
+            <input type="text" name="name" placeholder="Variant Name" class="form-control" required autocomplete="off">
         </div>
 
         <div class="mb-2">
-            <input type="number" name="price" placeholder="Price" class="form-control" required>
+            <input type="number" name="price" placeholder="Price" class="form-control" step="0.01" required autocomplete="off">
+
         </div>
 
         <div class="d-flex gap-2">

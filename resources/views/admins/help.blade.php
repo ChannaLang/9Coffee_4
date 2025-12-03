@@ -1,119 +1,122 @@
 @extends('layouts.admin')
 
+@section('title', 'Help Center')
+
+@push('styles')
+<link href="{{ asset('assets/css/help-admin.css') }}" rel="stylesheet">
+@endpush
+
 @section('content')
 <div class="container mt-5">
-    <div class="card shadow-sm border-0 rounded-4 help-main" style="background-color: #3e2f2f; color: #f5f5f5;">
-        <div class="card-header" style="background-color: #db770cff; color: #fff;">
-            <a href="{{ route('admins.dashboard') }}" class="btn btn-light mt-3" style="color:#3e2f2f;">
+    <div class="card shadow-sm border-0 rounded-4 help-main">
+        <div class="card-header">
+            <a href="{{ route('admins.dashboard') }}" class="btn btn-back">
                 <i class="bi bi-arrow-left-circle"></i> Back to Dashboard
             </a>
             <h4 class="mb-0 text-center">☕ Help Center</h4>
         </div>
         <div class="card-body">
-
-            <p class="intro-text text-center" style="color:#f5f5f5; font-size:1rem; margin-bottom:25px;">
+            <p class="intro-text text-center mb-4">
                 Welcome to the Help Center! Explore the sections below to manage your Coffee Shop Admin Dashboard efficiently.
             </p>
 
-            <div class="row g-3 help-cards">
-                <div class="col-md-4">
-                    <div class="card text-white" style="background-color:#5a3d30; box-shadow:0 5px 20px rgba(0,0,0,0.2);">
-                        <div class="card-body">
-                            <div class="help-icon" style="font-size:2rem;">📊</div>
-                            <h5>Dashboard</h5>
-                            <ul>
-                                <li>👁️ Daily Views: Track website visitors.</li>
-                                <li>💰 Sales: Monitor completed transactions.</li>
-                                <li>💬 Comments: Customer feedback messages.</li>
-                                <li>🤑 Earnings: Total revenue from all orders.</li>
-                            </ul>
-                        </div>
-                    </div>
+            <div class="help-cards">
+
+                <!-- Dashboard Card -->
+                <div class="help-card text-center">
+                    <div class="help-icon">📊</div>
+                    <h5>Dashboard</h5>
+                    <ul>
+                        <li>👁️ <strong>Daily Views:</strong> Track visitors and peak hours.</li>
+                        <li>💰 <strong>Sales Overview:</strong> Completed orders & revenue trends.</li>
+                        <li>💬 <strong>Comments:</strong> Monitor customer feedback.</li>
+                        <li>🤑 <strong>Earnings:</strong> Total revenue & summaries.</li>
+                        <li>📈 <strong>Reports:</strong> Export dashboard data.</li>
+                    </ul>
                 </div>
 
-                <div class="col-md-4">
-                    <div class="card text-white" style="background-color:#5a3d30; box-shadow:0 5px 20px rgba(0,0,0,0.2);">
-                        <div class="card-body">
-                            <div class="help-icon" style="font-size:2rem;">👥</div>
-                            <h5>Customers</h5>
-                            <ul>
-                                <li>View details: name, country, order history.</li>
-                                <li>Search and filter by name/location.</li>
-                                <li>Update or delete customer info.</li>
-                            </ul>
-                        </div>
-                    </div>
+                <!-- Customers Card -->
+                <div class="help-card text-center">
+                    <div class="help-icon">👥</div>
+                    <h5>Customers</h5>
+                    <ul>
+                        <li>🔍 <strong>Search & Filter:</strong> Find by name, email, location.</li>
+                        <li>📝 <strong>Details:</strong> View profile, orders, preferences.</li>
+                        <li>✏️ <strong>Edit Info:</strong> Update contact info.</li>
+                        <li>🗑️ <strong>Delete:</strong> Remove inactive/test accounts.</li>
+                        <li>💌 <strong>Communication:</strong> Send targeted notifications.</li>
+                    </ul>
                 </div>
 
-                <div class="col-md-4">
-                    <div class="card text-white" style="background-color:#5a3d30; box-shadow:0 5px 20px rgba(0,0,0,0.2);">
-                        <div class="card-body">
-                            <div class="help-icon" style="font-size:2rem;">🛒</div>
-                            <h5>Orders</h5>
-                            <ul>
-                                <li>View order info, payment & delivery status.</li>
-                                <li>Update status: Pending, Delivered, In Progress, Return.</li>
-                                <li>Mark payments as "Paid" or "Due".</li>
-                            </ul>
-                        </div>
-                    </div>
+                <!-- Orders Card -->
+                <div class="help-card text-center">
+                    <div class="help-icon">🛒</div>
+                    <h5>Orders</h5>
+                    <ul>
+                        <li>📄 <strong>Order Info:</strong> Products, quantities, payment & delivery status.</li>
+                        <li>⚙️ <strong>Update Status:</strong> Pending, Delivered, In Progress, Returned.</li>
+                        <li>💰 <strong>Payment:</strong> Confirm “Paid” or “Due”.</li>
+                        <li>🕒 <strong>Track Time:</strong> Order creation & delivery timestamps.</li>
+                        <li>📦 <strong>Bulk Actions:</strong> Export or delete multiple orders.</li>
+                    </ul>
                 </div>
 
-                <div class="col-md-4">
-                    <div class="card text-white" style="background-color:#5a3d30; box-shadow:0 5px 20px rgba(0,0,0,0.2);">
-                        <div class="card-body">
-                            <div class="help-icon" style="font-size:2rem;">✉️</div>
-                            <h5>Messages</h5>
-                            <ul>
-                                <li>Respond promptly to improve satisfaction.</li>
-                                <li>Resolve order issues or feedback efficiently.</li>
-                            </ul>
-                        </div>
-                    </div>
+                <!-- Messages Card -->
+                <div class="help-card text-center">
+                    <div class="help-icon">✉️</div>
+                    <h5>Messages</h5>
+                    <ul>
+                        <li>💬 <strong>Inbox:</strong> Read inquiries & feedback.</li>
+                        <li>📤 <strong>Respond:</strong> Reply promptly to maintain satisfaction.</li>
+                        <li>⚠️ <strong>Issues:</strong> Resolve complaints efficiently.</li>
+                        <li>📌 <strong>Mark Important:</strong> Flag messages for follow-up.</li>
+                        <li>📥 <strong>History:</strong> Review past conversations.</li>
+                    </ul>
                 </div>
 
-                <div class="col-md-4">
-                    <div class="card text-white" style="background-color:#5a3d30; box-shadow:0 5px 20px rgba(0,0,0,0.2);">
-                        <div class="card-body">
-                            <div class="help-icon" style="font-size:2rem;">⚙️</div>
-                            <h5>Settings</h5>
-                            <ul>
-                                <li>Update name, profile picture, contact info.</li>
-                                <li>Change preferences like language & theme.</li>
-                            </ul>
-                        </div>
-                    </div>
+                <!-- Settings Card -->
+                <div class="help-card text-center">
+                    <div class="help-icon">⚙️</div>
+                    <h5>Settings</h5>
+                    <ul>
+                        <li>👤 <strong>Profile:</strong> Update name, picture, contact info.</li>
+                        <li>🌐 <strong>Preferences:</strong> Change language, theme, time zone.</li>
+                        <li>🔔 <strong>Notifications:</strong> Enable/disable alerts.</li>
+                        <li>🔒 <strong>Security:</strong> Two-factor authentication if available.</li>
+                        <li>💾 <strong>Backup:</strong> Export your settings.</li>
+                    </ul>
                 </div>
 
-                <div class="col-md-4">
-                    <div class="card text-white" style="background-color:#5a3d30; box-shadow:0 5px 20px rgba(0,0,0,0.2);">
-                        <div class="card-body">
-                            <div class="help-icon" style="font-size:2rem;">🔒</div>
-                            <h5>Password</h5>
-                            <ul>
-                                <li>Use strong passwords with symbols & numbers.</li>
-                                <li>Change immediately if you suspect compromise.</li>
-                            </ul>
-                        </div>
-                    </div>
+                <!-- Password Card -->
+                <div class="help-card text-center">
+                    <div class="help-icon">🔒</div>
+                    <h5>Password</h5>
+                    <ul>
+                        <li>🔑 <strong>Strong Password:</strong> Symbols, numbers, uppercase.</li>
+                        <li>🛡️ <strong>Update Regularly:</strong> Change every few months.</li>
+                        <li>⚠️ <strong>Security Alert:</strong> Change if compromised.</li>
+                        <li>🔄 <strong>Password Recovery:</strong> Use “Forgot Password”.</li>
+                        <li>📌 <strong>Do Not Share:</strong> Never share credentials.</li>
+                    </ul>
                 </div>
 
-                <div class="col-md-4">
-                    <div class="card text-white" style="background-color:#5a3d30; box-shadow:0 5px 20px rgba(0,0,0,0.2);">
-                        <div class="card-body">
-                            <div class="help-icon" style="font-size:2rem;">🚪</div>
-                            <h5>Sign Out</h5>
-                            <ul>
-                                <li>Prevent unauthorized access.</li>
-                                <li>End session properly.</li>
-                            </ul>
-                        </div>
-                    </div>
+                <!-- Sign Out Card -->
+                <div class="help-card text-center">
+                    <div class="help-icon">🚪</div>
+                    <h5>Sign Out</h5>
+                    <ul>
+                        <li>🔒 <strong>End Session:</strong> Always log out after work.</li>
+                        <li>⚠️ <strong>Security:</strong> Prevent unauthorized access.</li>
+                        <li>🖥️ <strong>Multiple Devices:</strong> Log out from unused devices.</li>
+                        <li>🔄 <strong>Session Timeout:</strong> Auto-expire for safety.</li>
+                        <li>📌 <strong>Check Active Logins:</strong> Monitor recent logins.</li>
+                    </ul>
                 </div>
+
             </div>
 
-            <p class="support-text text-center mt-4" style="color:#f5f5f5;">
-                Need more help? Contact <a href="mailto:support@coffeeshop.com" style="color:#fff; text-decoration:underline;">support@coffeeshop.com</a>
+            <p class="support-text text-center mt-4">
+                Need more help? Contact <a href="mailto:support@coffeeshop.com">support@coffeeshop.com</a>
             </p>
         </div>
     </div>

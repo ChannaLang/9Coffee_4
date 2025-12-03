@@ -1,7 +1,33 @@
+
 document.addEventListener('DOMContentLoaded', function () {
     const tableBody = document.querySelector('table tbody');
     const btnAddProduct = document.getElementById('btnAddProduct');
     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+    // --- SEARCH FILTER ---
+    const searchInput = document.getElementById('productSearch');
+    if (searchInput) {
+        searchInput.addEventListener('keyup', () => {
+            const search = searchInput.value.toLowerCase();
+            const rows = tableBody.querySelectorAll('tr');
+
+            rows.forEach(row => {
+                const name = row.children[1]?.textContent.toLowerCase() || "";
+                const type = row.children[4]?.textContent.toLowerCase() || "";
+                const subtype = row.children[5]?.textContent.toLowerCase() || "";
+
+                if (
+                    name.includes(search) ||
+                    type.includes(search) ||
+                    subtype.includes(search)
+                ) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        });
+    }
+
 
     if (!tableBody || !btnAddProduct || !csrfToken) {
         console.warn('Essential DOM elements or CSRF token missing.');

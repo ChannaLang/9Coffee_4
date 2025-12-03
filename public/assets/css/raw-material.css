@@ -2,9 +2,8 @@
    GLOBAL THEME — Coffee (#3e2f2f) + Caramel (#db770c)
 ----------------------------------------------------------- */
 
-/* ---- CARD ---- */
 .card {
-    background-color: #4b3a2f;       /* coffee */
+    background-color: #4b3a2f;
     color: #f5f5f5;
     border-radius: 14px;
     border: 1px solid #3a2b27;
@@ -12,7 +11,7 @@
 }
 
 .card-header {
-    background-color: #db770c;       /* caramel */
+    background-color: #db770c;
     color: #fff;
     font-weight: 700;
     padding: 15px 20px;
@@ -20,7 +19,6 @@
     border-top-right-radius: 14px;
 }
 
-/* ---- RAW HEADER ---- */
 .raw-header h4 {
     font-weight: 700;
 }
@@ -29,30 +27,54 @@
    TABLE STYLING
 ----------------------------------------------------------- */
 
+.raw-table {
+    width: 100%;
+    table-layout: fixed; /* fixes column width issues */
+    border-collapse: collapse;
+}
+
 .raw-table thead th {
     background-color: #4b3a2f;
     color: #fff;
-    padding: 12px;
-    letter-spacing: 0.4px;
+    padding: 10px;
     font-weight: 700;
+    letter-spacing: 0.4px;
+    text-align: center;
 }
 
 .raw-table tbody td {
     background-color: #3e2f2f;
     color: #f5f5f5;
-    padding: 12px;
+    padding: 10px;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .raw-table tbody tr:hover td {
     background-color: #5a3d30;
 }
 
-/* Better border look */
 .raw-table th,
 .raw-table td {
     border: 1px solid #6b4c3b;
     vertical-align: middle !important;
 }
+
+/* Set fixed widths for key columns */
+.raw-table th:nth-child(1),
+.raw-table td:nth-child(1) { width: 40px; }       /* # */
+.raw-table th:nth-child(2),
+.raw-table td:nth-child(2) { width: 180px; }      /* Raw Ingredient */
+.raw-table th:nth-child(3),
+.raw-table td:nth-child(3) { width: 90px; }       /* Quantity */
+.raw-table th:nth-child(4),
+.raw-table td:nth-child(4) { width: 60px; }       /* Unit */
+.raw-table th:nth-child(5),
+.raw-table td:nth-child(5) { width: 80px; }       /* Status */
+.raw-table th:nth-child(6),
+.raw-table td:nth-child(6) { width: 200px; }      /* Action */
 
 /* -----------------------------------------------------------
    BADGES
@@ -63,14 +85,13 @@
     font-weight: 700;
     padding: 6px 12px;
     border-radius: 12px;
+    display: inline-block;
 }
 
-/* OK Status */
 .bg-success {
     background-color: #27ae60 !important;
 }
 
-/* Low Status */
 .bg-danger {
     background-color: #c0392b !important;
 }
@@ -79,7 +100,6 @@
    BUTTONS (UNIFIED THEME)
 ----------------------------------------------------------- */
 
-/* GENERAL BUTTON */
 .btn {
     border-radius: 8px;
     font-weight: 600;
@@ -88,7 +108,7 @@
     transition: 0.25s;
 }
 
-/* --- Add New Raw Ingredient Button --- */
+/* Add New Material Button */
 .btn-add-material {
     background-color: #db770c;
     color: #fff;
@@ -99,53 +119,31 @@
     transform: scale(1.03);
 }
 
-/* ACTION BUTTONS IN TABLE */
+/* Action Buttons in Table */
 .btn-action {
-    width: 38px;
-    height: 38px;
-    border-radius: 10px;
-    font-size: 1.1rem;
-    padding: 0;
-    display: flex;
+    min-width: 60px;
+    height: 36px;
+    font-size: 0.95rem;
+    padding: 0 8px;
+    display: inline-flex;
     justify-content: center;
     align-items: center;
+    border-radius: 10px;
+    margin: 2px;
 }
 
-/* Add Stock */
-.btn-success {
-    background-color: #db770c !important;
-    color: #fff !important;
-}
-.btn-success:hover {
-    background-color: #b36208 !important;
-}
+/* Colors for Action Buttons */
+.btn-success { background-color: #db770c !important; color: #fff !important; }
+.btn-success:hover { background-color: #b36208 !important; }
 
-/* Reduce */
-.btn-warning {
-    background-color: #f1c40f !important;
-    color: #000 !important;
-}
-.btn-warning:hover {
-    background-color: #d4ac0d !important;
-}
+.btn-warning { background-color: #f1c40f !important; color: #000 !important; }
+.btn-warning:hover { background-color: #d4ac0d !important; }
 
-/* Update Material */
-.btn-primary {
-    background-color: #db770c !important;
-    color: #fff !important;
-}
-.btn-primary:hover {
-    background-color: #b36208 !important;
-}
+.btn-primary { background-color: #db770c !important; color: #fff !important; }
+.btn-primary:hover { background-color: #b36208 !important; }
 
-/* Delete */
-.btn-danger {
-    background-color: #c0392b !important;
-    color: #fff !important;
-}
-.btn-danger:hover {
-    background-color: #922b21 !important;
-}
+.btn-danger { background-color: #c0392b !important; color: #fff !important; }
+.btn-danger:hover { background-color: #922b21 !important; }
 
 /* -----------------------------------------------------------
    BACK BUTTON
@@ -165,12 +163,23 @@
 ----------------------------------------------------------- */
 @media (max-width: 768px) {
     .btn-action {
-        width: 32px;
+        min-width: 40px;
         height: 32px;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
+        padding: 0 4px;
     }
 
     .raw-table {
         font-size: 0.85rem;
+    }
+
+    .raw-table th:nth-child(2),
+    .raw-table td:nth-child(2) {
+        width: 120px; /* ingredient name */
+    }
+
+    .raw-table th:nth-child(6),
+    .raw-table td:nth-child(6) {
+        width: 150px; /* action buttons */
     }
 }

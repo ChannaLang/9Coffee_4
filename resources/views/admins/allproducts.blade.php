@@ -65,6 +65,10 @@ foreach($types as $t) {
             @endif
 
             {{-- Table --}}
+            <div class="mb-3 d-flex justify-content-end">
+                <input type="text" id="productSearch" class="form-control w-25" placeholder="Search product...">
+            </div>
+
             <div class="table-responsive">
                 <table class="table table-hover align-middle text-center" style="color:#f5f5f5;">
                         <thead style="background-color:#6b4c3b;">
@@ -119,7 +123,7 @@ foreach($types as $t) {
                                             <td>
                                                 <button class="btn btn-success btn-sm rounded-pill btn-create-variant"
                                                         data-id="{{ $product->id }}">
-                                                        Create Variant
+                                                        Add Option and Recipe
                                                 </button>
                                             </td>
 

@@ -101,10 +101,10 @@
             if (btnUpdate) {
                 btnUpdate.addEventListener('click', () => {
                     const { id, name, unit } = btnUpdate.dataset;
+                    const row = btnUpdate.closest('tr'); // <-- fix
                     Swal.fire({
                         title: 'Update Material',
                         html: `
-                            <input type="number" id="update_id" class="swal2-input" placeholder="ID" value="${id}">
                             <input type="text" id="update_name" class="swal2-input" placeholder="Name" value="${name}">
                             <select id="update_unit" class="swal2-input">
                                 <option value="g" ${unit==='g'?'selected':''}>Gram (g)</option>
@@ -115,15 +115,14 @@
                         showCancelButton: true,
                         confirmButtonText: 'Update',
                         preConfirm: () => {
-                            const newId = parseInt(document.getElementById('update_id').value);
                             const newName = document.getElementById('update_name').value.trim();
                             const newUnit = document.getElementById('update_unit').value;
-                            if (!newId || !newName) Swal.showValidationMessage('Fill all fields');
-                            return { newId, newName, newUnit };
+                            if (!newName) Swal.showValidationMessage('Fill all fields');
+                            return { newName, newUnit };
                         }
                     }).then(result => {
                         if (!result.isConfirmed) return;
-                        const { newId, newName, newUnit } = result.value;
+                        const { newName, newUnit } = result.value;
 
                         fetch(`/admin/raw-material/update/${id}`, {
                             method: 'PATCH',
@@ -131,23 +130,24 @@
                                 'Content-Type': 'application/json',
                                 'X-CSRF-TOKEN': token
                             },
-                            body: JSON.stringify({ name: newName, unit: newUnit, new_id: newId !== parseInt(id) ? newId : undefined })
+                            body: JSON.stringify({ name: newName, unit: newUnit })
                         })
                         .then(res => res.json())
                         .then(data => {
-                            row.cells[0].textContent = data.id;
                             row.cells[1].textContent = data.name;
                             row.cells[3].textContent = data.unit;
+
                             row.querySelectorAll('button').forEach(b => {
-                                b.dataset.id = data.id;
                                 b.dataset.name = data.name;
                                 b.dataset.unit = data.unit;
                             });
+
                             Swal.fire('Success', 'Material updated!', 'success');
                         })
                         .catch(err => Swal.fire('Error', err.message, 'error'));
                     });
                 });
+
             }
 
             // --- DELETE MATERIAL ---

@@ -39,44 +39,43 @@
                         @foreach($rawMaterials as $index => $material)
                         <tr>
                             <td>{{ $index + 1 }}</td>
-
                             <td id="displayName{{ $material->id }}">{{ $material->name }}</td>
                             <td id="displayQty{{ $material->id }}">{{ number_format($material->quantity, 2) }}</td>
                             <td id="displayUnit{{ $material->id }}">{{ $material->unit }}</td>
-
                             <td>
                                 <span class="badge {{ $material->quantity < 5 ? 'bg-danger' : 'bg-success' }}">
                                     {{ $material->quantity < 5 ? 'Low' : 'OK' }}
                                 </span>
-                                <td>
-                                    <button class="btn btn-success btnAddStock"
+                            </td>
+                            <td>
+                                <div class="d-flex flex-wrap justify-content-center gap-1">
+                                    <button class="btn btn-success btn-action btnAddStock"
                                             data-id="{{ $material->id }}"
-                                            data-name="{{ $material->name }}"
-                                            data-unit="{{ $material->unit }}">
+                                            title="Add Stock">
                                         ➕ Add
                                     </button>
 
-                                    <button class="btn btn-warning btnReduceStock"
+                                    <button class="btn btn-warning btn-action btnReduceStock"
                                             data-id="{{ $material->id }}"
-                                            data-name="{{ $material->name }}"
-                                            data-unit="{{ $material->unit }}">
+                                            title="Reduce Stock">
                                         ➖ Reduce
                                     </button>
 
-                                    <button class="btn btn-primary btnUpdateMaterial"
+                                    <button class="btn btn-primary btn-action btnUpdateMaterial"
                                             data-id="{{ $material->id }}"
                                             data-name="{{ $material->name }}"
-                                            data-unit="{{ $material->unit }}">
+                                            data-unit="{{ $material->unit }}"
+                                            title="Update Material">
                                         🔄 Update
                                     </button>
 
-                                    <button class="btn btn-danger btnDeleteMaterial"
+
+                                    <button class="btn btn-danger btn-action btnDeleteMaterial"
                                             data-id="{{ $material->id }}"
-                                            data-name="{{ $material->name }}">
+                                            title="Delete Material">
                                         🗑 Delete
                                     </button>
-                                </td>
-
+                                </div>
                             </td>
 
                         </tr>

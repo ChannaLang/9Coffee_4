@@ -90,7 +90,7 @@
         <form id="add-type-form">
           <div class="mb-3">
             <label for="typeName" class="form-label">Type Name</label>
-            <input type="text" class="form-control" id="typeName" name="name" placeholder="e.g., Drink" required>
+            <input type="text" class="form-control" id="typeName" name="name" placeholder="e.g., Drink" required autocomplete="off">
           </div>
           <button type="submit" class="btn btn-success w-100">Add Type</button>
         </form>
@@ -112,15 +112,18 @@
           @csrf
           @method('DELETE')
             <div class="mb-3">
-                <label class="form-label">Select Product Types to Remove</label>
-                <div id="typeCheckboxes" class="checkbox-group">
-                    @foreach($types as $type)
-                        <div class="form-check custom-checkbox">
-                            <input class="form-check-input" type="checkbox" name="type_ids[]" value="{{ $type->id }}" id="typeCheck{{ $type->id }}">
-                            <label class="form-check-label" for="typeCheck{{ $type->id }}">{{ $type->name }}</label>
-                        </div>
-                    @endforeach
-                </div>
+                <fieldset class="mb-3">
+                    <legend class="form-label">Select Product Types to Remove</legend>
+                    <div id="typeCheckboxes" class="checkbox-group">
+                        @foreach($types as $type)
+                            <div class="form-check custom-checkbox">
+                                <input class="form-check-input" type="checkbox" name="type_ids[]" value="{{ $type->id }}" id="typeCheck{{ $type->id }}">
+                                <label class="form-check-label" for="typeCheck{{ $type->id }}">{{ $type->name }}</label>
+                            </div>
+                        @endforeach
+                    </div>
+                </fieldset>
+
             </div>
 
           <button type="submit" class="btn btn-danger w-100">Remove Selected Types</button>
@@ -142,7 +145,7 @@
         <form id="add-subtype-form">
           <div class="mb-3">
             <label for="productTypeSelect" class="form-label">Product Type</label>
-            <select class="form-select" id="productTypeSelect" name="product_type_id" required>
+            <select class="form-select" id="productTypeSelect" name="product_type_id" required autocomplete="off">
               @foreach($types as $type)
                 <option value="{{ $type->id }}">{{ $type->name }}</option>
               @endforeach
@@ -150,7 +153,7 @@
           </div>
           <div class="mb-3">
             <label for="subtypeName" class="form-label">Subtype Name</label>
-            <input type="text" class="form-control" id="subtypeName" name="name" placeholder="e.g., Ice" required>
+            <input type="text" class="form-control" id="subtypeName" name="name" placeholder="e.g., Ice" required autocomplete="off">
           </div>
           <button type="submit" class="btn btn-success w-100">Add Subtype</button>
         </form>
