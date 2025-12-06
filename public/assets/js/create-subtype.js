@@ -43,7 +43,7 @@ function initAddSubtypeModal() {
                                 <ul class="list-group mb-2">
                                     <li class="list-group-item text-muted">No products yet.</li>
                                 </ul>
-                                <form action="/categories/subtype/${subtype.id}/delete" method="POST" class="mt-2 delete-subtype-form">
+                                <form action="/admin/categories/delete-subtype/${subtype.id}" method="POST" class="mt-2 delete-subtype-form">
                                     <input type="hidden" name="_token" value="${document.querySelector('meta[name="csrf-token"]').getAttribute('content')}">
                                     <input type="hidden" name="_method" value="DELETE">
                                     <button class="btn btn-sm btn-danger w-100">Delete Subtype</button>
