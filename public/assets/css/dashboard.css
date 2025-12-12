@@ -1,0 +1,429 @@
+/* =========================================================
+   MODERN COFFEE SHOP DASHBOARD - REDESIGNED
+========================================================= */
+
+:root {
+    --coffee-dark: #2c1810;
+    --coffee-medium: #5d4037;
+    --coffee-light: #8d6e63;
+    --caramel: #d4a373;
+    --caramel-dark: #b8845e;
+    --cream: #f5e6d3;
+    --espresso: #1a0f0a;
+    --foam: #ffffff;
+    --success: #43a047;
+    --warning: #ffa726;
+    --danger: #ef5350;
+}
+
+* {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+    background: linear-gradient(135deg, #2c1810 0%, #1a0f0a 100%);
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1400px;
+    padding: 24px;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* =========================================================
+   STAT CARDS (TOP SECTION)
+========================================================= */
+
+.cardBox {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.cardBox .card {
+    background: rgba(93, 64, 55, 0.15);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1.5px solid rgba(245, 230, 211, 0.15);
+    border-radius: 20px;
+    padding: 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.cardBox .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
+    transition: height 0.3s ease;
+}
+
+.cardBox .card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+.cardBox .card:hover::before {
+    height: 100%;
+}
+
+/* Card 1 - Bookings (Yellow/Gold) */
+.cardBox .card:nth-child(1) {
+    background: linear-gradient(135deg, rgba(253, 203, 110, 0.25) 0%, rgba(212, 163, 115, 0.25) 100%);
+    border-color: rgba(253, 203, 110, 0.3);
+}
+
+/* Card 2 - Orders (Teal/Blue) */
+.cardBox .card:nth-child(2) {
+    background: linear-gradient(135deg, rgba(0, 206, 201, 0.2) 0%, rgba(66, 165, 245, 0.2) 100%);
+    border-color: rgba(0, 206, 201, 0.3);
+}
+
+/* Card 3 - Earnings (Green) */
+.cardBox .card:nth-child(3) {
+    background: linear-gradient(135deg, rgba(0, 184, 148, 0.2) 0%, rgba(67, 160, 71, 0.2) 100%);
+    border-color: rgba(0, 184, 148, 0.3);
+}
+
+.cardBox .card .numbers {
+    font-size: 2.5rem !important;
+    font-weight: 700 !important;
+    color: #f5e6d3 !important;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+    margin-bottom: 8px;
+}
+
+.cardBox .card .cardName {
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    color: #d4a373 !important;
+    text-shadow: none !important;
+    letter-spacing: 0.02em;
+}
+
+.cardBox .card .iconBx {
+    font-size: 3rem;
+    opacity: 0.3;
+}
+
+.cardBox .card .iconBx ion-icon {
+    color: #f5e6d3 !important;
+    font-size: 3.5rem !important;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+}
+
+/* =========================================================
+   DETAILS SECTION (TABLE + CHART)
+========================================================= */
+
+.details {
+    display: flex !important;
+    gap: 24px !important;
+    align-items: stretch !important;
+    flex-wrap: wrap;
+}
+
+.details > div {
+    flex: 1;
+    min-width: 400px;
+}
+
+/* =========================================================
+   RECENT ORDERS TABLE
+========================================================= */
+
+.recentOrders {
+    background: rgba(93, 64, 55, 0.15) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1.5px solid rgba(245, 230, 211, 0.1) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+    overflow: hidden;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.recent-orders-header {
+    background: linear-gradient(135deg, #d4a373 0%, #b8845e 100%) !important;
+    padding: 20px 28px !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.recent-orders-header h2 {
+    color: white !important;
+    font-weight: 700;
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.btn-view-all {
+    background: rgba(255, 255, 255, 0.2);
+    color: white !important;
+    padding: 8px 20px;
+    border-radius: 10px;
+    text-decoration: none !important;
+    font-weight: 600 !important;
+    font-size: 0.95rem;
+    border: 1.5px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(5px);
+}
+
+.btn-view-all:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+.recent-orders-table {
+    flex: 1;
+    overflow-y: auto !important;
+    max-height: 500px;
+}
+
+.recent-orders-table::-webkit-scrollbar {
+    width: 8px;
+}
+
+.recent-orders-table::-webkit-scrollbar-track {
+    background: rgba(26, 15, 10, 0.3);
+}
+
+.recent-orders-table::-webkit-scrollbar-thumb {
+    background: rgba(212, 163, 115, 0.5);
+    border-radius: 4px;
+}
+
+.recent-orders-table::-webkit-scrollbar-thumb:hover {
+    background: rgba(212, 163, 115, 0.7);
+}
+
+.recent-orders-table table {
+    background: transparent !important;
+    margin: 0 !important;
+}
+
+.recent-orders-table thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.recent-orders-table thead tr {
+    background: linear-gradient(180deg, rgba(93, 64, 55, 0.8) 0%, rgba(93, 64, 55, 0.6) 100%) !important;
+}
+
+.recent-orders-table thead th {
+    color: #f5e6d3 !important;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 16px 20px !important;
+    border: none !important;
+}
+
+.recent-orders-table tbody tr {
+    border-bottom: 1px solid rgba(245, 230, 211, 0.05) !important;
+    background: rgba(44, 24, 16, 0.3);
+}
+
+.recent-orders-table tbody tr:hover {
+    background: rgba(93, 64, 55, 0.4) !important;
+}
+
+.recent-orders-table tbody td {
+    color: #f5e6d3 !important;
+    padding: 16px 20px !important;
+    vertical-align: middle;
+    border: none !important;
+}
+
+.recent-orders-table tbody td:first-child {
+    font-weight: 600;
+}
+
+/* Status Badges */
+.badge {
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 12px;
+    text-transform: capitalize;
+}
+
+.bg-warning {
+    background: linear-gradient(135deg, #ffa726 0%, #fb8c00 100%) !important;
+    color: white !important;
+}
+
+.bg-danger {
+    background: linear-gradient(135deg, #ef5350 0%, #d32f2f 100%) !important;
+    color: white !important;
+}
+
+.bg-success {
+    background: linear-gradient(135deg, #43a047 0%, #2e7d32 100%) !important;
+    color: white !important;
+}
+
+.text-muted {
+    color: rgba(245, 230, 211, 0.5) !important;
+}
+
+/* =========================================================
+   ANALYTICS CHART
+========================================================= */
+
+.analytics {
+    background: rgba(93, 64, 55, 0.15) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1.5px solid rgba(245, 230, 211, 0.1) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+    overflow: hidden;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.analytics .card-header {
+    background: linear-gradient(135deg, #d4a373 0%, #b8845e 100%) !important;
+    padding: 20px 28px !important;
+}
+
+.analytics .card-header h4 {
+    color: white !important;
+    font-weight: 700;
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.analytics .card-body {
+    flex: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 32px !important;
+    background: rgba(44, 24, 16, 0.3);
+}
+
+#analyticsChart {
+    max-width: 100% !important;
+    max-height: 100% !important;
+}
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.cardBox .card:nth-child(1) { animation: fadeInUp 0.4s ease-out 0.1s backwards; }
+.cardBox .card:nth-child(2) { animation: fadeInUp 0.4s ease-out 0.2s backwards; }
+.cardBox .card:nth-child(3) { animation: fadeInUp 0.4s ease-out 0.3s backwards; }
+
+.recentOrders,
+.analytics {
+    animation: fadeInUp 0.6s ease-out 0.4s backwards;
+}
+
+/* =========================================================
+   RESPONSIVE DESIGN
+========================================================= */
+
+@media (max-width: 1200px) {
+    .details > div {
+        min-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 16px;
+    }
+
+    .cardBox {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .cardBox .card {
+        padding: 20px;
+    }
+
+    .cardBox .card .numbers {
+        font-size: 2rem !important;
+    }
+
+    .cardBox .card .iconBx ion-icon {
+        font-size: 2.5rem !important;
+    }
+
+    .details {
+        gap: 16px !important;
+    }
+
+    .recent-orders-header,
+    .analytics .card-header {
+        padding: 16px 20px !important;
+    }
+
+    .recent-orders-header h2,
+    .analytics .card-header h4 {
+        font-size: 1.2rem;
+    }
+
+    .recent-orders-table thead th,
+    .recent-orders-table tbody td {
+        padding: 12px 16px !important;
+        font-size: 0.85rem;
+    }
+
+    .analytics .card-body {
+        padding: 20px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .cardBox .card {
+        padding: 16px;
+    }
+
+    .cardBox .card .numbers {
+        font-size: 1.75rem !important;
+    }
+
+    .cardBox .card .cardName {
+        font-size: 0.95rem !important;
+    }
+
+    .recent-orders-table thead th,
+    .recent-orders-table tbody td {
+        padding: 10px 12px !important;
+        font-size: 0.8rem;
+    }
+}

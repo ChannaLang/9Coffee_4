@@ -45,34 +45,54 @@ document.getElementById('add-type-form').addEventListener('submit', async functi
             div.className = 'tab-pane fade';
             div.id = `type-${data.type.id}`;
             div.setAttribute('role','tabpanel');
-            div.innerHTML = `<p>No subtypes yet.</p>`;
+            div.innerHTML = `<p><i class="lucide-info" style="width: 20px; height: 20px; vertical-align: middle;"></i> No subtypes for this type yet.</p>`;
             content.appendChild(div);
 
             // Activate new tab
             const newTab = new bootstrap.Tab(document.getElementById(`type-tab-${data.type.id}`));
             newTab.show();
 
+            // Reinitialize Lucide icons for new content
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+
             Swal.fire({
                 icon: 'success',
                 title: 'Product Type added!',
                 timer: 1500,
-                showConfirmButton: false
+                showConfirmButton: false,
+                background: 'linear-gradient(135deg, #3e2723 0%, #2c1810 100%)',
+                color: '#f5e6d3',
+                confirmButtonColor: '#d4a373'
             });
         } else {
-            Swal.fire('Error', data.message || 'Failed to add type', 'error');
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: data.message || 'Failed to add type',
+                background: 'linear-gradient(135deg, #3e2723 0%, #2c1810 100%)',
+                color: '#f5e6d3',
+                confirmButtonColor: '#d4a373'
+            });
         }
 
     } catch(err){
         console.error(err);
-        Swal.fire('Error', err.message || 'Error adding type', 'error');
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: err.message || 'Error adding type',
+            background: 'linear-gradient(135deg, #3e2723 0%, #2c1810 100%)',
+            color: '#f5e6d3',
+            confirmButtonColor: '#d4a373'
+        });
     }
 });
 
 // ===== REMOVE TYPE =====
 const removeTypeModalEl = document.getElementById('removeTypeModal');
 const removeTypeModal = new bootstrap.Modal(removeTypeModalEl);
-
-
 
 // Disable checkboxes for types that have subtypes
 document.querySelectorAll('#typeCheckboxes input[type="checkbox"]').forEach(checkbox => {
@@ -82,12 +102,13 @@ document.querySelectorAll('#typeCheckboxes input[type="checkbox"]').forEach(chec
 
     if(hasSubtypes) {
         checkbox.disabled = true;
-        checkbox.nextElementSibling.title = "Cannot delete because this type has subtypes";
-        checkbox.nextElementSibling.style.opacity = 0.6;
+        const label = checkbox.nextElementSibling;
+        label.title = "Cannot delete because this type has subtypes";
+        label.style.opacity = "0.5";
+        label.style.cursor = "not-allowed";
+        checkbox.parentElement.style.opacity = "0.6";
     }
 });
-
-document.getElementById('btnRemoveType').addEventListener('click', () => removeTypeModal.show());
 
 document.getElementById('btnRemoveType').addEventListener('click', () => removeTypeModal.show());
 
@@ -96,7 +117,14 @@ document.getElementById('remove-type-form').addEventListener('submit', async fun
 
     const checkboxes = Array.from(document.querySelectorAll('#typeCheckboxes input[type="checkbox"]:checked'));
     if(checkboxes.length === 0) {
-        Swal.fire('Error', 'Please select at least one type to remove', 'warning');
+        Swal.fire({
+            icon: 'warning',
+            title: 'No Selection',
+            text: 'Please select at least one type to remove',
+            background: 'linear-gradient(135deg, #3e2723 0%, #2c1810 100%)',
+            color: '#f5e6d3',
+            confirmButtonColor: '#d4a373'
+        });
         return;
     }
 
@@ -111,7 +139,14 @@ document.getElementById('remove-type-form').addEventListener('submit', async fun
             const hasSubtypes = tabContent.querySelectorAll('.category-card').length > 0;
 
             if(hasSubtypes) {
-                Swal.fire('Warning', `Cannot delete type "${checkbox.nextElementSibling.textContent}" because it has subtypes.`, 'warning');
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Cannot Delete',
+                    text: `Cannot delete type "${checkbox.nextElementSibling.textContent}" because it has subtypes.`,
+                    background: 'linear-gradient(135deg, #3e2723 0%, #2c1810 100%)',
+                    color: '#f5e6d3',
+                    confirmButtonColor: '#d4a373'
+                });
                 continue; // Skip this type
             }
 
@@ -135,7 +170,14 @@ document.getElementById('remove-type-form').addEventListener('submit', async fun
                 // Remove checkbox
                 checkbox.parentNode.remove();
             } else {
-                Swal.fire('Error', data.message || `Failed to remove type ${typeId}`, 'error');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: data.message || `Failed to remove type ${typeId}`,
+                    background: 'linear-gradient(135deg, #3e2723 0%, #2c1810 100%)',
+                    color: '#f5e6d3',
+                    confirmButtonColor: '#d4a373'
+                });
             }
         }
 
@@ -144,12 +186,21 @@ document.getElementById('remove-type-form').addEventListener('submit', async fun
             icon: 'success',
             title: 'Selected types removed!',
             timer: 1500,
-            showConfirmButton: false
+            showConfirmButton: false,
+            background: 'linear-gradient(135deg, #3e2723 0%, #2c1810 100%)',
+            color: '#f5e6d3',
+            confirmButtonColor: '#d4a373'
         });
 
     } catch(err){
         console.error(err);
-        Swal.fire('Error', err.message || 'Error removing types', 'error');
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: err.message || 'Error removing types',
+            background: 'linear-gradient(135deg, #3e2723 0%, #2c1810 100%)',
+            color: '#f5e6d3',
+            confirmButtonColor: '#d4a373'
+        });
     }
 });
-

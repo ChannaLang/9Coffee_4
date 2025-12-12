@@ -1,180 +1,678 @@
-/* ----- POS Button Styling ----- */
-.staff-sell-section .btn {
-    border-radius: 0.5rem;
-    font-weight: 600;
-    transition: all 0.2s;
-}
-/* Add/Cart buttons */
-.btn-add-to-cart {
-    background-color: #db770c !important; /* your desired orange */
-    border-color: #db770c !important;
-    color: #fff !important;
+/* =========================================================
+   MODERN COFFEE SHOP POS CHECKOUT - REDESIGNED
+========================================================= */
+
+:root {
+    --coffee-dark: #2c1810;
+    --coffee-medium: #5d4037;
+    --coffee-light: #8d6e63;
+    --caramel: #d4a373;
+    --caramel-dark: #b8845e;
+    --cream: #f5e6d3;
+    --espresso: #1a0f0a;
+    --foam: #ffffff;
+    --success: #43a047;
+    --warning: #ffa726;
+    --danger: #ef5350;
 }
 
-.btn-add-to-cart:hover {
-    background-color: #e0891a !important;
-    border-color: #e0891a !important;
-    color: #fff !important;
+* {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Remove button optional */
-.btn-remove-from-cart {
-    background-color: #c72c2c !important;
-    border-color: #c72c2c !important;
-    color: #fff !important;
+body {
+    background: linear-gradient(135deg, #2c1810 0%, #1a0f0a 100%);
+    min-height: 100vh;
 }
 
-.btn-remove-from-cart:hover {
-    background-color: #e03b3b !important;
-    border-color: #e03b3b !important;
-    color: #fff !important;
+/* =========================================================
+   MAIN SECTION CARDS
+========================================================= */
+
+.staff-sell-section {
+    background: rgba(93, 64, 55, 0.15) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(245, 230, 211, 0.1) !important;
+    border-radius: 24px !important;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    padding: 28px !important;
 }
 
-/* Filter buttons */
-.staff-sell-section .filter-btn {
-    background-color: #6b4c3b;
-    color: #f5f5f5;
-    border: 1px solid #8b5e3c;
-    margin-right: 5px;
+.staff-sell-section .card-header {
+    background: linear-gradient(135deg, #d4a373 0%, #b8845e 100%) !important;
+    color: white !important;
+    padding: 20px 28px !important;
+    border-radius: 16px !important;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 16px rgba(212, 163, 115, 0.3);
 }
 
-.staff-sell-section .filter-btn.active,
-.staff-sell-section .filter-btn:hover {
-    background-color: #db770c;
-    color: #fff;
-    border-color: #db770c;
-}
-
-/* Filter Sub-Type Buttons */
-.staff-sell-section .filter-sub-btn {
-    background-color: #5a3d30;
-    color: #f5f5f5;
-    border: 1px solid #8b5e3c;
-    margin-right: 5px;
-}
-
-.staff-sell-section .filter-sub-btn.active,
-.staff-sell-section .filter-sub-btn:hover {
-    background-color: #ffb74d;
-    color: #3e2f2f;
-    border-color: #ffb74d;
-}
-
-/* Size Buttons */
-.size-btn {
-    background-color: #4b3a2f;
-    color: #f5f5f5;
-    border: 1px solid #6b4c3b;
-}
-
-.size-btn.active,
-.size-btn:hover {
-    background-color: #db770c;
-    color: #fff;
-    border-color: #db770c;
-}
-
-/* Sugar Buttons */
-.sugar-btn {
-    background-color: #3e2f2f;
-    color: #ffc107;
-    border: 1px solid #6b4c3b;
-}
-
-.sugar-btn.active,
-.sugar-btn:hover {
-    background-color: #ffb74d;
-    color: #3e2f2f;
-    border-color: #ffb74d;
-}
-
-/* Add / Remove Cart Buttons */
-.btn-add-to-cart {
-    background-color: #28a745;
-    color: #fff;
-}
-
-.btn-add-to-cart:hover {
-    background-color: #218838;
-}
-
-.btn-remove-from-cart {
-    background-color: #dc3545;
-    color: #fff;
-}
-
-.btn-remove-from-cart:hover {
-    background-color: #c82333;
-}
-
-/* Checkout Button */
-#checkout {
-    background-color: #ffb74d;
-    color: #3e2f2f;
+.staff-sell-section .card-header h4 {
     font-weight: 700;
+    font-size: 1.75rem;
+    letter-spacing: -0.02em;
+    margin: 0;
+}
+
+/* =========================================================
+   FILTER BUTTONS
+========================================================= */
+
+.filter-type-btn,
+.filter-sub-btn {
+    background: rgba(44, 24, 16, 0.4);
+    border: 1.5px solid rgba(245, 230, 211, 0.2) !important;
+    color: #f5e6d3 !important;
+    border-radius: 12px;
+    padding: 10px 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin: 4px;
+    backdrop-filter: blur(10px);
+}
+
+.filter-type-btn:hover,
+.filter-sub-btn:hover {
+    background: rgba(212, 163, 115, 0.2);
+    border-color: rgba(212, 163, 115, 0.4) !important;
+    color: #ffffff !important;
+    transform: translateY(-2px);
+}
+
+.filter-type-btn.active {
+    background: linear-gradient(135deg, #d4a373 0%, #b8845e 100%) !important;
+    border-color: #d4a373 !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(212, 163, 115, 0.4);
+}
+
+.filter-sub-btn.active {
+    background: linear-gradient(135deg, #ffa726 0%, #fb8c00 100%) !important;
+    border-color: #ffa726 !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(255, 167, 38, 0.4);
+}
+
+/* =========================================================
+   PRODUCT CARDS
+========================================================= */
+
+.product-wrapper {
+    animation: fadeInUp 0.4s ease-out backwards;
+}
+
+.product-card {
+    background: rgba(44, 24, 16, 0.5) !important;
+    border: 1.5px solid rgba(245, 230, 211, 0.15) !important;
+    border-radius: 20px !important;
+    padding: 20px !important;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.product-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    background: linear-gradient(180deg, rgba(212, 163, 115, 0.15) 0%, transparent 100%);
+    transition: height 0.3s ease;
+    pointer-events: none;
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(212, 163, 115, 0.4) !important;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+}
+
+.product-card:hover::before {
+    height: 100%;
+}
+
+.product-card img {
+    height: 140px !important;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 14px !important;
+    margin-bottom: 14px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.product-card .fw-bold {
+    color: #f5e6d3;
+    font-size: 1.05rem;
+    margin-bottom: 8px;
+}
+
+.product-card .product-price {
+    color: #d4a373;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+/* =========================================================
+   VARIANT BUTTONS
+========================================================= */
+
+.variant-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+    margin-top: 12px;
+}
+
+.variant-btn {
+    background: rgba(26, 15, 10, 0.6) !important;
+    border: 1.5px solid rgba(245, 230, 211, 0.2) !important;
+    color: #f5e6d3 !important;
+    border-radius: 10px !important;
+    padding: 8px 14px !important;
+    font-size: 0.85rem !important;
+    font-weight: 600;
+    min-width: auto !important;
+    backdrop-filter: blur(5px);
+}
+
+.variant-btn:hover {
+    background: rgba(212, 163, 115, 0.3) !important;
+    border-color: rgba(212, 163, 115, 0.5) !important;
+    color: white !important;
+    transform: scale(1.05);
+}
+
+.variant-btn.active {
+    background: linear-gradient(135deg, #d4a373 0%, #b8845e 100%) !important;
+    border-color: #d4a373 !important;
+    color: white !important;
+    box-shadow: 0 2px 8px rgba(212, 163, 115, 0.4);
+}
+
+/* =========================================================
+   SUGAR SELECTOR
+========================================================= */
+
+.sugar-wrapper {
+    margin-top: 12px;
+}
+
+.sugar-select {
+    background: rgba(26, 15, 10, 0.6) !important;
+    border: 1.5px solid rgba(245, 230, 211, 0.2) !important;
+    color: #f5e6d3 !important;
+    border-radius: 10px !important;
+    padding: 8px 12px !important;
+    font-size: 0.85rem !important;
+    font-weight: 600;
+    width: 100%;
+    backdrop-filter: blur(5px);
+    cursor: pointer;
+}
+
+.sugar-select:focus {
+    border-color: #ffa726 !important;
+    box-shadow: 0 0 0 3px rgba(255, 167, 38, 0.2) !important;
+    outline: none;
+}
+
+.sugar-select option {
+    background: #2c1810;
+    color: #f5e6d3;
+}
+
+/* =========================================================
+   ADD TO CART BUTTON
+========================================================= */
+
+.btn-add-to-cart {
+    background: linear-gradient(135deg, #43a047 0%, #2e7d32 100%) !important;
+    border: none !important;
+    color: white !important;
+    border-radius: 12px !important;
+    padding: 10px 24px !important;
+    font-weight: 700 !important;
+    font-size: 0.95rem !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 12px rgba(67, 160, 71, 0.3);
+    width: 100%;
+    justify-content: center;
+}
+
+.btn-add-to-cart:hover {
+    background: linear-gradient(135deg, #4caf50 0%, #43a047 100%) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(67, 160, 71, 0.5);
+}
+
+.btn-add-to-cart:active {
+    transform: translateY(0);
+}
+
+/* =========================================================
+   CART SECTION (RIGHT SIDE)
+========================================================= */
+
+.col-md-4 > .card {
+    background: rgba(93, 64, 55, 0.15) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(245, 230, 211, 0.1) !important;
+    border-radius: 24px !important;
+    padding: 28px !important;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    position: sticky;
+    top: 20px;
+}
+
+.col-md-4 > .card h4 {
+    color: #d4a373;
+    font-weight: 700;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+/* =========================================================
+   WALLET CARD
+========================================================= */
+
+.card.mb-3 {
+    background: linear-gradient(135deg, rgba(212, 163, 115, 0.2) 0%, rgba(184, 132, 94, 0.2) 100%) !important;
+    border: 1.5px solid rgba(212, 163, 115, 0.3) !important;
+    border-radius: 16px !important;
+    padding: 20px !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.card.mb-3 p {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #f5e6d3;
+}
+
+#wallet-balance {
+    color: #d4a373;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-left: 8px;
+}
+
+.card.mb-3 .bi-wallet2 {
+    color: #ffa726;
+    filter: drop-shadow(0 2px 8px rgba(255, 167, 38, 0.4));
+}
+
+/* =========================================================
+   CART TABLE
+========================================================= */
+
+.table-responsive {
+    border: 1.5px solid rgba(245, 230, 211, 0.15) !important;
+    border-radius: 16px;
+    overflow: hidden;
+    background: rgba(26, 15, 10, 0.4);
+    max-height: 50vh !important;
+}
+
+#cart-table {
+    margin: 0;
+    table-layout: fixed;
+    width: 100%;
+}
+
+#cart-table thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+#cart-table thead th {
+    background: linear-gradient(180deg, rgba(93, 64, 55, 0.8) 0%, rgba(93, 64, 55, 0.6) 100%) !important;
+    color: #f5e6d3 !important;
+    padding: 14px 8px !important;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border: none;
+}
+
+#cart-table tbody td {
+    background: rgba(44, 24, 16, 0.3);
+    color: #f5e6d3 !important;
+    padding: 12px 8px !important;
+    border-bottom: 1px solid rgba(245, 230, 211, 0.05);
+    vertical-align: middle;
+    font-size: 0.9rem;
+}
+
+#cart-table tbody tr:hover td {
+    background: rgba(93, 64, 55, 0.3);
+}
+
+/* Total rows */
+#cart-table tbody tr.fw-bold td {
+    background: rgba(93, 64, 55, 0.5) !important;
+    font-weight: 700 !important;
+    font-size: 1rem !important;
+    padding: 16px 8px !important;
+}
+
+#cart-table tbody tr .text-warning {
+    color: #ffa726 !important;
+}
+
+/* Column widths */
+#cart-table th:nth-child(1),
+#cart-table td:nth-child(1) { width: 25%; }
+#cart-table th:nth-child(2),
+#cart-table td:nth-child(2) { width: 18%; }
+#cart-table th:nth-child(3),
+#cart-table td:nth-child(3) { width: 15%; }
+#cart-table th:nth-child(4),
+#cart-table td:nth-child(4) { width: 22%; }
+#cart-table th:nth-child(5),
+#cart-table td:nth-child(5) { width: 20%; text-align: right; }
+
+/* =========================================================
+   QUANTITY BUTTONS
+========================================================= */
+
+.qty-btn {
+    background: rgba(212, 163, 115, 0.2) !important;
+    border: 1.5px solid rgba(212, 163, 115, 0.3) !important;
+    color: #f5e6d3 !important;
+    border-radius: 8px !important;
+    min-width: 32px !important;
+    height: 32px !important;
+    padding: 0 !important;
+    font-weight: 700;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.qty-btn:hover {
+    background: rgba(212, 163, 115, 0.4) !important;
+    border-color: rgba(212, 163, 115, 0.5) !important;
+    color: white !important;
+    transform: scale(1.1);
+}
+
+.qty-btn:active {
+    transform: scale(0.95);
+}
+
+/* =========================================================
+   PAYMENT METHOD SELECTOR
+========================================================= */
+
+.form-label {
+    color: #d4a373;
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+.form-select {
+    background: rgba(26, 15, 10, 0.6) !important;
+    border: 1.5px solid rgba(245, 230, 211, 0.2) !important;
+    color: #f5e6d3 !important;
+    border-radius: 12px !important;
+    padding: 12px 16px !important;
+    font-weight: 600;
+    backdrop-filter: blur(5px);
+}
+
+.form-select:focus {
+    border-color: #d4a373 !important;
+    box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.2) !important;
+    outline: none;
+}
+
+.form-select option {
+    background: #2c1810;
+    color: #f5e6d3;
+}
+
+/* =========================================================
+   CHECKOUT BUTTON
+========================================================= */
+
+#checkout {
+    background: linear-gradient(135deg, #ffa726 0%, #fb8c00 100%) !important;
+    border: none !important;
+    color: white !important;
+    border-radius: 16px !important;
+    padding: 16px !important;
+    font-weight: 700 !important;
+    font-size: 1.1rem !important;
+    margin-top: 20px;
+    box-shadow: 0 6px 20px rgba(255, 167, 38, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
 
 #checkout:hover {
-    background-color: #db770c;
-    color: #fff;
+    background: linear-gradient(135deg, #ffb74d 0%, #ffa726 100%) !important;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(255, 167, 38, 0.6);
 }
 
-/* Low Stock Badge */
-.badge.bg-danger {
-    background-color: #c0392b !important;
-    color: #fff;
+#checkout:active {
+    transform: translateY(0);
 }
 
-/* Table */
-#cart-table th {
-    background-color: #4b3a2f !important;
+#checkout i {
+    font-size: 1.3rem;
 }
 
-#cart-table td {
-    vertical-align: middle;
-}
-/* Fix table layout and column widths */
-#cart-table {
-    width: fixed;
-    table-layout: auto; /* keeps columns stable */
+/* =========================================================
+   RECEIPT MODAL
+========================================================= */
+
+.modal-content {
+    border-radius: 20px;
+    border: none;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
-#cart-table td:nth-child(1) { /* Product Name */
-    width: auto;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+#receipt-content {
+    padding: 32px;
 }
 
-#cart-table td:nth-child(2) { /* Variant */
-    width: auto;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+#receipt-content img {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-#cart-table td:nth-child(3) { /* Sugar */
-    width: auto;
+#receipt-content .table {
+    margin-top: 20px;
 }
 
-#cart-table td:nth-child(4) { /* Qty buttons */
-    width: auto;
-    text-align: center;
-    white-space: nowrap;
+#receipt-content .table-bordered {
+    border: 2px solid #ddd;
 }
 
-#cart-table td:nth-child(5) { /* Price */
-    width: auto;
-    text-align: right;
+#receipt-content .table th,
+#receipt-content .table td {
+    padding: 12px;
 }
 
-/* Keep quantity buttons small and aligned */
-.qty-btn {
-    min-width: 30px;
-    display: inline-block;
+/* =========================================================
+   SWEETALERT2 CUSTOMIZATION
+========================================================= */
+
+.swal2-popup {
+    background: linear-gradient(135deg, #3e2723 0%, #2c1810 100%) !important;
+    border: 1.5px solid rgba(245, 230, 211, 0.2);
+    border-radius: 24px;
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
 }
-.sugar-wrapper .form-select {
-    height: 38px; /* smaller height for card */
-    font-size: 0.9rem;
-    padding: 0.25rem 0.5rem;
+
+.swal2-title {
+    color: #f5e6d3 !important;
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.swal2-html-container {
+    color: #d7ccc8 !important;
+}
+
+.swal2-html-container .table {
+    color: #f5e6d3 !important;
+}
+
+.swal2-html-container .table th {
+    background: rgba(93, 64, 55, 0.5);
+    color: #f5e6d3;
+}
+
+.swal2-confirm {
+    background: linear-gradient(135deg, #d4a373 0%, #b8845e 100%) !important;
+    border-radius: 12px !important;
+    font-weight: 600 !important;
+    padding: 12px 28px !important;
+}
+
+.swal2-deny {
+    background: linear-gradient(135deg, #43a047 0%, #2e7d32 100%) !important;
+    border-radius: 12px !important;
+    font-weight: 600 !important;
+    padding: 12px 28px !important;
+}
+
+.swal2-cancel {
+    background: rgba(239, 83, 80, 0.2) !important;
+    border: 1.5px solid rgba(239, 83, 80, 0.5) !important;
+    border-radius: 12px !important;
+    font-weight: 600 !important;
+    padding: 12px 28px !important;
+}
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.staff-sell-section,
+.col-md-4 > .card {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.product-wrapper:nth-child(1) { animation-delay: 0.05s; }
+.product-wrapper:nth-child(2) { animation-delay: 0.1s; }
+.product-wrapper:nth-child(3) { animation-delay: 0.15s; }
+.product-wrapper:nth-child(4) { animation-delay: 0.2s; }
+.product-wrapper:nth-child(5) { animation-delay: 0.25s; }
+.product-wrapper:nth-child(6) { animation-delay: 0.3s; }
+.product-wrapper:nth-child(7) { animation-delay: 0.35s; }
+.product-wrapper:nth-child(8) { animation-delay: 0.4s; }
+
+/* =========================================================
+   RESPONSIVE DESIGN
+========================================================= */
+
+@media (max-width: 768px) {
+    .staff-sell-section,
+    .col-md-4 > .card {
+        padding: 20px !important;
+        border-radius: 20px !important;
+    }
+
+    .staff-sell-section .card-header {
+        padding: 16px 20px !important;
+    }
+
+    .staff-sell-section .card-header h4 {
+        font-size: 1.4rem;
+    }
+
+    .filter-type-btn,
+    .filter-sub-btn {
+        padding: 8px 14px;
+        font-size: 0.85rem;
+        margin: 3px;
+    }
+
+    .product-card {
+        padding: 16px !important;
+    }
+
+    .product-card img {
+        height: 110px !important;
+    }
+
+    #cart-table {
+        font-size: 0.8rem;
+    }
+
+    #cart-table thead th,
+    #cart-table tbody td {
+        padding: 10px 6px !important;
+    }
+
+    .qty-btn {
+        min-width: 28px !important;
+        height: 28px !important;
+        font-size: 0.9rem;
+    }
+
+    #checkout {
+        font-size: 1rem !important;
+        padding: 14px !important;
+    }
+}
+
+/* =========================================================
+   SCROLLBAR STYLING
+========================================================= */
+
+.table-responsive::-webkit-scrollbar,
+#products-container::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track,
+#products-container::-webkit-scrollbar-track {
+    background: rgba(26, 15, 10, 0.3);
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb,
+#products-container::-webkit-scrollbar-thumb {
+    background: rgba(212, 163, 115, 0.5);
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover,
+#products-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(212, 163, 115, 0.7);
 }
