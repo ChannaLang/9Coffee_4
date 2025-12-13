@@ -1,208 +1,553 @@
-/* ===========================
-   Assign Recipe Page Styling
-=========================== */
+/* =========================================================
+   MODERN COFFEE SHOP RECIPE ASSIGNMENT - REDESIGNED
+========================================================= */
 
-/* ---------------------------
-   General Text & Typography
---------------------------- */
+:root {
+    --coffee-dark: #2c1810;
+    --coffee-medium: #5d4037;
+    --coffee-light: #8d6e63;
+    --caramel: #d4a373;
+    --caramel-dark: #b8845e;
+    --cream: #f5e6d3;
+    --espresso: #1a0f0a;
+    --foam: #ffffff;
+    --success: #43a047;
+    --warning: #ffa726;
+    --danger: #ef5350;
+    --info: #42a5f5;
+}
+
+* {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 body {
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #2c1810 0%, #1a0f0a 100%);
+    min-height: 100vh;
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
 }
 
-.ingredient-item,
-.ingredient-item strong,
-#materialTable th,
-#materialTable td {
-    color: #212529; /* Dark text */
+.container {
+    animation: fadeInUp 0.6s ease-out;
 }
 
-.ingredient-item small,
-.text-muted {
-    color: #6c757d !important; /* Muted text */
+/* =========================================================
+   PAGE HEADER
+========================================================= */
+
+.page-header {
+    margin-bottom: 32px;
 }
 
-/* ---------------------------
-   Left Panel (Ingredients)
---------------------------- */
-#ingredientList {
-    max-height: 400px;
-    overflow-y: auto;
-    padding-right: 5px;
+.page-title {
+    color: #d4a373;
+    font-weight: 700;
+    font-size: 2rem;
+    letter-spacing: -0.02em;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    margin-bottom: 8px;
 }
 
-/* Scrollbar */
-#ingredientList::-webkit-scrollbar {
-    width: 6px;
-}
-#ingredientList::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.15);
-    border-radius: 3px;
-}
-#ingredientList::-webkit-scrollbar-track {
-    background-color: transparent;
+.page-subtitle {
+    color: rgba(245, 230, 211, 0.7);
+    font-size: 1.1rem;
+    font-weight: 500;
 }
 
-/* Ingredient items */
-.ingredient-item {
-    cursor: pointer;
-    background-color: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-radius: 0.5rem;
-    padding: 0.75rem;
-    margin-bottom: 0.5rem;
-    transition: all 0.2s ease-in-out;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-}
-.ingredient-item:hover {
-    background-color: #e9ecef;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+/* =========================================================
+   CARDS
+========================================================= */
+
+.card {
+    background: rgba(93, 64, 55, 0.15);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1.5px solid rgba(245, 230, 211, 0.1);
+    border-radius: 24px;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    overflow: hidden;
 }
 
-/* ---------------------------
-   Tom Select Dropdown
---------------------------- */
+.card-header {
+    background: linear-gradient(135deg, #d4a373 0%, #b8845e 100%);
+    color: white;
+    padding: 20px 24px;
+    border: none;
+    font-weight: 700;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.card-body {
+    padding: 24px;
+}
+
+/* =========================================================
+   LEFT PANEL - INGREDIENTS LIST
+========================================================= */
+
+.ingredient-section-label {
+    color: #d4a373;
+    font-weight: 600;
+    font-size: 1.05rem;
+    margin-bottom: 12px;
+    display: block;
+}
+
+/* Tom Select Dropdown */
 .tom-select .ts-control {
-    min-height: 45px;
-    border-radius: 0.5rem;
-    border: 1px solid #ced4da;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-    color: #212529;
-    transition: all 0.2s ease-in-out;
+    background: rgba(26, 15, 10, 0.6);
+    border: 1.5px solid rgba(245, 230, 211, 0.2);
+    color: #f5e6d3;
+    border-radius: 12px;
+    min-height: 48px;
+    padding: 8px 12px;
+    font-weight: 500;
+    box-shadow: none;
+}
+
+.tom-select .ts-control input {
+    color: #f5e6d3 !important;
+}
+
+.tom-select .ts-control::placeholder {
+    color: rgba(245, 230, 211, 0.4);
 }
 
 .tom-select .ts-control:hover,
-.tom-select .ts-control.focus {
-    border-color: #0d6efd;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+.tom-select.focus .ts-control {
+    border-color: #d4a373;
+    background: rgba(26, 15, 10, 0.8);
+}
+
+.tom-select.focus .ts-control {
+    box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.2);
 }
 
 .tom-select .ts-dropdown {
-    border-radius: 0.5rem;
-    max-height: 250px;
+    background: linear-gradient(135deg, #3e2723 0%, #2c1810 100%);
+    border: 1.5px solid rgba(245, 230, 211, 0.2);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+    margin-top: 4px;
+    max-height: 300px;
     overflow-y: auto;
-    color: #212529;
 }
 
 .tom-select .ts-dropdown .ts-option {
-    padding: 8px 12px;
+    padding: 12px 16px;
+    color: #f5e6d3;
     cursor: pointer;
 }
 
-.tom-select .ts-dropdown .ts-option:hover {
-    background-color: #f1f3f5;
+.tom-select .ts-dropdown .ts-option:hover,
+.tom-select .ts-dropdown .ts-option.active {
+    background: rgba(212, 163, 115, 0.2);
+    color: white;
 }
 
-/* ---------------------------
-   Right Table (Materials)
---------------------------- */
-#materialTable {
-    border-radius: 0.75rem;
+.tom-select .ts-dropdown .ts-option.selected {
+    background: rgba(212, 163, 115, 0.3);
+    color: #d4a373;
+}
+
+/* Scrollbar for dropdown */
+.tom-select .ts-dropdown::-webkit-scrollbar {
+    width: 6px;
+}
+
+.tom-select .ts-dropdown::-webkit-scrollbar-track {
+    background: rgba(26, 15, 10, 0.3);
+}
+
+.tom-select .ts-dropdown::-webkit-scrollbar-thumb {
+    background: rgba(212, 163, 115, 0.5);
+    border-radius: 3px;
+}
+
+/* Ingredient List */
+#ingredientList {
+    max-height: 450px;
+    overflow-y: auto;
+    padding-right: 8px;
+    margin-top: 20px;
+}
+
+#ingredientList::-webkit-scrollbar {
+    width: 8px;
+}
+
+#ingredientList::-webkit-scrollbar-track {
+    background: rgba(26, 15, 10, 0.3);
+    border-radius: 4px;
+}
+
+#ingredientList::-webkit-scrollbar-thumb {
+    background: rgba(212, 163, 115, 0.5);
+    border-radius: 4px;
+}
+
+#ingredientList::-webkit-scrollbar-thumb:hover {
+    background: rgba(212, 163, 115, 0.7);
+}
+
+/* Ingredient Items */
+.ingredient-item {
+    cursor: pointer;
+    background: rgba(26, 15, 10, 0.4);
+    border: 1.5px solid rgba(245, 230, 211, 0.15);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 12px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
     overflow: hidden;
+}
+
+.ingredient-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, #d4a373 0%, #b8845e 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.ingredient-item:hover {
+    background: rgba(93, 64, 55, 0.3);
+    border-color: rgba(212, 163, 115, 0.4);
+    transform: translateX(8px);
+}
+
+.ingredient-item:hover::before {
+    opacity: 1;
+}
+
+.ingredient-item strong {
+    color: #f5e6d3;
+    font-size: 1rem;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.ingredient-item small {
+    color: rgba(245, 230, 211, 0.6);
+    font-size: 0.875rem;
+}
+
+/* Empty State */
+.ingredient-empty {
+    text-align: center;
+    padding: 48px 20px;
+    color: rgba(245, 230, 211, 0.5);
+    font-style: italic;
+}
+
+/* =========================================================
+   RIGHT PANEL - MATERIALS TABLE
+========================================================= */
+
+.table-responsive {
+    border-radius: 16px;
+    overflow: hidden;
+    background: rgba(26, 15, 10, 0.4);
+    margin-bottom: 20px;
+}
+
+#materialTable {
+    margin: 0;
     width: 100%;
     table-layout: fixed;
 }
 
-#materialTable th {
-    background-color: #f8f9fa;
+#materialTable thead {
+    background: linear-gradient(180deg, rgba(93, 64, 55, 0.8) 0%, rgba(93, 64, 55, 0.6) 100%);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+#materialTable thead th {
+    color: #f5e6d3;
     font-weight: 600;
-    color: #212529;
-    text-align: center;
-    padding: 0.75rem 0.5rem;
-}
-
-#materialTable td {
-    vertical-align: middle;
-    padding: 0.75rem 0.5rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 16px 12px;
+    border: none;
     text-align: center;
 }
 
-#materialTable td input.form-control {
-    width: 100%;
-    padding: 0.5rem;
-    font-size: 14px;
-    color: #212529;
-    background-color: #fff;
-    border: 1px solid #ced4da;
-    border-radius: 0.375rem;
+#materialTable tbody tr {
+    background: rgba(44, 24, 16, 0.3);
+    border-bottom: 1px solid rgba(245, 230, 211, 0.05);
 }
 
-/* Alternate row colors */
-#materialTable tbody tr:nth-child(even) {
-    background-color: #fbfcfd;
-}
 #materialTable tbody tr:hover {
-    background-color: #f1f3f5;
+    background: rgba(93, 64, 55, 0.4);
 }
 
-/* Remove button */
-#materialTable .remove-btn {
-    border-radius: 0.375rem;
-    font-size: 13px;
-    padding: 0.25rem 0.5rem;
-    transition: background-color 0.2s, color 0.2s;
-}
-#materialTable .remove-btn:hover {
-    background-color: #c82333;
-    color: #fff;
+#materialTable tbody td {
+    color: #f5e6d3;
+    padding: 16px 12px;
+    vertical-align: middle;
+    border: none;
+    text-align: center;
 }
 
-/* ---------------------------
-   Card Styling
---------------------------- */
-.card {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    border-radius: 0.75rem;
-}
-.card-header {
+#materialTable tbody td:first-child {
     font-weight: 600;
-}
-.card-header.bg-primary,
-.card-header.bg-secondary {
-    color: white;
+    text-align: left;
+    padding-left: 20px;
 }
 
-/* ---------------------------
-   Buttons
---------------------------- */
+/* Input Fields in Table */
+#materialTable input.form-control {
+    background: rgba(26, 15, 10, 0.6);
+    border: 1.5px solid rgba(245, 230, 211, 0.2);
+    color: #f5e6d3;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-weight: 600;
+    text-align: center;
+    width: 100%;
+}
+
+#materialTable input.form-control:focus {
+    border-color: #d4a373;
+    box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.2);
+    outline: none;
+    background: rgba(26, 15, 10, 0.8);
+}
+
+#materialTable input.form-control::placeholder {
+    color: rgba(245, 230, 211, 0.3);
+}
+
+/* Empty Table State */
+#materialTable tbody:empty::after {
+    content: 'No ingredients selected yet. Choose from the list on the left.';
+    display: block;
+    text-align: center;
+    padding: 48px 20px;
+    color: rgba(245, 230, 211, 0.5);
+    font-style: italic;
+}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.btn {
+    border-radius: 12px;
+    padding: 10px 24px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn:active::before {
+    width: 300px;
+    height: 300px;
+}
+
+/* Save Button */
 .btn-primary {
-    background-color: #0d6efd;
-    border-color: #0d6efd;
-    border-radius: 0.5rem;
-    transition: background-color 0.2s, border-color 0.2s;
+    background: linear-gradient(135deg, #42a5f5 0%, #1e88e5 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(66, 165, 245, 0.3);
+    font-size: 1rem;
 }
+
 .btn-primary:hover {
-    background-color: #0b5ed7;
-    border-color: #0a58ca;
+    background: linear-gradient(135deg, #64b5f6 0%, #42a5f5 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(66, 165, 245, 0.5);
 }
 
+/* Remove Button */
+.remove-btn,
 .btn-danger {
-    border-radius: 0.5rem;
-    transition: background-color 0.2s, border-color 0.2s;
+    background: linear-gradient(135deg, #ef5350 0%, #d32f2f 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(239, 83, 80, 0.3);
+    padding: 6px 14px;
+    font-size: 0.875rem;
 }
+
+.remove-btn:hover,
 .btn-danger:hover {
-    background-color: #c82333;
-    border-color: #bd2130;
+    background: linear-gradient(135deg, #f44336 0%, #ef5350 100%);
+    transform: scale(1.05);
 }
 
-/* Labels */
-label.fw-bold {
-    font-weight: 600;
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-/* ---------------------------
-   Responsive Adjustments
---------------------------- */
-@media (max-width: 767px) {
+.container {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.ingredient-item {
+    animation: fadeInUp 0.3s ease-out backwards;
+}
+
+.ingredient-item:nth-child(1) { animation-delay: 0.05s; }
+.ingredient-item:nth-child(2) { animation-delay: 0.1s; }
+.ingredient-item:nth-child(3) { animation-delay: 0.15s; }
+.ingredient-item:nth-child(4) { animation-delay: 0.2s; }
+.ingredient-item:nth-child(5) { animation-delay: 0.25s; }
+
+#materialTable tbody tr {
+    animation: fadeInUp 0.3s ease-out backwards;
+}
+
+/* =========================================================
+   RESPONSIVE DESIGN
+========================================================= */
+
+@media (max-width: 991px) {
+    .col-md-4,
+    .col-md-8 {
+        margin-bottom: 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    .page-title {
+        font-size: 1.6rem;
+    }
+
+    .page-subtitle {
+        font-size: 1rem;
+    }
+
+    .card-header {
+        padding: 16px 20px;
+        font-size: 1.1rem;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
     #ingredientList {
         max-height: 300px;
     }
-    #materialTable th,
-    #materialTable td,
-    .btn {
-        font-size: 14px;
+
+    #materialTable thead th,
+    #materialTable tbody td {
+        padding: 12px 8px;
+        font-size: 0.85rem;
     }
-    #materialTable td input.form-control {
-        font-size: 14px;
+
+    #materialTable input.form-control {
+        padding: 8px 10px;
+        font-size: 0.875rem;
     }
+
+    .btn-primary {
+        width: 100%;
+        padding: 12px 24px;
+    }
+}
+
+@media (max-width: 576px) {
+    .ingredient-item {
+        padding: 12px;
+    }
+
+    #materialTable {
+        font-size: 0.8rem;
+    }
+
+    #materialTable thead th,
+    #materialTable tbody td {
+        padding: 10px 6px;
+    }
+}
+
+/* =========================================================
+   UTILITY CLASSES
+========================================================= */
+
+.text-end {
+    text-align: right;
+}
+
+.mt-3 {
+    margin-top: 1rem;
+}
+
+.mt-4 {
+    margin-top: 1.5rem;
+}
+
+.mb-2 {
+    margin-bottom: 0.5rem;
+}
+
+.mb-3 {
+    margin-bottom: 1rem;
+}
+
+.mb-0 {
+    margin-bottom: 0;
+}
+
+.fw-bold {
+    font-weight: 600;
+}
+
+.fw-semibold {
+    font-weight: 600;
+}
+
+.px-4 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+.py-2 {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
 }

@@ -1,104 +1,505 @@
-/* Add Variant Form Styled like Variant Cards */
-.variant-form-card {
-    background: #ffffffcb;
-    padding: 20px;
-    border-radius: 14px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-    border: 1px solid #e7e7e7;
-    transition: 0.25s ease;
+/* =========================================================
+   MODERN COFFEE SHOP VARIANT MANAGEMENT - REDESIGNED
+========================================================= */
+
+:root {
+    --coffee-dark: #2c1810;
+    --coffee-medium: #5d4037;
+    --coffee-light: #8d6e63;
+    --caramel: #d4a373;
+    --caramel-dark: #b8845e;
+    --cream: #f5e6d3;
+    --espresso: #1a0f0a;
+    --foam: #ffffff;
+    --success: #43a047;
+    --warning: #ffa726;
+    --danger: #ef5350;
+    --info: #42a5f5;
+}
+
+* {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+    background: linear-gradient(135deg, #2c1810 0%, #1a0f0a 100%);
+    min-height: 100vh;
+    padding: 24px;
+}
+
+/* =========================================================
+   PAGE HEADERS
+========================================================= */
+
+h2 {
+    color: #d4a373;
+    font-weight: 700;
+    font-size: 2rem;
+    letter-spacing: -0.02em;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    margin-bottom: 24px;
+}
+
+h3 {
+    color: #d4a373;
+    font-weight: 600;
+    font-size: 1.5rem;
+    margin-top: 32px;
     margin-bottom: 20px;
-
-    /* FIXED WIDTH — change as you like */
-    max-width: 500px;
-    width: 100%;
-    margin-left: 100;
-    margin-right: auto;
 }
 
+/* =========================================================
+   ALERTS
+========================================================= */
 
-/* On hover, same as your variant cards */
-.variant-form-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+.alert {
+    border-radius: 12px;
+    border: none;
+    padding: 16px 20px;
+    font-weight: 500;
+    backdrop-filter: blur(10px);
+    margin-bottom: 20px;
 }
 
-/* Inputs */
-.variant-form-card input.form-control {
-    height: 42px;
+.alert-success {
+    background: rgba(67, 160, 71, 0.2);
+    color: #76ff03;
+    border: 1.5px solid rgba(67, 160, 71, 0.3);
+}
+
+.alert-danger {
+    background: rgba(239, 83, 80, 0.2);
+    color: #ff6b6b;
+    border: 1.5px solid rgba(239, 83, 80, 0.3);
+}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.btn {
+    border-radius: 12px;
+    padding: 10px 24px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn:active::before {
+    width: 300px;
+    height: 300px;
+}
+
+/* Show Form Button */
+#btnShowForm,
+.btn-success {
+    background: linear-gradient(135deg, #43a047 0%, #2e7d32 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(67, 160, 71, 0.3);
+}
+
+#btnShowForm:hover,
+.btn-success:hover {
+    background: linear-gradient(135deg, #4caf50 0%, #43a047 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(67, 160, 71, 0.5);
+}
+
+/* Save Button */
+.btn-primary {
+    background: linear-gradient(135deg, #42a5f5 0%, #1e88e5 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(66, 165, 245, 0.3);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #64b5f6 0%, #42a5f5 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(66, 165, 245, 0.5);
+}
+
+/* Cancel Button */
+.btn-outline-secondary {
+    background: transparent;
+    border: 2px solid rgba(245, 230, 211, 0.3) !important;
+    color: #f5e6d3;
+    backdrop-filter: blur(10px);
+}
+
+.btn-outline-secondary:hover {
+    background: rgba(245, 230, 211, 0.1);
+    border-color: rgba(245, 230, 211, 0.5) !important;
+    color: #ffffff;
+}
+
+/* Delete Button */
+.btn-danger {
+    background: linear-gradient(135deg, #ef5350 0%, #d32f2f 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(239, 83, 80, 0.3);
+}
+
+.btn-danger:hover {
+    background: linear-gradient(135deg, #f44336 0%, #ef5350 100%);
+    transform: scale(1.05);
+}
+
+/* Small Buttons in Cards */
+.btn-sm {
+    padding: 8px 16px;
+    font-size: 0.9rem;
     border-radius: 10px;
-    border: 1px solid #ffffffcb;
 }
 
-/* Variant Page Custom Styles */
+/* =========================================================
+   VARIANT FORM CARD
+========================================================= */
+
+#variantForm {
+    display: none;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    max-height: 0;
+    overflow: hidden;
+}
+
+#variantForm.show {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 500px;
+}
+
+.variant-form-card {
+    background: rgba(93, 64, 55, 0.15);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1.5px solid rgba(245, 230, 211, 0.15);
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto 32px;
+}
+
+.variant-form-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Form Inputs */
+.variant-form-card .form-control {
+    background: rgba(26, 15, 10, 0.6);
+    border: 1.5px solid rgba(245, 230, 211, 0.2);
+    color: #f5e6d3;
+    border-radius: 12px;
+    padding: 12px 16px;
+    height: 48px;
+    font-weight: 500;
+}
+
+.variant-form-card .form-control:focus {
+    border-color: #d4a373;
+    box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.2);
+    outline: none;
+    background: rgba(26, 15, 10, 0.8);
+}
+
+.variant-form-card .form-control::placeholder {
+    color: rgba(245, 230, 211, 0.4);
+}
+
+/* =========================================================
+   VARIANT CARDS GRID
+========================================================= */
+
+.row {
+    margin-top: 24px;
+}
 
 .variant-card {
-    background: #ffffffcb;
-    padding: 18px;
-    border-radius: 14px;
-    transition: 0.25s;
-    border: 1px solid #ffffffcb;
+    background: rgba(93, 64, 55, 0.15);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1.5px solid rgba(245, 230, 211, 0.15);
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+}
+
+.variant-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    background: linear-gradient(180deg, rgba(212, 163, 115, 0.15) 0%, transparent 100%);
+    transition: height 0.3s ease;
+    pointer-events: none;
 }
 
 .variant-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    transform: translateY(-8px);
+    border-color: rgba(212, 163, 115, 0.4);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
 }
 
+.variant-card:hover::before {
+    height: 100%;
+}
+
+/* Variant Title */
 .variant-title {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #333;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #d4a373;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
+/* Variant Price */
 .variant-price {
-    font-size: 1rem;
-    font-weight: 500;
-    color: #777;
-    margin-bottom: 12px;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #f5e6d3;
+    margin-bottom: 16px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Buttons inside card */
-.variant-card .btn-sm {
-    padding: 6px 10px;
-    border-radius: 8px;
-}
+/* =========================================================
+   ASSIGNED MATERIALS
+========================================================= */
 
-/* Smooth spacing */
-h2, h3 {
-    font-weight: 600;
-}
-/* Assigned Materials inside Variant Card */
 .assigned-materials {
-    background: #f9f9f9cb; /* subtle background */
-    padding: 10px 12px;
+    background: rgba(26, 15, 10, 0.4);
+    border: 1.5px solid rgba(245, 230, 211, 0.1);
     border-radius: 12px;
-    border: 1px solid #e0e0e0;
-    font-size: 0.95rem;
-    color: #555;
-    line-height: 1.4;
-    max-height: 120px; /* optional, for long lists */
-    overflow-y: auto;  /* scroll if too many ingredients */
-}
-
-.assigned-materials ul {
-    list-style-type: disc;
-    margin: 0;
-    padding-left: 20px;
+    padding: 14px 16px;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    max-height: 160px;
+    overflow-y: auto;
 }
 
 .assigned-materials strong {
+    color: #d4a373;
     font-weight: 600;
+    font-size: 0.95rem;
     display: block;
-    margin-bottom: 4px;
-    color: #333;
+    margin-bottom: 8px;
 }
 
-/* Optional: Scrollbar styling for assigned ingredients */
+.assigned-materials ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.assigned-materials li {
+    color: #f5e6d3;
+    font-size: 0.9rem;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(245, 230, 211, 0.05);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.assigned-materials li:last-child {
+    border-bottom: none;
+}
+
+.assigned-materials li::before {
+    content: '•';
+    color: #d4a373;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.assigned-materials.text-muted {
+    color: rgba(245, 230, 211, 0.5);
+    font-style: italic;
+    text-align: center;
+}
+
+/* Custom Scrollbar for Materials */
 .assigned-materials::-webkit-scrollbar {
     width: 6px;
 }
 
-.assigned-materials::-webkit-scrollbar-thumb {
-    background-color: rgba(0,0,0,0.2);
+.assigned-materials::-webkit-scrollbar-track {
+    background: rgba(26, 15, 10, 0.3);
     border-radius: 3px;
+}
+
+.assigned-materials::-webkit-scrollbar-thumb {
+    background: rgba(212, 163, 115, 0.5);
+    border-radius: 3px;
+}
+
+.assigned-materials::-webkit-scrollbar-thumb:hover {
+    background: rgba(212, 163, 115, 0.7);
+}
+
+/* =========================================================
+   BUTTON GROUPS IN CARDS
+========================================================= */
+
+.variant-card .d-flex {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.variant-card form {
+    flex: 1;
+}
+
+.variant-card .btn-sm {
+    width: 100%;
+}
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+body {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.variant-card {
+    animation: fadeInUp 0.4s ease-out backwards;
+}
+
+.variant-card:nth-child(1) { animation-delay: 0.05s; }
+.variant-card:nth-child(2) { animation-delay: 0.1s; }
+.variant-card:nth-child(3) { animation-delay: 0.15s; }
+.variant-card:nth-child(4) { animation-delay: 0.2s; }
+.variant-card:nth-child(5) { animation-delay: 0.25s; }
+.variant-card:nth-child(6) { animation-delay: 0.3s; }
+
+/* =========================================================
+   RESPONSIVE DESIGN
+========================================================= */
+
+@media (max-width: 768px) {
+    body {
+        padding: 16px;
+    }
+
+    h2 {
+        font-size: 1.6rem;
+    }
+
+    h3 {
+        font-size: 1.3rem;
+    }
+
+    .variant-form-card {
+        padding: 20px;
+    }
+
+    .row {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .variant-card {
+        padding: 20px;
+    }
+
+    .variant-title {
+        font-size: 1.2rem;
+    }
+
+    .variant-price {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .variant-card .d-flex {
+        flex-direction: column;
+    }
+
+    .btn-sm {
+        width: 100% !important;
+    }
+}
+
+/* =========================================================
+   UTILITY CLASSES
+========================================================= */
+
+.mb-2 {
+    margin-bottom: 0.5rem;
+}
+
+.mb-3 {
+    margin-bottom: 1rem;
+}
+
+.mt-2 {
+    margin-top: 0.5rem;
+}
+
+.mt-4 {
+    margin-top: 1.5rem;
+}
+
+.gap-2 {
+    gap: 0.5rem;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.w-10 {
+    width: auto;
+    flex: 1;
 }

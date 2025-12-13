@@ -1,190 +1,501 @@
-/* ===========================
-   General Reset
-=========================== */
+/* =========================================================
+   MODERN COFFEE SHOP PRODUCT MANAGEMENT - REDESIGNED
+========================================================= */
+
+:root {
+    --coffee-dark: #2c1810;
+    --coffee-medium: #5d4037;
+    --coffee-light: #8d6e63;
+    --caramel: #d4a373;
+    --caramel-dark: #b8845e;
+    --cream: #f5e6d3;
+    --espresso: #1a0f0a;
+    --foam: #ffffff;
+    --success: #43a047;
+    --warning: #ffa726;
+    --danger: #ef5350;
+    --info: #42a5f5;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ===========================
-   General Button Styling
-=========================== */
+body {
+    background: linear-gradient(135deg, #2c1810 0%, #1a0f0a 100%);
+    min-height: 100vh;
+}
+
+.container-fluid {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* =========================================================
+   PAGE HEADER
+========================================================= */
+
+.text-cafe-title {
+    color: #d4a373;
+    font-weight: 700;
+    font-size: 2rem;
+    letter-spacing: -0.02em;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    margin: 0;
+}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
 .btn {
-    border-radius: 8px;
-    padding: 0.5rem 1rem;
-    font-weight: 500;
-    transition: all 0.3s ease;
+    border-radius: 12px;
+    padding: 10px 24px;
+    font-weight: 600;
     border: none;
     cursor: pointer;
-    outline: none;
-    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
 }
 
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn:active::before {
+    width: 300px;
+    height: 300px;
+}
+
+/* Add Product Button */
+.btn-create,
+#btnAddProduct {
+    background: linear-gradient(135deg, #d4a373 0%, #b8845e 100%);
+    color: white;
+    font-size: 1rem;
+    box-shadow: 0 4px 12px rgba(212, 163, 115, 0.3);
+}
+
+.btn-create:hover,
+#btnAddProduct:hover {
+    background: linear-gradient(135deg, #b8845e 0%, #a06d48 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(212, 163, 115, 0.5);
+}
+
+/* Table Action Buttons */
 .btn-sm {
     font-size: 0.85rem;
-    padding: 0.25rem 0.75rem;
+    padding: 6px 16px;
+    border-radius: 10px;
+    min-width: 70px;
 }
 
-.btn i {
-    margin-right: 0.3rem;
+.btn-edit {
+    background: linear-gradient(135deg, #42a5f5 0%, #1e88e5 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(66, 165, 245, 0.3);
+}
+
+.btn-edit:hover {
+    background: linear-gradient(135deg, #64b5f6 0%, #42a5f5 100%);
+    transform: scale(1.05);
+}
+
+.btn-delete {
+    background: linear-gradient(135deg, #ef5350 0%, #d32f2f 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(239, 83, 80, 0.3);
+}
+
+.btn-delete:hover {
+    background: linear-gradient(135deg, #f44336 0%, #ef5350 100%);
+    transform: scale(1.05);
+}
+
+.btn-create-variant,
+.btn-success {
+    background: linear-gradient(135deg, #43a047 0%, #2e7d32 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(67, 160, 71, 0.3);
+}
+
+.btn-create-variant:hover,
+.btn-success:hover {
+    background: linear-gradient(135deg, #4caf50 0%, #43a047 100%);
+    transform: scale(1.05);
 }
 
 .btn:disabled {
     opacity: 0.6;
     cursor: not-allowed;
-    transform: none;
+    transform: none !important;
 }
 
-/* Specific Buttons */
-#btnAddProduct,
-.btn-create {
-    background-color: #db770c;
-}
-#btnAddProduct:hover,
-.btn-create:hover {
-    background-color: #b95f05;
-    transform: translateY(-2px);
+/* =========================================================
+   SEARCH INPUT
+========================================================= */
+
+#productSearch {
+    background: rgba(26, 15, 10, 0.6);
+    border: 1.5px solid rgba(245, 230, 211, 0.2);
+    color: #f5e6d3;
+    border-radius: 12px;
+    padding: 10px 16px;
+    font-weight: 500;
+    backdrop-filter: blur(5px);
 }
 
-.btn-edit {
-    background-color: #db770c;
-    padding: 0.3rem 0.8rem;
-}
-.btn-edit:hover {
-    background-color: #217dbb;
-    transform: scale(1.05);
+#productSearch:focus {
+    border-color: #d4a373;
+    box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.2);
+    outline: none;
+    background: rgba(26, 15, 10, 0.8);
 }
 
-.btn-delete {
-    background-color: #e74c3c;
-    padding: 0.3rem 0.8rem;
-}
-.btn-delete:hover {
-    background-color: #c0392b;
-    transform: scale(1.05);
+#productSearch::placeholder {
+    color: rgba(245, 230, 211, 0.5);
 }
 
-.btn-back {
-    background-color: #db770c;
-}
-.btn-back:hover {
-    background-color: #b95f05;
-}
+/* =========================================================
+   CARD CONTAINER
+========================================================= */
 
-/* ===========================
-   Card & Page Styling
-=========================== */
 .cafe-card {
-    background: #3e2f2f;
-    color: #f5f5f5;
-    border: 1px solid #6b4c3b;
-    padding: 20px;
-    border-radius: 12px;
+    background: rgba(93, 64, 55, 0.15);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1.5px solid rgba(245, 230, 211, 0.1);
+    border-radius: 24px;
+    padding: 32px;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-.text-cafe-title {
-    color: #db770c;
-    font-weight: 700;
-    font-size: 1.8rem;
+/* =========================================================
+   ALERTS
+========================================================= */
+
+.alert {
+    border-radius: 12px;
+    border: none;
+    padding: 16px 20px;
+    font-weight: 500;
+    backdrop-filter: blur(10px);
 }
 
-/* ===========================
-   Table Styling
-=========================== */
-.cafe-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    border-radius: 12px;
+.alert-success {
+    background: rgba(67, 160, 71, 0.2);
+    color: #76ff03;
+    border: 1.5px solid rgba(67, 160, 71, 0.3);
+}
+
+.alert-danger {
+    background: rgba(239, 83, 80, 0.2);
+    color: #ff6b6b;
+    border: 1.5px solid rgba(239, 83, 80, 0.3);
+}
+
+.btn-close {
+    filter: brightness(2);
+    opacity: 0.8;
+}
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.table-responsive {
+    border-radius: 16px;
     overflow: hidden;
+    background: rgba(26, 15, 10, 0.4);
 }
 
-.cafe-table thead {
-    background: #5a3d30;
-    color: #fff;
+.table {
+    margin: 0;
+    color: #f5e6d3;
+}
+
+.table thead {
+    background: linear-gradient(180deg, rgba(93, 64, 55, 0.8) 0%, rgba(93, 64, 55, 0.6) 100%);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.table thead th {
+    color: #f5e6d3;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 16px 12px;
+    border: none;
+    vertical-align: middle;
+}
+
+.table tbody tr {
+    background: rgba(44, 24, 16, 0.3);
+    border-bottom: 1px solid rgba(245, 230, 211, 0.05);
+}
+
+.table tbody tr:hover {
+    background: rgba(93, 64, 55, 0.4);
+    transform: scale(1.005);
+}
+
+.table tbody td,
+.table tbody th {
+    color: #f5e6d3;
+    padding: 16px 12px;
+    vertical-align: middle;
+    border: none;
+}
+
+.table tbody th {
     font-weight: 600;
 }
 
-.cafe-table tbody tr {
-    background: #4b3a2f;
-    transition: all 0.2s ease-in-out;
+.table tbody td:nth-child(2) {
+    font-weight: 600;
 }
 
-.cafe-table tbody tr:nth-child(even) {
-    background: #3e2f2f;
-}
-
-.cafe-table tbody tr:hover {
-    background: #6b4c3b;
-    transform: scale(1.01);
-}
-
-.product-img {
+/* Product Images */
+.product-img,
+.table img {
     width: 60px;
     height: 60px;
     object-fit: cover;
     border-radius: 12px;
-    border: 1px solid #6b4c3b;
+    border: 1.5px solid rgba(212, 163, 115, 0.3);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
 }
 
-/* ===========================
-   SweetAlert2 Custom Styles
-=========================== */
+.table img:hover {
+    transform: scale(1.5);
+    z-index: 100;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+/* =========================================================
+   SWEETALERT2 CUSTOMIZATION
+========================================================= */
+
 .swal2-popup {
-    font-family: 'Poppins', sans-serif;
-    font-size: 16px;
-    border-radius: 12px !important;
+    background: linear-gradient(135deg, #3e2723 0%, #2c1810 100%);
+    border: 1.5px solid rgba(245, 230, 211, 0.2);
+    border-radius: 24px;
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
+    color: #f5e6d3;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
 }
 
 .swal2-title {
+    color: #d4a373;
     font-weight: 700;
-    font-size: 22px;
-    color: #6b4c3b;
-    text-align: center;
+    font-size: 1.5rem;
+    letter-spacing: -0.01em;
 }
 
-.swal2-input, .swal2-file, .swal2-textarea, .swal2-select {
-    padding: 10px 12px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-    color: #333;
+.swal2-html-container {
+    color: #d7ccc8;
 }
 
-.swal2-input:focus, .swal2-textarea:focus, .swal2-select:focus {
-    border-color: #db770c;
-    box-shadow: 0 0 4px #db770c;
-}
-
-.swal2-confirm {
-    background-color: #db770c !important;
-    color: #fff !important;
-    font-weight: 600;
-    border-radius: 8px !important;
-    padding: 10px 24px;
-}
-
-.swal2-cancel {
-    background-color: #6b4c3b !important;
-    color: #fff !important;
+.swal2-input,
+.swal2-textarea,
+.swal2-select,
+.swal2-file {
+    background: rgba(26, 15, 10, 0.6) !important;
+    border: 1.5px solid rgba(245, 230, 211, 0.2) !important;
+    color: #f5e6d3 !important;
+    border-radius: 12px !important;
+    padding: 12px 16px !important;
     font-weight: 500;
-    border-radius: 8px !important;
-    padding: 10px 24px;
+    margin: 8px 0;
 }
 
-.swal2-textarea {
-    min-height: 80px;
+.swal2-input:focus,
+.swal2-textarea:focus,
+.swal2-select:focus {
+    border-color: #d4a373 !important;
+    box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.2) !important;
+    outline: none;
+}
+
+.swal2-input::placeholder,
+.swal2-textarea::placeholder {
+    color: rgba(245, 230, 211, 0.4);
+}
+
+.swal2-select option {
+    background: #2c1810;
+    color: #f5e6d3;
 }
 
 .swal2-file {
-    padding: 5px;
+    padding: 8px 12px !important;
+    cursor: pointer;
 }
 
-/* ===========================
-   Responsive
-=========================== */
+.swal2-textarea {
+    min-height: 80px !important;
+    resize: vertical;
+}
+
+.swal2-confirm {
+    background: linear-gradient(135deg, #d4a373 0%, #b8845e 100%) !important;
+    color: white !important;
+    border-radius: 12px !important;
+    padding: 12px 28px !important;
+    font-weight: 600 !important;
+    box-shadow: 0 4px 12px rgba(212, 163, 115, 0.3);
+}
+
+.swal2-confirm:hover {
+    background: linear-gradient(135deg, #b8845e 0%, #a06d48 100%) !important;
+}
+
+.swal2-cancel {
+    background: rgba(239, 83, 80, 0.2) !important;
+    border: 1.5px solid rgba(239, 83, 80, 0.5) !important;
+    color: #ff6b6b !important;
+    border-radius: 12px !important;
+    padding: 12px 28px !important;
+    font-weight: 600 !important;
+}
+
+.swal2-cancel:hover {
+    background: rgba(239, 83, 80, 0.3) !important;
+}
+
+.swal2-validation-message {
+    background: rgba(239, 83, 80, 0.2) !important;
+    color: #ff6b6b !important;
+    border-color: rgba(239, 83, 80, 0.4) !important;
+}
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.container-fluid {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.table tbody tr {
+    animation: fadeInUp 0.4s ease-out backwards;
+}
+
+.table tbody tr:nth-child(1) { animation-delay: 0.05s; }
+.table tbody tr:nth-child(2) { animation-delay: 0.1s; }
+.table tbody tr:nth-child(3) { animation-delay: 0.15s; }
+.table tbody tr:nth-child(4) { animation-delay: 0.2s; }
+.table tbody tr:nth-child(5) { animation-delay: 0.25s; }
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+.table-responsive::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: rgba(26, 15, 10, 0.3);
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: rgba(212, 163, 115, 0.5);
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background: rgba(212, 163, 115, 0.7);
+}
+
+/* =========================================================
+   RESPONSIVE DESIGN
+========================================================= */
+
 @media (max-width: 768px) {
-    .product-img { width: 50px; height: 50px; }
-    .text-cafe-title { font-size: 1.4rem; }
+    .text-cafe-title {
+        font-size: 1.6rem;
+    }
+
+    .cafe-card {
+        padding: 20px;
+    }
+
+    .btn-create,
+    #btnAddProduct {
+        width: 100%;
+        margin-bottom: 16px;
+    }
+
+    #productSearch {
+        width: 100% !important;
+        margin-bottom: 16px;
+    }
+
+    .table thead th,
+    .table tbody td,
+    .table tbody th {
+        padding: 12px 8px;
+        font-size: 0.85rem;
+    }
+
+    .table img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .btn-sm {
+        font-size: 0.75rem;
+        padding: 4px 10px;
+        min-width: 60px;
+    }
+}
+
+@media (max-width: 576px) {
+    .table thead th,
+    .table tbody td {
+        padding: 10px 6px;
+        font-size: 0.8rem;
+    }
+
+    .btn-sm {
+        font-size: 0.7rem;
+        padding: 3px 8px;
+        min-width: 50px;
+    }
 }

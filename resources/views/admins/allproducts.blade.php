@@ -1,6 +1,11 @@
 @extends('layouts.admin')
 
 @section('content')
+
+{{-- Add CSS and Icons --}}
+<link rel="stylesheet" href="{{ asset('assets/css/allproduct.css') }}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@latest/font/lucide.min.css">
+
 @php
 $types = App\Models\Product\ProductType::with('subTypes')->get();
 
@@ -29,121 +34,158 @@ foreach($types as $t) {
     window.subTypes = @json($subTypesArr);
 </script>
 
-
 <div class="container-fluid py-4">
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
     {{-- Page Header --}}
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="text-cafe-title">☕ Product Management</h2>
+        <h2 class="text-cafe-title">
+            <i class="lucide-package-search" style="width: 32px; height: 32px; vertical-align: middle;"></i>
+            Product Management
+        </h2>
         <div>
-            <a href="#" id="btnAddProduct" class="btn btn-create btn-lg me-2">
-                <i class="bi bi-plus-circle"></i> Add Product
+            <a href="#" id="btnAddProduct" class="btn btn-create btn-lg">
+                <i class="lucide-plus-circle" style="width: 20px; height: 20px;"></i>
+                Add Product
             </a>
         </div>
     </div>
 
-
-
     {{-- Products Card --}}
-    <div class="card shadow-sm rounded-4 cafe-card">
+    <div class="card shadow-lg rounded-4 cafe-card">
         <div class="card-body">
 
             {{-- Flash Messages --}}
             @if (Session::has('success'))
-                <p class="alert alert-success alert-dismissible fade show" role="alert">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="lucide-check-circle" style="width: 18px; height: 18px; vertical-align: middle;"></i>
                     {{ Session::get('success') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </p>
+                </div>
             @endif
             @if (Session::has('delete'))
-                <p class="alert alert-danger alert-dismissible fade show" role="alert">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="lucide-alert-circle" style="width: 18px; height: 18px; vertical-align: middle;"></i>
                     {{ Session::get('delete') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </p>
+                </div>
             @endif
 
-            {{-- Table --}}
-            <div class="mb-3 d-flex justify-content-end">
-                <input type="text" id="productSearch" class="form-control w-25" placeholder="Search product...">
+            {{-- Search --}}
+            <div class="mb-4 d-flex justify-content-end">
+                <input type="text" id="productSearch" class="form-control w-25" placeholder="🔍 Search products...">
             </div>
 
+            {{-- Table --}}
             <div class="table-responsive">
-                <table class="table table-hover align-middle text-center" style="color:#f5f5f5;">
-                        <thead style="background-color:#6b4c3b;">
+                <table class="table table-hover align-middle text-center">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>
+                                <i class="lucide-tag" style="width: 16px; height: 16px; vertical-align: middle;"></i>
+                                Product Name
+                            </th>
+                            <th>
+                                <i class="lucide-image" style="width: 16px; height: 16px; vertical-align: middle;"></i>
+                                Image
+                            </th>
+                            <th>
+                                <i class="lucide-dollar-sign" style="width: 16px; height: 16px; vertical-align: middle;"></i>
+                                Price
+                            </th>
+                            <th>
+                                <i class="lucide-layers" style="width: 16px; height: 16px; vertical-align: middle;"></i>
+                                Type
+                            </th>
+                            <th>
+                                <i class="lucide-folder" style="width: 16px; height: 16px; vertical-align: middle;"></i>
+                                Subtype
+                            </th>
+                            <th>
+                                <i class="lucide-edit" style="width: 16px; height: 16px; vertical-align: middle;"></i>
+                                Edit
+                            </th>
+                            <th>
+                                <i class="lucide-trash-2" style="width: 16px; height: 16px; vertical-align: middle;"></i>
+                                Delete
+                            </th>
+                            <th>
+                                <i class="lucide-settings" style="width: 16px; height: 16px; vertical-align: middle;"></i>
+                                Options
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php $counter = 1; @endphp
+                        @foreach ($products as $product)
                             <tr>
-                                <th>#</th>
-                                <th>Product Name</th>
-                                <th>Image</th>
-                                <th>Price</th>
-                                <th>Type</th>
-                                <th>Subtype</th>
-                                <th>Edit</th>
-                                <th>Delete</th>
-                                <th>Option</th>
+                                <th scope="row">{{ $counter }}</th>
+                                <td>
+                                    <i class="lucide-coffee" style="width: 16px; height: 16px; vertical-align: middle; opacity: 0.7;"></i>
+                                    {{ $product->name }}
+                                </td>
+                                <td>
+                                    <img src="{{ asset('assets/images/'.$product->image) }}"
+                                        alt="{{ $product->name }}"
+                                        class="product-img">
+                                </td>
+                                <td><strong>${{ number_format($product->price, 2) }}</strong></td>
+                                <td>{{ $product->productType ? $product->productType->name : 'N/A' }}</td>
+                                <td>{{ $product->subType ? $product->subType->name : 'N/A' }}</td>
+
+                                <td>
+                                    <button type="button"
+                                            class="btn btn-info btn-sm rounded-pill btn-edit"
+                                            data-id="{{ $product->id }}"
+                                            data-name="{{ $product->name }}"
+                                            data-price="{{ $product->price }}"
+                                            data-type-id="{{ $product->productType ? $product->productType->id : '' }}"
+                                            data-subtype-id="{{ $product->subType ? $product->subType->id : '' }}">
+                                            <i class="lucide-edit" style="width: 14px; height: 14px;"></i>
+                                            Edit
+                                    </button>
+                                </td>
+                                <td>
+                                    <button type="button"
+                                            class="btn btn-danger btn-sm rounded-pill btn-delete"
+                                            data-id="{{ $product->id }}"
+                                            data-name="{{ $product->name }}">
+                                            <i class="lucide-trash-2" style="width: 14px; height: 14px;"></i>
+                                            Delete
+                                    </button>
+                                </td>
+                                <td>
+                                    <button class="btn btn-success btn-sm rounded-pill btn-create-variant"
+                                            data-id="{{ $product->id }}">
+                                            <i class="lucide-settings" style="width: 14px; height: 14px;"></i>
+                                            Add Options
+                                    </button>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                                    @php $counter = 1; @endphp
-                                    @foreach ($products as $product)
-                                        <tr style="border-bottom:1px solid #5a3d30;">
-                                            <th scope="row">{{ $counter }}</th>
-                                            <td>{{ $product->name }}</td>
-                                            <td>
-                                                <img src="{{ asset('assets/images/'.$product->image) }}"
-                                                    alt="{{ $product->name }}"
-                                                    style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px; border:1px solid #6b4c3b;">
-                                            </td>
-                                            <td>${{ number_format($product->price, 2) }}</td>
-                                            <td>{{ $product->productType ? $product->productType->name : 'N/A' }}</td>
-                                            <td>{{ $product->subType ? $product->subType->name : 'N/A' }}</td>
-
-                                            <td>
-                                                <button type="button"
-                                                        class="btn btn-info btn-sm rounded-pill btn-edit"
-                                                        data-id="{{ $product->id }}"
-                                                        data-name="{{ $product->name }}"
-                                                        data-price="{{ $product->price }}"
-                                                        data-type-id="{{ $product->productType ? $product->productType->id : '' }}"
-                                                        data-subtype-id="{{ $product->subType ? $product->subType->id : '' }}">
-
-                                                        Edit
-                                                </button>
-
-                                            </td>
-                                            <td>
-                                                <button type="button"
-                                                        class="btn btn-danger btn-sm rounded-pill btn-delete"
-                                                        data-id="{{ $product->id }}"
-                                                        data-name="{{ $product->name }}">
-                                                        Delete
-                                                </button>
-                                            </td>
-                                            <td>
-                                                <button class="btn btn-success btn-sm rounded-pill btn-create-variant"
-                                                        data-id="{{ $product->id }}">
-                                                        Add Option and Recipe
-                                                </button>
-                                            </td>
-
-
-                                        </tr>
-                                    @php $counter++; @endphp
-                                    @endforeach
-                        </tbody>
+                        @php $counter++; @endphp
+                        @endforeach
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-<link rel="stylesheet" href="{{ asset('assets/css/allproduct.css') }}">
 
+{{-- Scripts --}}
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+    // Initialize Lucide icons
+    document.addEventListener('DOMContentLoaded', () => {
+        lucide.createIcons();
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{{ asset('assets/js/all-product.js') }}"></script>
 <script>
     window.variantCreateUrl = "{{ url('/admin/product/products') }}";
 </script>
-
 
 @endsection
