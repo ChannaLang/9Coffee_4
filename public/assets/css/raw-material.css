@@ -1,185 +1,565 @@
-/* -----------------------------------------------------------
-   GLOBAL THEME — Coffee (#3e2f2f) + Caramel (#db770c)
------------------------------------------------------------ */
+/* =========================================================
+   MODERN COFFEE SHOP RAW MATERIALS - COMPLETE REDESIGN
+========================================================= */
 
-.card {
-    background-color: #4b3a2f;
-    color: #f5f5f5;
-    border-radius: 14px;
-    border: 1px solid #3a2b27;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.35);
+:root {
+    --coffee-dark: #2c1810;
+    --coffee-medium: #5d4037;
+    --coffee-light: #8d6e63;
+    --caramel: #d4a373;
+    --caramel-dark: #b8845e;
+    --cream: #f5e6d3;
+    --espresso: #1a0f0a;
+    --foam: #ffffff;
+    --success: #43a047;
+    --warning: #ffa726;
+    --danger: #ef5350;
 }
 
-.card-header {
-    background-color: #db770c;
-    color: #fff;
-    font-weight: 700;
-    padding: 15px 20px;
-    border-top-left-radius: 14px;
-    border-top-right-radius: 14px;
+* {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+    background: linear-gradient(135deg, #2c1810 0%, #1a0f0a 100%);
+    min-height: 100vh;
+}
+
+.container-fluid {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* =========================================================
+   ADD MATERIAL BUTTON (TOP)
+========================================================= */
+
+.btn-add-material {
+    background: linear-gradient(135deg, #d4a373 0%, #b8845e 100%);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    padding: 12px 28px;
+    font-weight: 600;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 4px 12px rgba(212, 163, 115, 0.3);
+    text-transform: none;
+    letter-spacing: 0.02em;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-add-material::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn-add-material:active::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-add-material:hover {
+    background: linear-gradient(135deg, #b8845e 0%, #a06d48 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(212, 163, 115, 0.5);
+}
+
+/* =========================================================
+   CARD CONTAINER
+========================================================= */
+
+.raw-card {
+    background: rgba(93, 64, 55, 0.15);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1.5px solid rgba(245, 230, 211, 0.1);
+    border-radius: 24px;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.raw-header {
+    background: linear-gradient(135deg, #d4a373 0%, #b8845e 100%);
+    color: white;
+    padding: 20px 28px;
+    border-radius: 24px 24px 0 0;
+    border: none;
+    box-shadow: 0 4px 16px rgba(212, 163, 115, 0.3);
 }
 
 .raw-header h4 {
     font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: -0.01em;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-/* -----------------------------------------------------------
+.card-body {
+    padding: 32px;
+}
+
+/* =========================================================
    TABLE STYLING
------------------------------------------------------------ */
+========================================================= */
+
+.table-responsive {
+    border-radius: 16px;
+    overflow: hidden;
+    background: rgba(26, 15, 10, 0.4);
+    margin-bottom: 24px;
+}
 
 .raw-table {
     width: 100%;
-    table-layout: fixed; /* fixes column width issues */
-    border-collapse: collapse;
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 0;
+}
+
+.raw-table thead {
+    background: linear-gradient(180deg, rgba(93, 64, 55, 0.8) 0%, rgba(93, 64, 55, 0.6) 100%);
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
 .raw-table thead th {
-    background-color: #4b3a2f;
-    color: #fff;
-    padding: 10px;
-    font-weight: 700;
-    letter-spacing: 0.4px;
+    color: #f5e6d3;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 16px 12px;
+    border: none;
     text-align: center;
+}
+
+.raw-table tbody tr {
+    background: rgba(44, 24, 16, 0.3);
+    border-bottom: 1px solid rgba(245, 230, 211, 0.05);
+    position: relative;
+}
+
+.raw-table tbody tr::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(212, 163, 115, 0.15) 0%, transparent 100%);
+    transition: width 0.3s ease;
+    pointer-events: none;
+}
+
+.raw-table tbody tr:hover::before {
+    width: 100%;
+}
+
+.raw-table tbody tr:hover {
+    background: rgba(93, 64, 55, 0.4);
 }
 
 .raw-table tbody td {
-    background-color: #3e2f2f;
-    color: #f5f5f5;
-    padding: 10px;
+    color: #f5e6d3;
+    padding: 16px 12px;
+    vertical-align: middle;
+    border: none;
     text-align: center;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 }
 
-.raw-table tbody tr:hover td {
-    background-color: #5a3d30;
+.raw-table tbody td:first-child {
+    font-weight: 600;
+    color: #d4a373;
 }
 
-.raw-table th,
-.raw-table td {
-    border: 1px solid #6b4c3b;
-    vertical-align: middle !important;
+.raw-table tbody td:nth-child(2) {
+    font-weight: 600;
+    text-align: left;
+    padding-left: 20px;
 }
 
-/* Set fixed widths for key columns */
+.raw-table tbody td:nth-child(3) {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: #d4a373;
+}
+
+/* Column widths */
 .raw-table th:nth-child(1),
-.raw-table td:nth-child(1) { width: 40px; }       /* # */
+.raw-table td:nth-child(1) { width: 60px; }
 .raw-table th:nth-child(2),
-.raw-table td:nth-child(2) { width: 180px; }      /* Raw Ingredient */
+.raw-table td:nth-child(2) { width: 200px; }
 .raw-table th:nth-child(3),
-.raw-table td:nth-child(3) { width: 90px; }       /* Quantity */
+.raw-table td:nth-child(3) { width: 120px; }
 .raw-table th:nth-child(4),
-.raw-table td:nth-child(4) { width: 60px; }       /* Unit */
+.raw-table td:nth-child(4) { width: 80px; }
 .raw-table th:nth-child(5),
-.raw-table td:nth-child(5) { width: 80px; }       /* Status */
+.raw-table td:nth-child(5) { width: 100px; }
 .raw-table th:nth-child(6),
-.raw-table td:nth-child(6) { width: 200px; }      /* Action */
+.raw-table td:nth-child(6) { width: auto; min-width: 320px; }
 
-/* -----------------------------------------------------------
+/* =========================================================
    BADGES
------------------------------------------------------------ */
+========================================================= */
 
 .badge {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 700;
-    padding: 6px 12px;
-    border-radius: 12px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.badge::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
     display: inline-block;
+    animation: pulse 2s ease-in-out infinite;
 }
 
 .bg-success {
-    background-color: #27ae60 !important;
+    background: linear-gradient(135deg, #43a047 0%, #2e7d32 100%);
+    color: white;
+}
+
+.bg-success::before {
+    background: #76ff03;
+    box-shadow: 0 0 8px #76ff03;
 }
 
 .bg-danger {
-    background-color: #c0392b !important;
+    background: linear-gradient(135deg, #ef5350 0%, #d32f2f 100%);
+    color: white;
 }
 
-/* -----------------------------------------------------------
-   BUTTONS (UNIFIED THEME)
------------------------------------------------------------ */
-
-.btn {
-    border-radius: 8px;
-    font-weight: 600;
-    padding: 8px 14px;
-    border: none !important;
-    transition: 0.25s;
+.bg-danger::before {
+    background: #ff6b6b;
+    box-shadow: 0 0 8px #ff6b6b;
 }
 
-/* Add New Material Button */
-.btn-add-material {
-    background-color: #db770c;
-    color: #fff;
-    border-radius: 10px;
-}
-.btn-add-material:hover {
-    background-color: #b36208;
-    transform: scale(1.03);
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(0.9); }
 }
 
-/* Action Buttons in Table */
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
+
 .btn-action {
-    min-width: 60px;
-    height: 36px;
-    font-size: 0.95rem;
-    padding: 0 8px;
+    min-width: 70px;
+    height: 38px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0 12px;
+    border: none;
+    border-radius: 10px;
     display: inline-flex;
-    justify-content: center;
     align-items: center;
-    border-radius: 10px;
-    margin: 2px;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    margin: 0 3px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
 }
 
-/* Colors for Action Buttons */
-.btn-success { background-color: #db770c !important; color: #fff !important; }
-.btn-success:hover { background-color: #b36208 !important; }
+.btn-action::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.4s, height 0.4s;
+}
 
-.btn-warning { background-color: #f1c40f !important; color: #000 !important; }
-.btn-warning:hover { background-color: #d4ac0d !important; }
+.btn-action:active::before {
+    width: 200px;
+    height: 200px;
+}
 
-.btn-primary { background-color: #db770c !important; color: #fff !important; }
-.btn-primary:hover { background-color: #b36208 !important; }
+.btn-action:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
 
-.btn-danger { background-color: #c0392b !important; color: #fff !important; }
-.btn-danger:hover { background-color: #922b21 !important; }
+.btn-action:active {
+    transform: translateY(0);
+}
 
-/* -----------------------------------------------------------
+/* Button colors */
+.btn-success {
+    background: linear-gradient(135deg, #43a047 0%, #2e7d32 100%);
+    color: white !important;
+}
+
+.btn-success:hover {
+    background: linear-gradient(135deg, #4caf50 0%, #43a047 100%);
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #ffa726 0%, #fb8c00 100%);
+    color: white !important;
+}
+
+.btn-warning:hover {
+    background: linear-gradient(135deg, #ffb74d 0%, #ffa726 100%);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #42a5f5 0%, #1e88e5 100%);
+    color: white !important;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #64b5f6 0%, #42a5f5 100%);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #ef5350 0%, #d32f2f 100%);
+    color: white !important;
+}
+
+.btn-danger:hover {
+    background: linear-gradient(135deg, #f44336 0%, #ef5350 100%);
+}
+
+/* =========================================================
    BACK BUTTON
------------------------------------------------------------ */
+========================================================= */
+
 .btn-outline-light {
-    border: 2px solid #fff !important;
-    color: #fff !important;
-    border-radius: 10px;
-}
-.btn-outline-light:hover {
-    background-color: #fff !important;
-    color: #3e2f2f !important;
+    background: transparent;
+    border: 2px solid rgba(245, 230, 211, 0.3) !important;
+    color: #f5e6d3 !important;
+    border-radius: 12px;
+    padding: 12px 24px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    backdrop-filter: blur(10px);
 }
 
-/* -----------------------------------------------------------
-   RESPONSIVE
------------------------------------------------------------ */
-@media (max-width: 768px) {
+.btn-outline-light:hover {
+    background: rgba(245, 230, 211, 0.1) !important;
+    border-color: rgba(245, 230, 211, 0.5) !important;
+    color: #ffffff !important;
+    transform: translateX(-4px);
+}
+
+/* =========================================================
+   SWEETALERT2 CUSTOMIZATION
+========================================================= */
+
+.swal2-popup {
+    background: linear-gradient(135deg, #3e2723 0%, #2c1810 100%) !important;
+    border: 1.5px solid rgba(245, 230, 211, 0.2);
+    border-radius: 24px;
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
+}
+
+.swal2-title {
+    color: #f5e6d3 !important;
+    font-weight: 700;
+}
+
+.swal2-html-container {
+    color: #d7ccc8 !important;
+}
+
+.swal2-input,
+.swal2-select {
+    background: rgba(26, 15, 10, 0.6) !important;
+    border: 1.5px solid rgba(245, 230, 211, 0.2) !important;
+    color: #f5e6d3 !important;
+    border-radius: 12px !important;
+    padding: 12px 16px !important;
+}
+
+.swal2-input:focus,
+.swal2-select:focus {
+    border-color: #d4a373 !important;
+    box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.2) !important;
+}
+
+.swal2-confirm {
+    background: linear-gradient(135deg, #d4a373 0%, #b8845e 100%) !important;
+    border-radius: 12px !important;
+    font-weight: 600 !important;
+    padding: 12px 28px !important;
+}
+
+.swal2-cancel {
+    background: rgba(239, 83, 80, 0.2) !important;
+    border: 1.5px solid rgba(239, 83, 80, 0.5) !important;
+    border-radius: 12px !important;
+    font-weight: 600 !important;
+}
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.container-fluid {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.raw-table tbody tr {
+    animation: fadeInUp 0.4s ease-out backwards;
+}
+
+.raw-table tbody tr:nth-child(1) { animation-delay: 0.05s; }
+.raw-table tbody tr:nth-child(2) { animation-delay: 0.1s; }
+.raw-table tbody tr:nth-child(3) { animation-delay: 0.15s; }
+.raw-table tbody tr:nth-child(4) { animation-delay: 0.2s; }
+.raw-table tbody tr:nth-child(5) { animation-delay: 0.25s; }
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+.table-responsive::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: rgba(26, 15, 10, 0.3);
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: rgba(212, 163, 115, 0.5);
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background: rgba(212, 163, 115, 0.7);
+}
+
+/* =========================================================
+   RESPONSIVE DESIGN
+========================================================= */
+
+@media (max-width: 1200px) {
     .btn-action {
+        font-size: 0;
         min-width: 40px;
-        height: 32px;
-        font-size: 0.85rem;
-        padding: 0 4px;
+        padding: 0 8px;
+    }
+
+    .btn-action i {
+        margin: 0;
+    }
+
+    .btn-text {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .card-body {
+        padding: 20px;
+    }
+
+    .raw-header {
+        padding: 16px 20px;
+    }
+
+    .raw-header h4 {
+        font-size: 1.25rem;
+    }
+
+    .btn-add-material {
+        width: 100%;
+        margin-bottom: 16px;
     }
 
     .raw-table {
         font-size: 0.85rem;
     }
 
-    .raw-table th:nth-child(2),
-    .raw-table td:nth-child(2) {
-        width: 120px; /* ingredient name */
+    .raw-table thead th,
+    .raw-table tbody td {
+        padding: 12px 8px;
     }
 
-    .raw-table th:nth-child(6),
-    .raw-table td:nth-child(6) {
-        width: 150px; /* action buttons */
+    .raw-table th:nth-child(2),
+    .raw-table td:nth-child(2) {
+        width: 140px;
+        padding-left: 12px;
     }
+
+    .btn-action {
+        min-width: 36px;
+        height: 34px;
+        margin: 1px;
+    }
+
+    .badge {
+        font-size: 0.7rem;
+        padding: 6px 12px;
+    }
+}
+
+/* =========================================================
+   UTILITY CLASSES
+========================================================= */
+
+.mt-4 {
+    margin-top: 1.5rem;
+}
+
+.mb-3 {
+    margin-bottom: 1rem;
+}
+
+.fw-bold {
+    font-weight: 600;
+}
+
+.gap-1 {
+    gap: 0.25rem;
 }

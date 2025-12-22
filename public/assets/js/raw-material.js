@@ -2,22 +2,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const token = document.querySelector('meta[name="csrf-token"]').content;
 
-    // Refresh Lucide icons after DOM changes
+    // Reinitialize Lucide after DOM changes
     function refreshIcons() {
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
         }
     }
 
-    // SweetAlert2 styling configuration
-    const swalConfig = {
+    // SweetAlert theme configuration
+    const swalTheme = {
         background: 'linear-gradient(135deg, #3e2723 0%, #2c1810 100%)',
         color: '#f5e6d3',
-        confirmButtonColor: '#d4a373',
-        cancelButtonColor: 'rgba(239, 83, 80, 0.8)',
-        customClass: {
-            popup: 'swal-coffee-theme'
-        }
+        confirmButtonColor: '#d4a373'
     };
 
     function attachMaterialListeners(row) {
@@ -31,7 +27,6 @@ document.addEventListener("DOMContentLoaded", () => {
             btnAdd.addEventListener('click', () => {
                 const { id, name, unit } = btnAdd.dataset;
                 Swal.fire({
-                    ...swalConfig,
                     title: `Add Stock: ${name}`,
                     input: 'number',
                     inputLabel: `Enter amount (${unit})`,
@@ -41,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     },
                     showCancelButton: true,
                     confirmButtonText: 'Add',
+                    ...swalTheme,
                     preConfirm: qty => {
                         if (!qty || parseFloat(qty) <= 0) Swal.showValidationMessage('Enter a valid quantity');
                         return parseFloat(qty);
@@ -64,21 +60,9 @@ document.addEventListener("DOMContentLoaded", () => {
                             badge.className = data.quantity < 5 ? 'badge bg-danger' : 'badge bg-success';
                             badge.textContent = data.quantity < 5 ? 'Low Stock' : 'In Stock';
                         }
-                        Swal.fire({
-                            ...swalConfig,
-                            icon: 'success',
-                            title: 'Success!',
-                            text: 'Stock added successfully',
-                            timer: 2000,
-                            showConfirmButton: false
-                        });
+                        Swal.fire({ ...swalTheme, icon: 'success', title: 'Success', text: 'Stock added!', timer: 2000, showConfirmButton: false });
                     })
-                    .catch(err => Swal.fire({
-                        ...swalConfig,
-                        icon: 'error',
-                        title: 'Error',
-                        text: err.message
-                    }));
+                    .catch(err => Swal.fire({ ...swalTheme, icon: 'error', title: 'Error', text: err.message }));
                 });
             });
         }
@@ -88,13 +72,13 @@ document.addEventListener("DOMContentLoaded", () => {
             btnReduce.addEventListener('click', () => {
                 const { id, name, unit } = btnReduce.dataset;
                 Swal.fire({
-                    ...swalConfig,
                     title: `Reduce Stock: ${name}`,
                     input: 'number',
                     inputLabel: `Enter amount to reduce (${unit})`,
                     inputAttributes: { min: 0.01, step: 0.01 },
                     showCancelButton: true,
                     confirmButtonText: 'Reduce',
+                    ...swalTheme,
                     preConfirm: qty => {
                         if (!qty || parseFloat(qty) <= 0) Swal.showValidationMessage('Enter a valid quantity');
                         return parseFloat(qty);
@@ -122,21 +106,9 @@ document.addEventListener("DOMContentLoaded", () => {
                             badge.className = data.quantity < 5 ? 'badge bg-danger' : 'badge bg-success';
                             badge.textContent = data.quantity < 5 ? 'Low Stock' : 'In Stock';
                         }
-                        Swal.fire({
-                            ...swalConfig,
-                            icon: 'success',
-                            title: 'Success!',
-                            text: 'Stock reduced successfully',
-                            timer: 2000,
-                            showConfirmButton: false
-                        });
+                        Swal.fire({ ...swalTheme, icon: 'success', title: 'Success', text: 'Stock reduced!', timer: 2000, showConfirmButton: false });
                     })
-                    .catch(err => Swal.fire({
-                        ...swalConfig,
-                        icon: 'error',
-                        title: 'Error',
-                        text: err.message
-                    }));
+                    .catch(err => Swal.fire({ ...swalTheme, icon: 'error', title: 'Error', text: err.message }));
                 });
             });
         }
@@ -147,7 +119,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 const { id, name, unit } = btnUpdate.dataset;
                 const row = btnUpdate.closest('tr');
                 Swal.fire({
-                    ...swalConfig,
                     title: 'Update Material',
                     html: `
                         <input type="text" id="update_name" class="swal2-input" placeholder="Name" value="${name}">
@@ -159,6 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     `,
                     showCancelButton: true,
                     confirmButtonText: 'Update',
+                    ...swalTheme,
                     preConfirm: () => {
                         const newName = document.getElementById('update_name').value.trim();
                         const newUnit = document.getElementById('update_unit').value;
@@ -187,21 +159,9 @@ document.addEventListener("DOMContentLoaded", () => {
                             b.dataset.unit = data.unit;
                         });
 
-                        Swal.fire({
-                            ...swalConfig,
-                            icon: 'success',
-                            title: 'Success!',
-                            text: 'Material updated successfully',
-                            timer: 2000,
-                            showConfirmButton: false
-                        });
+                        Swal.fire({ ...swalTheme, icon: 'success', title: 'Success', text: 'Material updated!', timer: 2000, showConfirmButton: false });
                     })
-                    .catch(err => Swal.fire({
-                        ...swalConfig,
-                        icon: 'error',
-                        title: 'Error',
-                        text: err.message
-                    }));
+                    .catch(err => Swal.fire({ ...swalTheme, icon: 'error', title: 'Error', text: err.message }));
                 });
             });
         }
@@ -214,22 +174,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 const qty = qtyCell ? parseFloat(qtyCell.textContent) : 0;
 
                 if (qty > 0) {
-                    Swal.fire({
-                        ...swalConfig,
-                        icon: 'error',
-                        title: 'Cannot Delete',
-                        text: 'Cannot delete material with existing stock'
-                    });
+                    Swal.fire({ ...swalTheme, icon: 'error', title: 'Error', text: 'Cannot delete material with stock' });
                     return;
                 }
 
                 Swal.fire({
-                    ...swalConfig,
                     title: `Delete "${name}"?`,
                     text: "This action cannot be undone.",
                     icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonText: 'Yes, delete it!'
+                    confirmButtonText: 'Delete',
+                    ...swalTheme
                 }).then(result => {
                     if (!result.isConfirmed) return;
 
@@ -240,21 +195,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     .then(res => res.json())
                     .then(() => {
                         row.remove();
-                        Swal.fire({
-                            ...swalConfig,
-                            icon: 'success',
-                            title: 'Deleted!',
-                            text: 'Material removed successfully',
-                            timer: 2000,
-                            showConfirmButton: false
-                        });
+                        Swal.fire({ ...swalTheme, icon: 'success', title: 'Deleted!', text: 'Material removed', timer: 2000, showConfirmButton: false });
                     })
-                    .catch(err => Swal.fire({
-                        ...swalConfig,
-                        icon: 'error',
-                        title: 'Error',
-                        text: err.message
-                    }));
+                    .catch(err => Swal.fire({ ...swalTheme, icon: 'error', title: 'Error', text: err.message }));
                 });
             });
         }
@@ -265,7 +208,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (btnAddMaterial) {
         btnAddMaterial.addEventListener('click', () => {
             Swal.fire({
-                ...swalConfig,
                 title: 'Add Raw Material',
                 html: `
                     <input type="number" id="rm_id" class="swal2-input" placeholder="ID">
@@ -278,6 +220,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 `,
                 showCancelButton: true,
                 confirmButtonText: 'Save',
+                ...swalTheme,
                 preConfirm: () => {
                     const id = parseInt(document.getElementById('rm_id').value);
                     const name = document.getElementById('rm_name').value.trim();
@@ -336,23 +279,11 @@ document.addEventListener("DOMContentLoaded", () => {
                         </td>
                     `;
                     tbody.appendChild(newRow);
-                    refreshIcons();
                     attachMaterialListeners(newRow);
-                    Swal.fire({
-                        ...swalConfig,
-                        icon: 'success',
-                        title: 'Success!',
-                        text: 'Raw material added successfully',
-                        timer: 2000,
-                        showConfirmButton: false
-                    });
+                    refreshIcons();
+                    Swal.fire({ ...swalTheme, icon: 'success', title: 'Success', text: 'Raw material added!', timer: 2000, showConfirmButton: false });
                 })
-                .catch(err => Swal.fire({
-                    ...swalConfig,
-                    icon: 'error',
-                    title: 'Error',
-                    text: err.message
-                }));
+                .catch(err => Swal.fire({ ...swalTheme, icon: 'error', title: 'Error', text: err.message }));
             });
         });
     }
