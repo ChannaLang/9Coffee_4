@@ -1,37 +1,25 @@
-
 document.addEventListener('DOMContentLoaded', function () {
     const tableBody = document.querySelector('table tbody');
     const btnAddProduct = document.getElementById('btnAddProduct');
     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+    if (!tableBody || !btnAddProduct || !csrfToken) {
+        console.warn('Essential DOM elements or CSRF token missing.');
+        return;
+    }
+
     // --- SEARCH FILTER ---
     const searchInput = document.getElementById('productSearch');
     if (searchInput) {
         searchInput.addEventListener('keyup', () => {
             const search = searchInput.value.toLowerCase();
-            const rows = tableBody.querySelectorAll('tr');
-
-            rows.forEach(row => {
+            tableBody.querySelectorAll('tr').forEach(row => {
                 const name = row.children[1]?.textContent.toLowerCase() || "";
                 const type = row.children[4]?.textContent.toLowerCase() || "";
                 const subtype = row.children[5]?.textContent.toLowerCase() || "";
-
-                if (
-                    name.includes(search) ||
-                    type.includes(search) ||
-                    subtype.includes(search)
-                ) {
-                    row.style.display = "";
-                } else {
-                    row.style.display = "none";
-                }
+                row.style.display = (name.includes(search) || type.includes(search) || subtype.includes(search)) ? "" : "none";
             });
         });
-    }
-
-
-    if (!tableBody || !btnAddProduct || !csrfToken) {
-        console.warn('Essential DOM elements or CSRF token missing.');
-        return;
     }
 
     // --- ADD PRODUCT ---
@@ -45,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <option value="" disabled selected>Select Type</option>
                     ${window.productTypes?.map(t => `<option value="${t.id}">${t.name}</option>`).join('') || ''}
                 </select>
-                <select id="prod-subtype" class="swal2-input" style="display:none;">
+                <select id="prod-subtype" class="swal2-input hidden">
                     <option value="" disabled selected>Select Subtype</option>
                 </select>
                 <input id="prod-image" type="file" accept="image/*" class="swal2-file">
@@ -57,14 +45,11 @@ document.addEventListener('DOMContentLoaded', function () {
             didOpen: () => {
                 const typeSelect = document.getElementById('prod-type');
                 const subtypeSelect = document.getElementById('prod-subtype');
-
-                if (!typeSelect || !subtypeSelect) return;
-
-                typeSelect.addEventListener('change', () => {
+                typeSelect?.addEventListener('change', () => {
                     const subtypes = window.subTypes?.[typeSelect.value] || [];
                     subtypeSelect.innerHTML = `<option value="" disabled selected>Select Subtype</option>`;
                     if (subtypes.length) {
-                        subtypeSelect.style.display = 'block';
+                        subtypeSelect.classList.remove('hidden');
                         subtypes.forEach(s => {
                             const opt = document.createElement('option');
                             opt.value = s.id;
@@ -72,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             subtypeSelect.appendChild(opt);
                         });
                     } else {
-                        subtypeSelect.style.display = 'none';
+                        subtypeSelect.classList.add('hidden');
                     }
                 });
             },
@@ -116,48 +101,56 @@ document.addEventListener('DOMContentLoaded', function () {
             if (result.isConfirmed && result.value?.success) {
                 const p = result.value.product;
 
+                // --- CREATE ROW DYNAMICALLY ---
                 const newRow = document.createElement('tr');
                 newRow.innerHTML = `
                     <td>${tableBody.rows.length + 1}</td>
                     <td>${p.name}</td>
-                    <td><img src="/assets/images/${p.image}" alt="${p.name}" width="50" style="border-radius:8px;"></td>
+                    <td><img src="/assets/images/${p.image}" alt="${p.name}" class="product-img"></td>
                     <td>$${Number(p.price).toFixed(2)}</td>
                     <td>${p.product_type_name}</td>
                     <td>${p.sub_type_name || 'N/A'}</td>
                     <td>
-                        <button class="btn btn-sm btn-edit"
-                            data-id="${p.id}"
-                            data-name="${p.name}"
-                            data-price="${p.price}"
-                            data-type-id="${p.product_type_id}"
-                            data-subtype-id="${p.sub_type_id}">
+                        <button class="btn btn-info btn-sm btn-edit"
+                                data-id="${p.id}"
+                                data-name="${p.name}"
+                                data-price="${p.price}"
+                                data-type-id="${p.product_type_id}"
+                                data-subtype-id="${p.sub_type_id || ''}">
                             Edit
                         </button>
                     </td>
                     <td>
-                        <button class="btn btn-sm btn-delete"
-                            data-id="${p.id}"
-                            data-name="${p.name}">
+                        <button class="btn btn-danger btn-sm btn-delete"
+                                data-id="${p.id}"
+                                data-name="${p.name}"
+                                data-price="${p.price}">
                             Delete
                         </button>
                     </td>
                     <td>
-                        <button class="btn btn-success btn-sm btn-create-variant" data-id="${p.id}">
-                            Create Variant
+                        <button class="btn btn-success btn-sm btn-create-variant"
+                                data-id="${p.id}">
+                            Add Options
                         </button>
                     </td>
                 `;
                 tableBody.appendChild(newRow);
+
+                // Update row numbers dynamically
+                Array.from(tableBody.rows).forEach((row, index) => {
+                    row.cells[0].textContent = index + 1;
+                });
+
                 Swal.fire('Success', 'Product added!', 'success');
             }
         });
     });
 
-    // --- TABLE BUTTON DELEGATION ---
-    tableBody.addEventListener('click', async (e) => {
+    // --- TABLE BUTTON DELEGATION (EDIT, DELETE, CREATE VARIANT) ---
+    tableBody.addEventListener('click', async e => {
         const btn = e.target.closest('button');
         if (!btn) return;
-
         const id = btn.dataset.id;
 
         // --- EDIT ---
@@ -177,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <input id="swal-name" class="swal2-input" value="${name}">
                     <input id="swal-price" type="number" class="swal2-input" value="${price}">
                     <select id="swal-type" class="swal2-input">${typeOptions}</select>
-                    <select id="swal-subtype" class="swal2-input"><option value="" disabled>Select Subtype</option></select>
+                    <select id="swal-subtype" class="swal2-input hidden"><option value="" disabled>Select Subtype</option></select>
                 `,
                 showCancelButton: true,
                 confirmButtonText: 'Update',
@@ -187,13 +180,18 @@ document.addEventListener('DOMContentLoaded', function () {
                     const loadSubtypes = (selectedTypeId, selectedSubtypeId) => {
                         subtypeSelect.innerHTML = `<option value="" disabled>Select Subtype</option>`;
                         const subtypes = window.subTypes?.[selectedTypeId] || [];
-                        subtypes.forEach(s => {
-                            const opt = document.createElement('option');
-                            opt.value = s.id;
-                            opt.textContent = s.name;
-                            if (s.id == selectedSubtypeId) opt.selected = true;
-                            subtypeSelect.appendChild(opt);
-                        });
+                        if (subtypes.length) {
+                            subtypeSelect.classList.remove('hidden');
+                            subtypes.forEach(s => {
+                                const opt = document.createElement('option');
+                                opt.value = s.id;
+                                opt.textContent = s.name;
+                                if (s.id == selectedSubtypeId) opt.selected = true;
+                                subtypeSelect.appendChild(opt);
+                            });
+                        } else {
+                            subtypeSelect.classList.add('hidden');
+                        }
                     };
                     if (typeId) loadSubtypes(typeId, subtypeId);
                     typeSelect.addEventListener('change', () => loadSubtypes(typeSelect.value, null));
@@ -215,11 +213,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 try {
                     const r = await fetch(`/admin/products/${id}/edit-products`, {
                         method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': csrfToken,
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
+                        headers: { 'X-CSRF-TOKEN': csrfToken, 'Content-Type': 'application/json', 'Accept': 'application/json' },
                         body: JSON.stringify(res.value)
                     });
                     const data = await r.json();
@@ -233,11 +227,11 @@ document.addEventListener('DOMContentLoaded', function () {
                             ? window.subTypes[res.value.product_type_id]?.find(s => s.id == res.value.sub_type_id)?.name || 'N/A'
                             : 'N/A';
 
-                        const editBtn = row.querySelector('.btn-edit');
-                        editBtn.dataset.name = res.value.name;
-                        editBtn.dataset.price = res.value.price;
-                        editBtn.dataset.typeId = res.value.product_type_id;
-                        editBtn.dataset.subtypeId = res.value.sub_type_id;
+                        // Update data attributes
+                        btn.dataset.name = res.value.name;
+                        btn.dataset.price = res.value.price;
+                        btn.dataset.typeId = res.value.product_type_id;
+                        btn.dataset.subtypeId = res.value.sub_type_id;
                     } else Swal.fire('Error', data.message, 'error');
                 } catch {
                     Swal.fire('Error', 'Request failed.', 'error');
@@ -264,6 +258,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (data.success) {
                         Swal.fire('Deleted!', data.message, 'success');
                         btn.closest('tr')?.remove();
+                        // Update row numbers
+                        Array.from(tableBody.rows).forEach((row, index) => {
+                            row.cells[0].textContent = index + 1;
+                        });
                     } else Swal.fire('Error', data.message, 'error');
                 } catch {
                     Swal.fire('Error', 'Request failed.', 'error');
@@ -272,10 +270,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // --- CREATE VARIANT ---
-        if (btn.classList.contains('btn-create-variant')) {
-            if (window.variantCreateUrl) {
-                window.location.href = `${window.variantCreateUrl}/${id}/variants/create`;
-            }
+        if (btn.classList.contains('btn-create-variant') && window.variantCreateUrl) {
+            window.location.href = `${window.variantCreateUrl}/${id}/variants/create`;
         }
     });
 });
