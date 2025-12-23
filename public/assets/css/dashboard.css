@@ -14,21 +14,21 @@
     --success: #43a047;
     --warning: #ffa726;
     --danger: #ef5350;
+    --primary-orange: #e67e22;
+    --dark-orange: #d35400;
 }
 
 * {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-body {
-    background: linear-gradient(135deg, #2c1810 0%, #1a0f0a 100%);
-    min-height: 100vh;
-}
-
-.container {
-    max-width: 1400px;
+/* Dashboard Container */
+.dashboard-container {
     padding: 24px;
     animation: fadeInUp 0.6s ease-out;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
 }
 
 /* =========================================================
@@ -78,22 +78,22 @@ body {
     height: 100%;
 }
 
-/* Card 1 - Bookings (Yellow/Gold) */
+/* Card 1 - Bookings (Orange) */
 .cardBox .card:nth-child(1) {
-    background: linear-gradient(135deg, rgba(253, 203, 110, 0.25) 0%, rgba(212, 163, 115, 0.25) 100%);
-    border-color: rgba(253, 203, 110, 0.3);
+    background: linear-gradient(135deg, rgba(230, 126, 34, 0.25) 0%, rgba(211, 84, 0, 0.25) 100%);
+    border-color: rgba(230, 126, 34, 0.3);
 }
 
-/* Card 2 - Orders (Teal/Blue) */
+/* Card 2 - Orders (Blue) */
 .cardBox .card:nth-child(2) {
-    background: linear-gradient(135deg, rgba(0, 206, 201, 0.2) 0%, rgba(66, 165, 245, 0.2) 100%);
-    border-color: rgba(0, 206, 201, 0.3);
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.25) 0%, rgba(41, 128, 185, 0.25) 100%);
+    border-color: rgba(52, 152, 219, 0.3);
 }
 
 /* Card 3 - Earnings (Green) */
 .cardBox .card:nth-child(3) {
-    background: linear-gradient(135deg, rgba(0, 184, 148, 0.2) 0%, rgba(67, 160, 71, 0.2) 100%);
-    border-color: rgba(0, 184, 148, 0.3);
+    background: linear-gradient(135deg, rgba(39, 174, 96, 0.25) 0%, rgba(34, 153, 84, 0.25) 100%);
+    border-color: rgba(39, 174, 96, 0.3);
 }
 
 .cardBox .card .numbers {
@@ -110,6 +110,14 @@ body {
     color: #d4a373 !important;
     text-shadow: none !important;
     letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.cardBox .card .cardName i {
+    width: 18px;
+    height: 18px;
 }
 
 .cardBox .card .iconBx {
@@ -117,9 +125,10 @@ body {
     opacity: 0.3;
 }
 
-.cardBox .card .iconBx ion-icon {
+.cardBox .card .iconBx i {
+    width: 56px;
+    height: 56px;
     color: #f5e6d3 !important;
-    font-size: 3.5rem !important;
     filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
 }
 
@@ -156,7 +165,7 @@ body {
 }
 
 .recent-orders-header {
-    background: linear-gradient(135deg, #d4a373 0%, #b8845e 100%) !important;
+    background: linear-gradient(135deg, var(--primary-orange) 0%, var(--dark-orange) 100%) !important;
     padding: 20px 28px !important;
     display: flex;
     justify-content: space-between;
@@ -168,6 +177,14 @@ body {
     font-weight: 700;
     font-size: 1.5rem;
     margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.recent-orders-header h2 i {
+    width: 24px;
+    height: 24px;
 }
 
 .btn-view-all {
@@ -180,6 +197,14 @@ body {
     font-size: 0.95rem;
     border: 1.5px solid rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(5px);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-view-all i {
+    width: 16px;
+    height: 16px;
 }
 
 .btn-view-all:hover {
@@ -203,12 +228,12 @@ body {
 }
 
 .recent-orders-table::-webkit-scrollbar-thumb {
-    background: rgba(212, 163, 115, 0.5);
+    background: rgba(230, 126, 34, 0.5);
     border-radius: 4px;
 }
 
 .recent-orders-table::-webkit-scrollbar-thumb:hover {
-    background: rgba(212, 163, 115, 0.7);
+    background: rgba(230, 126, 34, 0.7);
 }
 
 .recent-orders-table table {
@@ -236,6 +261,13 @@ body {
     border: none !important;
 }
 
+.recent-orders-table thead th i {
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
 .recent-orders-table tbody tr {
     border-bottom: 1px solid rgba(245, 230, 211, 0.05) !important;
     background: rgba(44, 24, 16, 0.3);
@@ -252,8 +284,23 @@ body {
     border: none !important;
 }
 
+.recent-orders-table tbody td i {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    opacity: 0.7;
+    vertical-align: middle;
+}
+
 .recent-orders-table tbody td:first-child {
     font-weight: 600;
+}
+
+.recent-orders-table .text-center i {
+    width: 32px;
+    height: 32px;
+    display: block;
+    margin: 0 auto 8px;
 }
 
 /* Status Badges */
@@ -301,7 +348,7 @@ body {
 }
 
 .analytics .card-header {
-    background: linear-gradient(135deg, #d4a373 0%, #b8845e 100%) !important;
+    background: linear-gradient(135deg, var(--primary-orange) 0%, var(--dark-orange) 100%) !important;
     padding: 20px 28px !important;
 }
 
@@ -310,6 +357,14 @@ body {
     font-weight: 700;
     font-size: 1.5rem;
     margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.analytics .card-header h4 i {
+    width: 24px;
+    height: 24px;
 }
 
 .analytics .card-body {
@@ -361,7 +416,7 @@ body {
 }
 
 @media (max-width: 768px) {
-    .container {
+    .dashboard-container {
         padding: 16px;
     }
 
@@ -379,8 +434,9 @@ body {
         font-size: 2rem !important;
     }
 
-    .cardBox .card .iconBx ion-icon {
-        font-size: 2.5rem !important;
+    .cardBox .card .iconBx i {
+        width: 48px;
+        height: 48px;
     }
 
     .details {

@@ -1,27 +1,25 @@
 @extends('layouts.admin')
-@section('page-css')
-<link rel="stylesheet" href="{{ asset('assets/css/category.css') }}">
-<!-- Add Lucide Icons -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@latest/font/lucide.min.css">
-@endsection
 
 @section('content')
+
+<link rel="stylesheet" href="{{ asset('assets/css/category.css') }}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@latest/font/lucide.min.css">
 
 <div class="container-fluid px-4 py-4">
 
     <h2 class="mb-4">
-        <i class="lucide-folder-tree" style="width: 32px; height: 32px; vertical-align: middle;"></i>
+        <i class="lucide-folder-tree"></i>
         Category Management
     </h2>
 
     {{-- Top Buttons Row --}}
     <div class="d-flex flex-wrap gap-2 mb-4">
         <button id="btnAddType" class="btn btn-primary">
-            <i class="lucide-plus-circle" style="width: 18px; height: 18px;"></i>
+            <i class="lucide-plus-circle"></i>
             Add Product Type
         </button>
         <button id="btnAddSubtype" class="btn btn-warning">
-            <i class="lucide-folder-plus" style="width: 18px; height: 18px;"></i>
+            <i class="lucide-folder-plus"></i>
             Add Subtype
         </button>
     </div>
@@ -53,7 +51,7 @@
                             <div class="category-card"
                                 data-product-count="{{ $subtype->products->count() }}">
                                 <div class="card-header">
-                                    <i class="lucide-tag" style="width: 20px; height: 20px; vertical-align: middle;"></i>
+                                    <i class="lucide-tag"></i>
                                     {{ $subtype->name }}
                                 </div>
                                 <div class="card-body">
@@ -61,14 +59,14 @@
                                         @forelse($subtype->products as $product)
                                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                                 <span>
-                                                    <i class="lucide-coffee" style="width: 16px; height: 16px; vertical-align: middle; opacity: 0.7;"></i>
+                                                    <i class="lucide-coffee"></i>
                                                     {{ $product->name }}
                                                 </span>
                                                 <span>${{ number_format($product->price, 2) }}</span>
                                             </li>
                                         @empty
                                             <li class="list-group-item text-muted">
-                                                <i class="lucide-package-x" style="width: 16px; height: 16px; vertical-align: middle;"></i>
+                                                <i class="lucide-package-x"></i>
                                                 No products yet.
                                             </li>
                                         @endforelse
@@ -80,7 +78,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button class="btn btn-sm btn-danger w-100">
-                                            <i class="lucide-trash-2" style="width: 16px; height: 16px;"></i>
+                                            <i class="lucide-trash-2"></i>
                                             Delete Subtype
                                         </button>
                                     </form>
@@ -89,7 +87,7 @@
                         </div>
                     @empty
                         <p>
-                            <i class="lucide-info" style="width: 20px; height: 20px; vertical-align: middle;"></i>
+                            <i class="lucide-info"></i>
                             No subtypes for this type yet.
                         </p>
                     @endforelse
@@ -100,7 +98,7 @@
     </div>
 
     <button id="btnRemoveType" class="btn btn-danger">
-        <i class="lucide-folder-minus" style="width: 18px; height: 18px;"></i>
+        <i class="lucide-folder-minus"></i>
         Remove Product Type
     </button>
 
@@ -112,7 +110,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">
-            <i class="lucide-plus-square" style="width: 24px; height: 24px; vertical-align: middle;"></i>
+            <i class="lucide-plus-square"></i>
             Add New Product Type
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -121,13 +119,13 @@
         <form id="add-type-form">
           <div class="mb-3">
             <label for="typeName" class="form-label">
-                <i class="lucide-type" style="width: 18px; height: 18px; vertical-align: middle;"></i>
+                <i class="lucide-type"></i>
                 Type Name
             </label>
             <input type="text" class="form-control" id="typeName" name="name" placeholder="e.g., Drink, Food, Dessert" required autocomplete="off">
           </div>
           <button type="submit" class="btn btn-success w-100">
-            <i class="lucide-check-circle" style="width: 18px; height: 18px;"></i>
+            <i class="lucide-check-circle"></i>
             Add Type
           </button>
         </form>
@@ -142,7 +140,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">
-            <i class="lucide-trash" style="width: 24px; height: 24px; vertical-align: middle;"></i>
+            <i class="lucide-trash"></i>
             Remove Product Type
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -154,7 +152,7 @@
             <div class="mb-3">
                 <fieldset class="mb-3">
                     <legend class="form-label">
-                        <i class="lucide-list-checks" style="width: 18px; height: 18px; vertical-align: middle;"></i>
+                        <i class="lucide-list-checks"></i>
                         Select Product Types to Remove
                     </legend>
                     <div id="typeCheckboxes" class="checkbox-group">
@@ -171,7 +169,7 @@
             </div>
 
           <button type="submit" class="btn btn-danger w-100">
-            <i class="lucide-trash-2" style="width: 18px; height: 18px;"></i>
+            <i class="lucide-trash-2"></i>
             Remove Selected Types
           </button>
         </form>
@@ -186,7 +184,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">
-            <i class="lucide-folder-plus" style="width: 24px; height: 24px; vertical-align: middle;"></i>
+            <i class="lucide-folder-plus"></i>
             Add New Subtype
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -195,7 +193,7 @@
         <form id="add-subtype-form">
           <div class="mb-3">
             <label for="productTypeSelect" class="form-label">
-                <i class="lucide-layers" style="width: 18px; height: 18px; vertical-align: middle;"></i>
+                <i class="lucide-layers"></i>
                 Product Type
             </label>
             <select class="form-select" id="productTypeSelect" name="product_type_id" required autocomplete="off">
@@ -206,13 +204,13 @@
           </div>
           <div class="mb-3">
             <label for="subtypeName" class="form-label">
-                <i class="lucide-tag" style="width: 18px; height: 18px; vertical-align: middle;"></i>
+                <i class="lucide-tag"></i>
                 Subtype Name
             </label>
             <input type="text" class="form-control" id="subtypeName" name="name" placeholder="e.g., Ice, Hot, Blended" required autocomplete="off">
           </div>
           <button type="submit" class="btn btn-success w-100">
-            <i class="lucide-check-circle" style="width: 18px; height: 18px;"></i>
+            <i class="lucide-check-circle"></i>
             Add Subtype
           </button>
         </form>
@@ -229,7 +227,6 @@
 </script>
 <script src="https://unpkg.com/lucide@latest"></script>
 <script>
-    // Initialize Lucide icons
     document.addEventListener('DOMContentLoaded', () => {
         lucide.createIcons();
     });

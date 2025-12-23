@@ -2,136 +2,173 @@
 
 @section('content')
 <meta name="csrf-token" content="{{ csrf_token() }}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@latest/font/lucide.min.css">
+<link rel="stylesheet" href="{{ asset('assets/css/all-order.css') }}">
 
-<div class="container-fluid mt-5">
+<div class="orders-container">
+    <!-- Header -->
+    <div class="orders-header">
+        <a href="javascript:history.back()" class="btn-back">
+            <i class="lucide lucide-arrow-left"></i>
+            Back
+        </a>
+        <h1 class="orders-title">
+            <i class="lucide lucide-receipt"></i>
+            Orders Management
+        </h1>
+        <div style="width: 100px;"></div>
+    </div>
 
-    <div class="card shadow-sm border-0 rounded-4 w-100" style="background-color: #3e2f2f; color: #f5f5f5;">
+    <!-- Stats Cards -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-icon total">
+                <i class="lucide lucide-shopping-bag"></i>
+            </div>
+            <div class="stat-content">
+                <h4>Total Orders</h4>
+                <p>{{ $allOrders->total() }}</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon revenue">
+                <i class="lucide lucide-dollar-sign"></i>
+            </div>
+            <div class="stat-content">
+                <h4>Total Revenue</h4>
+                <p>${{ number_format($allOrders->sum('price'), 2) }}</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon pending">
+                <i class="lucide lucide-clock"></i>
+            </div>
+            <div class="stat-content">
+                <h4>Pending Orders</h4>
+                <p>{{ $allOrders->where('status', 'Pending')->count() }}</p>
+            </div>
+        </div>
+    </div>
 
-        {{-- Card Header --}}
-        <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #db770c; color: #fff;">
-            <a href="javascript:history.back()" class="btn btn-outline-light fw-bold">
-                <i class="bi bi-arrow-left-circle"></i> Back
-            </a>
-            <h4 class="mb-0 text-center grow">Orders List</h4>
-            <div></div> {{-- Empty div to balance flex spacing --}}
+    <!-- Alerts -->
+    @if(Session::has('update'))
+        <div class="alert-custom success">
+            <i class="lucide lucide-check-circle"></i>
+            {{ Session::get('update') }}
+        </div>
+    @endif
+    @if(Session::has('delete'))
+        <div class="alert-custom danger">
+            <i class="lucide lucide-trash-2"></i>
+            {{ Session::get('delete') }}
+        </div>
+    @endif
+
+    <!-- Orders Card -->
+    <div class="orders-card">
+        <div class="table-responsive">
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Customer</th>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php $counter = ($allOrders->currentPage() - 1) * $allOrders->perPage() + 1; @endphp
+                    @foreach ($allOrders as $order)
+                        <tr>
+                            <td>{{ $counter }}</td>
+                            <td><strong>{{ $order->first_name }}</strong></td>
+                            <td>
+                                {{ $order->product->name ?? 'N/A' }}
+                                @if($order->quantity > 1)
+                                    <span style="color: var(--primary-orange);">(×{{ $order->quantity }})</span>
+                                @endif
+                            </td>
+                            <td><strong>${{ number_format($order->price, 2) }}</strong></td>
+                            <td>{{ \Carbon\Carbon::parse($order->order_created_at ?? $order->created_at)->format('M d, Y') }}</td>
+                            <td>
+                                <span class="status-badge {{ strtolower($order->status) }}">
+                                    {{ $order->status }}
+                                </span>
+                            </td>
+                            <td>
+                                <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 4px;">
+                                    <button type="button" class="btn-action info btn-edit-status"
+                                        data-id="{{ $order->id }}"
+                                        data-status="{{ $order->status }}">
+                                        <i class="lucide lucide-edit"></i>
+                                        Change
+                                    </button>
+                                    <form action="{{ route('delete.orders', $order->id) }}" method="POST" style="display: inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" class="btn-action danger btn-delete"
+                                            data-name="{{ $order->first_name ?? '' }}"
+                                            data-price="{{ number_format($order->price, 2) }}"
+                                            data-id="{{ $order->id }}">
+                                            <i class="lucide lucide-trash-2"></i>
+                                            Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        @php $counter++; @endphp
+                    @endforeach
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="5" style="text-align: right;">
+                            <strong>Total Revenue:</strong>
+                        </td>
+                        <td colspan="2">
+                            <strong>${{ number_format($allOrders->sum('price'), 2) }}</strong>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
         </div>
 
-        {{-- Card Body --}}
-        <div class="card-body">
+        <!-- Pagination -->
+        <div class="pagination-wrapper">
+            {{ $allOrders->links('pagination::bootstrap-5') }}
+        </div>
 
-            {{-- Flash Messages --}}
-            @if(Session::has('update'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ Session::get('update') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-            @endif
-            @if(Session::has('delete'))
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    {{ Session::get('delete') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-            @endif
+        <!-- Bottom Actions -->
+        <div class="bottom-actions">
+            <form action="{{ route('delete.all.orders') }}" method="POST" style="margin: 0;">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn-bulk delete-all" onclick="return confirm('Are you sure you want to delete ALL orders?');">
+                    <i class="lucide lucide-trash-2"></i>
+                    Delete All Orders
+                </button>
+            </form>
 
-            {{-- Orders Table --}}
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0 text-center" style="border:1px solid #6b4c3b; color:#f5f5f5;">
-                    <thead style="background-color: #5a3d30;">
-                        <tr>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th>Product</th>
-                            <th>Price</th>
-                            <th>Date</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php $counter = 1; @endphp
-                        @foreach ($allOrders as $order)
-                            @php
-                                $statusColors = [
-                                    'Pending'   => '#db770c', // caramel orange
-                                    'Paid'      => '#6b4c3b', // café brown
-                                    'Cancelled' => '#b02a37'  // deep red
-                                ];
-                            @endphp
-                            <tr>
-                                <th scope="row">{{ $counter }}</th>
-                                <td>{{ $order->first_name }}</td>
-                                <td>
-                                    {{ $order->product->name ?? 'N/A' }}
-                                    @if($order->quantity > 1)
-                                        (x{{ $order->quantity }})
-                                    @endif
-                                </td>
-                                <td>${{ number_format($order->price,2) }}</td>
-                                <td>{{ $order->order_created_at ?? $order->created_at }}</td>
-                                <td>
-                                    <span class="badge px-3 py-1" style="background-color: {{ $statusColors[$order->status] ?? '#6b4c3b' }}; color: #fff;">
-                                        {{ $order->status }}
-                                    </span>
-                                </td>
-                                <td>
-                                    <div class="d-flex justify-content-center gap-1 flex-wrap">
-                                        <button type="button" class="btn btn-sm btn-info rounded-pill btn-edit-status"
-                                            data-id="{{ $order->id }}"
-                                            data-status="{{ $order->status }}">
-                                            Change Status
-                                        </button>
-                                        <form action="{{ route('delete.orders', $order->id)}}" method="POST" class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="button" class="btn btn-sm btn-danger rounded-pill btn-delete"
-                                                data-name="{{ $order->address ?? '' }}"
-                                                data-price="{{ number_format($order->price, 2) }}"
-                                                data-id="{{ $order->id }}">
-                                                Delete
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                            @php $counter++; @endphp
-                        @endforeach
-                    </tbody>
-                    <tfoot style="background-color:#5a3d30; color:#fff;">
-                        <tr>
-                            <td colspan="5" class="text-end"><strong>Total Price:</strong></td>
-                            <td colspan="2">${{ number_format($allOrders->sum('price'),2) }}</td>
-                        </tr>
-                    </tfoot>
-                </table>
-                <div class="d-flex justify-content-center mt-4" >
-    {{ $allOrders->links('pagination::bootstrap-5') }}
-</div>
-
-
-            </div>
-
-            {{-- Bulk Actions --}}
-            <div class="d-flex justify-content-between mt-4 flex-wrap">
-    <form action="{{ route('delete.all.orders') }}" method="POST" onsubmit="return confirm('Are you sure you want to delete all orders?');">
-        @csrf
-        @method('DELETE')
-        <button type="submit" class="btn btn-sm btn-danger ">
-            <i class="bi bi-trash3-fill"></i> Delete All Orders
-        </button>
-    </form>
-
-    <a href="{{ route('orders.export') }}" class="btn btn-success">
-        <i class="bi bi-download"></i> Download Excel
-    </a>
-</div>
-
-
+            <a href="{{ route('orders.export') }}" class="btn-bulk export">
+                <i class="lucide lucide-download"></i>
+                Export to Excel
+            </a>
         </div>
     </div>
 </div>
-<link rel="stylesheet" href="{{ asset('assets/css/all-order.css') }}">
 
-{{-- Scripts --}}
+<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+    // Initialize Lucide icons
+    document.addEventListener('DOMContentLoaded', () => {
+        lucide.createIcons();
+    });
+</script>
 <script src="{{ asset('assets/js/all-allorder.js') }}"></script>
+
 @endsection

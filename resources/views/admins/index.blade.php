@@ -2,11 +2,10 @@
 
 @section('content')
 
-{{-- Add CSS and Icons --}}
 <link rel="stylesheet" href="{{ asset('assets/css/dashboard.css') }}">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@latest/font/lucide.min.css">
 
-<div class="container">
+<div class="dashboard-container">
 
     {{-- Stats Cards --}}
     <div class="cardBox">
@@ -14,12 +13,12 @@
             <div>
                 <div class="numbers">{{ $productsCount }}</div>
                 <div class="cardName">
-                    <i class="lucide-calendar" style="width: 18px; height: 18px; vertical-align: middle;"></i>
+                    <i class="lucide-calendar"></i>
                     Total Bookings
                 </div>
             </div>
             <div class="iconBx">
-                <i class="lucide-calendar-check" style="width: 56px; height: 56px;"></i>
+                <i class="lucide-calendar-check"></i>
             </div>
         </a>
 
@@ -27,12 +26,12 @@
             <div>
                 <div class="numbers">{{ $ordersCount }}</div>
                 <div class="cardName">
-                    <i class="lucide-shopping-cart" style="width: 18px; height: 18px; vertical-align: middle;"></i>
+                    <i class="lucide-shopping-cart"></i>
                     Total Orders
                 </div>
             </div>
             <div class="iconBx">
-                <i class="lucide-shopping-bag" style="width: 56px; height: 56px;"></i>
+                <i class="lucide-shopping-bag"></i>
             </div>
         </a>
 
@@ -40,12 +39,12 @@
             <div>
                 <div class="numbers">${{ number_format($earning, 2) }}</div>
                 <div class="cardName">
-                    <i class="lucide-dollar-sign" style="width: 18px; height: 18px; vertical-align: middle;"></i>
+                    <i class="lucide-dollar-sign"></i>
                     Total Earnings
                 </div>
             </div>
             <div class="iconBx">
-                <i class="lucide-wallet" style="width: 56px; height: 56px;"></i>
+                <i class="lucide-wallet"></i>
             </div>
         </a>
     </div>
@@ -56,12 +55,12 @@
         <div class="recentOrders card flex-fill" id="recentOrdersCard">
             <div class="cardHeader recent-orders-header">
                 <h2 class="fw-bold mb-0">
-                    <i class="lucide-receipt" style="width: 24px; height: 24px; vertical-align: middle;"></i>
+                    <i class="lucide-receipt"></i>
                     Recent Orders
                 </h2>
                 <a href="{{ route('all.orders') }}" class="btn-view-all">
                     View All
-                    <i class="lucide-arrow-right" style="width: 16px; height: 16px; vertical-align: middle;"></i>
+                    <i class="lucide-arrow-right"></i>
                 </a>
             </div>
 
@@ -70,23 +69,23 @@
                     <thead>
                         <tr>
                             <th>
-                                <i class="lucide-package" style="width: 16px; height: 16px; vertical-align: middle;"></i>
+                                <i class="lucide-package"></i>
                                 Product
                             </th>
                             <th>
-                                <i class="lucide-dollar-sign" style="width: 16px; height: 16px; vertical-align: middle;"></i>
+                                <i class="lucide-dollar-sign"></i>
                                 Price
                             </th>
                             <th>
-                                <i class="lucide-credit-card" style="width: 16px; height: 16px; vertical-align: middle;"></i>
+                                <i class="lucide-credit-card"></i>
                                 Payment
                             </th>
                             <th>
-                                <i class="lucide-activity" style="width: 16px; height: 16px; vertical-align: middle;"></i>
+                                <i class="lucide-activity"></i>
                                 Status
                             </th>
                             <th>
-                                <i class="lucide-clock" style="width: 16px; height: 16px; vertical-align: middle;"></i>
+                                <i class="lucide-clock"></i>
                                 Order Date
                             </th>
                         </tr>
@@ -95,7 +94,7 @@
                         @forelse($recentOrders as $order)
                         <tr>
                             <td>
-                                <i class="lucide-coffee" style="width: 16px; height: 16px; vertical-align: middle; opacity: 0.7;"></i>
+                                <i class="lucide-coffee"></i>
                                 {{ $order->product->name ?? 'N/A' }}
                             </td>
                             <td>${{ number_format($order->price, 2) }}</td>
@@ -114,7 +113,7 @@
                         @empty
                         <tr>
                             <td colspan="5" class="text-center text-muted py-4">
-                                <i class="lucide-inbox" style="width: 32px; height: 32px; display: block; margin: 0 auto 8px;"></i>
+                                <i class="lucide-inbox"></i>
                                 No recent orders
                             </td>
                         </tr>
@@ -128,7 +127,7 @@
         <div class="analytics card flex-fill" id="analyticsCard">
             <div class="card-header">
                 <h4 class="mb-0">
-                    <i class="lucide-bar-chart-3" style="width: 24px; height: 24px; vertical-align: middle;"></i>
+                    <i class="lucide-bar-chart-3"></i>
                     Analytics Overview
                 </h4>
             </div>
@@ -143,14 +142,10 @@
 {{-- Scripts --}}
 <script src="https://unpkg.com/lucide@latest"></script>
 <script>
-    // Initialize Lucide icons
     document.addEventListener('DOMContentLoaded', () => {
         lucide.createIcons();
     });
 </script>
-
-<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
@@ -165,7 +160,6 @@
         }
     }
 
-    // Run on load and on window resize
     window.addEventListener('load', matchChartHeight);
     window.addEventListener('resize', matchChartHeight);
 
