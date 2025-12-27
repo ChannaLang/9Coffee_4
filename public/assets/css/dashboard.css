@@ -1,5 +1,5 @@
 /* =========================================================
-   MODERN COFFEE SHOP DASHBOARD - REDESIGNED
+   MODERN COFFEE SHOP DASHBOARD - ENHANCED REDESIGN
 ========================================================= */
 
 :root {
@@ -10,21 +10,27 @@
     --caramel-dark: #b8845e;
     --cream: #f5e6d3;
     --espresso: #1a0f0a;
-    --foam: #ffffff;
     --success: #43a047;
     --warning: #ffa726;
     --danger: #ef5350;
-    --primary-orange: #e67e22;
-    --dark-orange: #d35400;
+    --info: #42a5f5;
 }
 
 * {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Dashboard Container */
+body {
+    background: linear-gradient(135deg, #2c1810 0%, #1a0f0a 100%);
+    min-height: 100vh;
+}
+
+/* =========================================================
+   DASHBOARD CONTAINER
+========================================================= */
+
 .dashboard-container {
-    padding: 24px;
+    padding: 28px;
     animation: fadeInUp 0.6s ease-out;
     width: 100%;
     max-width: 100%;
@@ -32,108 +38,220 @@
 }
 
 /* =========================================================
-   STAT CARDS (TOP SECTION)
+   WELCOME BANNER
+========================================================= */
+
+.welcome-banner {
+    background: linear-gradient(135deg, rgba(212, 163, 115, 0.2) 0%, rgba(184, 132, 94, 0.2) 100%);
+    border: 1.5px solid rgba(212, 163, 115, 0.3);
+    border-radius: 24px;
+    padding: 28px 32px;
+    margin-bottom: 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    animation: fadeInUp 0.5s ease-out;
+}
+
+.welcome-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.welcome-title {
+    color: #f5e6d3;
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.welcome-title i {
+    width: 32px;
+    height: 32px;
+    color: #ffa726;
+}
+
+.welcome-subtitle {
+    color: #d4a373;
+    font-size: 1.05rem;
+    margin: 0;
+}
+
+.welcome-date {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    background: rgba(26, 15, 10, 0.5);
+    border-radius: 12px;
+    color: #f5e6d3;
+    font-weight: 600;
+}
+
+.welcome-date i {
+    width: 20px;
+    height: 20px;
+    color: #ffa726;
+}
+
+/* =========================================================
+   STAT CARDS
 ========================================================= */
 
 .cardBox {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 24px;
     margin-bottom: 32px;
 }
 
-.cardBox .card {
+.stat-card {
     background: rgba(93, 64, 55, 0.15);
     backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
     border: 1.5px solid rgba(245, 230, 211, 0.15);
-    border-radius: 20px;
-    padding: 28px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    border-radius: 24px;
+    padding: 0;
     text-decoration: none;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
     position: relative;
     overflow: hidden;
+    display: block;
 }
 
-.cardBox .card::before {
+.stat-card::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 0;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
+    height: 4px;
     transition: height 0.3s ease;
 }
 
-.cardBox .card:hover {
+.stat-card:hover {
     transform: translateY(-8px);
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
 }
 
-.cardBox .card:hover::before {
+.stat-card:hover::before {
     height: 100%;
+    opacity: 0.1;
 }
 
-/* Card 1 - Bookings (Orange) */
-.cardBox .card:nth-child(1) {
-    background: linear-gradient(135deg, rgba(230, 126, 34, 0.25) 0%, rgba(211, 84, 0, 0.25) 100%);
-    border-color: rgba(230, 126, 34, 0.3);
+/* Card Specific Colors */
+.stat-card-bookings::before {
+    background: linear-gradient(90deg, #e67e22, #d35400);
 }
 
-/* Card 2 - Orders (Blue) */
-.cardBox .card:nth-child(2) {
-    background: linear-gradient(135deg, rgba(52, 152, 219, 0.25) 0%, rgba(41, 128, 185, 0.25) 100%);
-    border-color: rgba(52, 152, 219, 0.3);
+.stat-card-bookings .stat-icon-wrapper {
+    background: linear-gradient(135deg, rgba(230, 126, 34, 0.2), rgba(211, 84, 0, 0.2));
+    color: #e67e22;
 }
 
-/* Card 3 - Earnings (Green) */
-.cardBox .card:nth-child(3) {
-    background: linear-gradient(135deg, rgba(39, 174, 96, 0.25) 0%, rgba(34, 153, 84, 0.25) 100%);
-    border-color: rgba(39, 174, 96, 0.3);
+.stat-card-orders::before {
+    background: linear-gradient(90deg, #3498db, #2980b9);
 }
 
-.cardBox .card .numbers {
-    font-size: 2.5rem !important;
-    font-weight: 700 !important;
-    color: #f5e6d3 !important;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
-    margin-bottom: 8px;
+.stat-card-orders .stat-icon-wrapper {
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.2), rgba(41, 128, 185, 0.2));
+    color: #3498db;
 }
 
-.cardBox .card .cardName {
-    font-size: 1.1rem !important;
-    font-weight: 600 !important;
-    color: #d4a373 !important;
-    text-shadow: none !important;
-    letter-spacing: 0.02em;
+.stat-card-earnings::before {
+    background: linear-gradient(90deg, #27ae60, #229954);
+}
+
+.stat-card-earnings .stat-icon-wrapper {
+    background: linear-gradient(135deg, rgba(39, 174, 96, 0.2), rgba(34, 153, 84, 0.2));
+    color: #27ae60;
+}
+
+.stat-content {
+    padding: 28px;
+}
+
+.stat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.stat-icon-wrapper {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.stat-icon-wrapper i {
+    width: 32px;
+    height: 32px;
+}
+
+.stat-trend {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.trend-up {
+    background: rgba(67, 160, 71, 0.2);
+    color: #43a047;
+}
+
+.trend-up i {
+    width: 16px;
+    height: 16px;
+}
+
+.stat-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.stat-label {
+    color: #d4a373;
+    font-size: 1rem;
+    font-weight: 600;
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
-.cardBox .card .cardName i {
+.stat-label i {
     width: 18px;
     height: 18px;
 }
 
-.cardBox .card .iconBx {
-    font-size: 3rem;
-    opacity: 0.3;
+.stat-number {
+    color: #f5e6d3;
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-.cardBox .card .iconBx i {
-    width: 56px;
-    height: 56px;
-    color: #f5e6d3 !important;
-    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+.stat-footer {
+    color: rgba(245, 230, 211, 0.6);
+    font-size: 0.9rem;
 }
 
 /* =========================================================
-   DETAILS SECTION (TABLE + CHART)
+   DETAILS SECTION
 ========================================================= */
 
 .details {
@@ -141,62 +259,75 @@
     gap: 24px !important;
     align-items: stretch !important;
     flex-wrap: wrap;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 .details > div {
     flex: 1;
-    min-width: 400px;
+    min-width: 450px;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 /* =========================================================
-   RECENT ORDERS TABLE
+   SECTION HEADERS
 ========================================================= */
 
-.recentOrders {
-    background: rgba(93, 64, 55, 0.15) !important;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1.5px solid rgba(245, 230, 211, 0.1) !important;
-    border-radius: 20px !important;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
-    overflow: hidden;
-    display: flex !important;
-    flex-direction: column !important;
-}
-
-.recent-orders-header {
-    background: linear-gradient(135deg, var(--primary-orange) 0%, var(--dark-orange) 100%) !important;
-    padding: 20px 28px !important;
+.section-header {
+    background: linear-gradient(135deg, rgba(212, 163, 115, 0.3) 0%, rgba(184, 132, 94, 0.3) 100%);
+    padding: 24px 28px;
+    border-bottom: 1.5px solid rgba(212, 163, 115, 0.2);
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.recent-orders-header h2 {
-    color: white !important;
-    font-weight: 700;
-    font-size: 1.5rem;
-    margin: 0;
+.section-title {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 16px;
 }
 
-.recent-orders-header h2 i {
+.section-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, rgba(255, 167, 38, 0.3), rgba(251, 140, 0, 0.3));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(255, 167, 38, 0.3);
+}
+
+.section-icon i {
     width: 24px;
     height: 24px;
+    color: #ffa726;
+}
+
+.section-title h2 {
+    color: #f5e6d3;
+    font-weight: 700;
+    font-size: 1.4rem;
+    margin: 0;
+}
+
+.section-subtitle {
+    color: #d4a373;
+    font-size: 0.9rem;
+    margin: 0;
 }
 
 .btn-view-all {
-    background: rgba(255, 255, 255, 0.2);
-    color: white !important;
-    padding: 8px 20px;
-    border-radius: 10px;
+    background: rgba(255, 167, 38, 0.2);
+    color: #ffa726 !important;
+    padding: 10px 20px;
+    border-radius: 12px;
     text-decoration: none !important;
-    font-weight: 600 !important;
+    font-weight: 700 !important;
     font-size: 0.95rem;
-    border: 1.5px solid rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(5px);
+    border: 1.5px solid rgba(255, 167, 38, 0.3);
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -208,15 +339,30 @@
 }
 
 .btn-view-all:hover {
-    background: rgba(255, 255, 255, 0.3);
-    border-color: rgba(255, 255, 255, 0.5);
-    transform: translateY(-2px);
+    background: rgba(255, 167, 38, 0.3);
+    border-color: rgba(255, 167, 38, 0.5);
+    transform: translateX(4px);
+}
+
+/* =========================================================
+   RECENT ORDERS
+========================================================= */
+
+.recentOrders {
+    background: rgba(93, 64, 55, 0.15) !important;
+    backdrop-filter: blur(20px);
+    border: 1.5px solid rgba(245, 230, 211, 0.1) !important;
+    border-radius: 24px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+    overflow: hidden;
+    display: flex !important;
+    flex-direction: column !important;
 }
 
 .recent-orders-table {
     flex: 1;
     overflow-y: auto !important;
-    max-height: 500px;
+    max-height: 550px;
 }
 
 .recent-orders-table::-webkit-scrollbar {
@@ -228,107 +374,187 @@
 }
 
 .recent-orders-table::-webkit-scrollbar-thumb {
-    background: rgba(230, 126, 34, 0.5);
+    background: rgba(212, 163, 115, 0.5);
     border-radius: 4px;
 }
 
 .recent-orders-table::-webkit-scrollbar-thumb:hover {
-    background: rgba(230, 126, 34, 0.7);
+    background: rgba(212, 163, 115, 0.7);
 }
 
-.recent-orders-table table {
-    background: transparent !important;
-    margin: 0 !important;
+.orders-table {
+    width: 100%;
+    margin: 0;
+    border-collapse: collapse;
 }
 
-.recent-orders-table thead {
+.orders-table thead {
     position: sticky;
     top: 0;
     z-index: 10;
 }
 
-.recent-orders-table thead tr {
-    background: linear-gradient(180deg, rgba(93, 64, 55, 0.8) 0%, rgba(93, 64, 55, 0.6) 100%) !important;
+.orders-table thead tr {
+    background: linear-gradient(180deg, rgba(93, 64, 55, 0.9) 0%, rgba(93, 64, 55, 0.7) 100%) !important;
 }
 
-.recent-orders-table thead th {
+.orders-table thead th {
     color: #f5e6d3 !important;
-    font-weight: 600;
-    font-size: 0.9rem;
+    font-weight: 700;
+    font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    padding: 16px 20px !important;
+    padding: 18px 20px !important;
     border: none !important;
+    text-align: left;
 }
 
-.recent-orders-table thead th i {
-    width: 16px;
-    height: 16px;
-    margin-right: 6px;
-    vertical-align: middle;
-}
-
-.recent-orders-table tbody tr {
-    border-bottom: 1px solid rgba(245, 230, 211, 0.05) !important;
-    background: rgba(44, 24, 16, 0.3);
-}
-
-.recent-orders-table tbody tr:hover {
-    background: rgba(93, 64, 55, 0.4) !important;
-}
-
-.recent-orders-table tbody td {
-    color: #f5e6d3 !important;
-    padding: 16px 20px !important;
-    vertical-align: middle;
-    border: none !important;
-}
-
-.recent-orders-table tbody td i {
+.orders-table thead th i {
     width: 16px;
     height: 16px;
     margin-right: 8px;
-    opacity: 0.7;
     vertical-align: middle;
 }
 
-.recent-orders-table tbody td:first-child {
+.order-row {
+    border-bottom: 1px solid rgba(245, 230, 211, 0.05) !important;
+    background: rgba(44, 24, 16, 0.3);
+    animation: fadeInUp 0.4s ease-out backwards;
+}
+
+.order-row:hover {
+    background: rgba(93, 64, 55, 0.4) !important;
+    transform: scale(1.01);
+}
+
+.orders-table tbody td {
+    color: #f5e6d3 !important;
+    padding: 16px 20px !important;
+    vertical-align: middle;
+    border: none !important;
+}
+
+.product-cell {
     font-weight: 600;
 }
 
-.recent-orders-table .text-center i {
-    width: 32px;
-    height: 32px;
-    display: block;
-    margin: 0 auto 8px;
+.product-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
-/* Status Badges */
-.badge {
+.product-icon {
+    width: 40px;
+    height: 40px;
+    background: rgba(212, 163, 115, 0.2);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-icon i {
+    width: 20px;
+    height: 20px;
+    color: #d4a373;
+}
+
+.price-cell {
+    font-weight: 700;
+    color: #43a047 !important;
+    font-size: 1.05rem;
+}
+
+.payment-badge {
+    background: rgba(66, 165, 245, 0.2);
+    color: #42a5f5 !important;
+    padding: 6px 12px;
+    border-radius: 8px;
     font-size: 0.85rem;
     font-weight: 600;
-    padding: 6px 14px;
-    border-radius: 12px;
-    text-transform: capitalize;
+    border: 1px solid rgba(66, 165, 245, 0.3);
 }
 
-.bg-warning {
-    background: linear-gradient(135deg, #ffa726 0%, #fb8c00 100%) !important;
-    color: white !important;
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.85rem;
 }
 
-.bg-danger {
-    background: linear-gradient(135deg, #ef5350 0%, #d32f2f 100%) !important;
-    color: white !important;
+.status-badge i {
+    width: 16px;
+    height: 16px;
 }
 
-.bg-success {
-    background: linear-gradient(135deg, #43a047 0%, #2e7d32 100%) !important;
-    color: white !important;
+.status-pending {
+    background: linear-gradient(135deg, rgba(255, 167, 38, 0.2), rgba(251, 140, 0, 0.2));
+    color: #ffa726 !important;
+    border: 1.5px solid rgba(255, 167, 38, 0.4);
 }
 
-.text-muted {
-    color: rgba(245, 230, 211, 0.5) !important;
+.status-cancelled {
+    background: linear-gradient(135deg, rgba(239, 83, 80, 0.2), rgba(211, 47, 47, 0.2));
+    color: #ef5350 !important;
+    border: 1.5px solid rgba(239, 83, 80, 0.4);
+}
+
+.status-completed,
+.status-delivered {
+    background: linear-gradient(135deg, rgba(67, 160, 71, 0.2), rgba(46, 125, 50, 0.2));
+    color: #43a047 !important;
+    border: 1.5px solid rgba(67, 160, 71, 0.4);
+}
+
+.datetime-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.date-text {
+    font-weight: 600;
+    color: #f5e6d3;
+}
+
+.time-text {
+    font-size: 0.85rem;
+    color: #d4a373;
+}
+
+.empty-state {
+    padding: 80px 20px !important;
+    text-align: center;
+}
+
+.empty-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.empty-content i {
+    width: 64px;
+    height: 64px;
+    color: #8d6e63;
+    opacity: 0.5;
+}
+
+.empty-content p {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #d4a373;
+    margin: 0;
+}
+
+.empty-content span {
+    font-size: 0.9rem;
+    color: rgba(245, 230, 211, 0.6);
 }
 
 /* =========================================================
@@ -338,41 +564,20 @@
 .analytics {
     background: rgba(93, 64, 55, 0.15) !important;
     backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
     border: 1.5px solid rgba(245, 230, 211, 0.1) !important;
-    border-radius: 20px !important;
+    border-radius: 24px !important;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
     overflow: hidden;
     display: flex !important;
     flex-direction: column !important;
 }
 
-.analytics .card-header {
-    background: linear-gradient(135deg, var(--primary-orange) 0%, var(--dark-orange) 100%) !important;
-    padding: 20px 28px !important;
-}
-
-.analytics .card-header h4 {
-    color: white !important;
-    font-weight: 700;
-    font-size: 1.5rem;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.analytics .card-header h4 i {
-    width: 24px;
-    height: 24px;
-}
-
-.analytics .card-body {
+.chart-body {
     flex: 1 !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    padding: 32px !important;
+    padding: 40px !important;
     background: rgba(44, 24, 16, 0.3);
 }
 
@@ -396,14 +601,20 @@
     }
 }
 
-.cardBox .card:nth-child(1) { animation: fadeInUp 0.4s ease-out 0.1s backwards; }
-.cardBox .card:nth-child(2) { animation: fadeInUp 0.4s ease-out 0.2s backwards; }
-.cardBox .card:nth-child(3) { animation: fadeInUp 0.4s ease-out 0.3s backwards; }
+.stat-card:nth-child(1) { animation: fadeInUp 0.5s ease-out 0.1s backwards; }
+.stat-card:nth-child(2) { animation: fadeInUp 0.5s ease-out 0.2s backwards; }
+.stat-card:nth-child(3) { animation: fadeInUp 0.5s ease-out 0.3s backwards; }
 
 .recentOrders,
 .analytics {
     animation: fadeInUp 0.6s ease-out 0.4s backwards;
 }
+
+.order-row:nth-child(1) { animation-delay: 0.1s; }
+.order-row:nth-child(2) { animation-delay: 0.15s; }
+.order-row:nth-child(3) { animation-delay: 0.2s; }
+.order-row:nth-child(4) { animation-delay: 0.25s; }
+.order-row:nth-child(5) { animation-delay: 0.3s; }
 
 /* =========================================================
    RESPONSIVE DESIGN
@@ -420,66 +631,72 @@
         padding: 16px;
     }
 
+    .welcome-banner {
+        flex-direction: column;
+        gap: 16px;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .welcome-title {
+        font-size: 1.5rem;
+    }
+
     .cardBox {
         grid-template-columns: 1fr;
         gap: 16px;
         margin-bottom: 24px;
     }
 
-    .cardBox .card {
+    .stat-content {
         padding: 20px;
     }
 
-    .cardBox .card .numbers {
-        font-size: 2rem !important;
-    }
-
-    .cardBox .card .iconBx i {
-        width: 48px;
-        height: 48px;
+    .stat-number {
+        font-size: 2rem;
     }
 
     .details {
         gap: 16px !important;
     }
 
-    .recent-orders-header,
-    .analytics .card-header {
-        padding: 16px 20px !important;
+    .section-header {
+        padding: 20px;
+        flex-direction: column;
+        gap: 16px;
+        align-items: flex-start;
     }
 
-    .recent-orders-header h2,
-    .analytics .card-header h4 {
-        font-size: 1.2rem;
-    }
-
-    .recent-orders-table thead th,
-    .recent-orders-table tbody td {
+    .orders-table thead th,
+    .orders-table tbody td {
         padding: 12px 16px !important;
         font-size: 0.85rem;
     }
 
-    .analytics .card-body {
-        padding: 20px !important;
+    .chart-body {
+        padding: 24px !important;
     }
 }
 
 @media (max-width: 480px) {
-    .cardBox .card {
-        padding: 16px;
+    .stat-icon-wrapper {
+        width: 56px;
+        height: 56px;
     }
 
-    .cardBox .card .numbers {
-        font-size: 1.75rem !important;
+    .stat-number {
+        font-size: 1.75rem;
     }
 
-    .cardBox .card .cardName {
-        font-size: 0.95rem !important;
-    }
-
-    .recent-orders-table thead th,
-    .recent-orders-table tbody td {
+    .orders-table thead th,
+    .orders-table tbody td {
         padding: 10px 12px !important;
         font-size: 0.8rem;
+    }
+
+    .product-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
     }
 }

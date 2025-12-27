@@ -444,12 +444,7 @@
                     <span class="title">Total Sales Report</span>
                 </a>
             </li>
-            <li class="{{ Request::routeIs('admin.expenses') ? 'active' : '' }}">
-                <a href="{{ route('admin.expenses') }}">
-                    <span class="icon"><ion-icon name="cash-outline"></ion-icon></span>
-                    <span class="title">Expenses</span>
-                </a>
-            </li>
+
             <li>
                 <a href="{{ route('admin.logout') }}"
                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

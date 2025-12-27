@@ -1,0 +1,572 @@
+/* =========================================================
+   MODERN SALES REPORT - ELEGANT DARK THEME
+========================================================= */
+
+:root {
+    --primary-dark: #2c1810;
+    --primary-medium: #5d4037;
+    --primary-light: #8d6e63;
+    --accent: #db770c;
+    --accent-dark: #b8845e;
+    --cream: #f5e6d3;
+    --espresso: #1a0f0a;
+    --success: #43a047;
+    --warning: #ffa726;
+    --danger: #ef5350;
+}
+
+* {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+    background: linear-gradient(135deg, #2c1810 0%, #1a0f0a 100%);
+    min-height: 100vh;
+}
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.sales-container {
+    padding: 28px;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+.btn-back {
+    background: rgba(93, 64, 55, 0.3) !important;
+    border: 1.5px solid rgba(245, 230, 211, 0.2) !important;
+    color: #f5e6d3 !important;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.btn-back:hover {
+    background: rgba(212, 163, 115, 0.3) !important;
+    border-color: rgba(212, 163, 115, 0.4) !important;
+    color: #ffffff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* =========================================================
+   SALES CARD
+========================================================= */
+
+.sales-card {
+    background: rgba(93, 64, 55, 0.15) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(245, 230, 211, 0.1) !important;
+    border-radius: 24px !important;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    animation: fadeInUp 0.6s ease-out 0.1s backwards;
+}
+
+.sales-card-header {
+    background: linear-gradient(135deg, #db770c 0%, #b8845e 100%) !important;
+    padding: 24px 32px !important;
+    border-radius: 0 !important;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.sales-card-header h4 {
+    color: white !important;
+    font-weight: 700;
+    font-size: 1.75rem;
+    letter-spacing: -0.02em;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* =========================================================
+   DOWNLOAD BUTTON
+========================================================= */
+
+.btn-download {
+    background: linear-gradient(135deg, #43a047 0%, #2e7d32 100%) !important;
+    border: none !important;
+    color: white !important;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 16px rgba(67, 160, 71, 0.3);
+    font-size: 0.95rem;
+}
+
+.btn-download:hover {
+    background: linear-gradient(135deg, #4caf50 0%, #43a047 100%) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(67, 160, 71, 0.5);
+}
+
+/* =========================================================
+   CARD BODY
+========================================================= */
+
+.sales-card-body {
+    padding: 32px !important;
+}
+
+/* =========================================================
+   STAT CARDS
+========================================================= */
+
+.stat-card {
+    background: rgba(26, 15, 10, 0.5);
+    border: 1.5px solid rgba(245, 230, 211, 0.15);
+    border-radius: 20px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    flex-shrink: 0;
+}
+
+.stat-orders .stat-icon {
+    background: linear-gradient(135deg, rgba(255, 167, 38, 0.2) 0%, rgba(251, 140, 0, 0.2) 100%);
+    color: #ffa726;
+    box-shadow: 0 4px 12px rgba(255, 167, 38, 0.3);
+}
+
+.stat-sales .stat-icon {
+    background: linear-gradient(135deg, rgba(67, 160, 71, 0.2) 0%, rgba(46, 125, 50, 0.2) 100%);
+    color: #43a047;
+    box-shadow: 0 4px 12px rgba(67, 160, 71, 0.3);
+}
+
+.stat-average .stat-icon {
+    background: linear-gradient(135deg, rgba(219, 119, 12, 0.2) 0%, rgba(184, 132, 94, 0.2) 100%);
+    color: #db770c;
+    box-shadow: 0 4px 12px rgba(219, 119, 12, 0.3);
+}
+
+.stat-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.stat-label {
+    color: #a0a0a0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.stat-value {
+    color: #f5e6d3;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+/* =========================================================
+   CHART SECTION
+========================================================= */
+
+.chart-section {
+    background: rgba(26, 15, 10, 0.4);
+    border: 1.5px solid rgba(245, 230, 211, 0.15);
+    border-radius: 20px;
+    padding: 32px;
+    margin-bottom: 32px;
+    backdrop-filter: blur(10px);
+}
+
+.chart-title {
+    color: #d4a373;
+    font-weight: 700;
+    font-size: 1.3rem;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.chart-container {
+    max-width: 400px;
+    margin: 0 auto;
+    position: relative;
+    height: 400px;
+}
+
+/* =========================================================
+   TABLE SECTION
+========================================================= */
+
+.table-section {
+    background: rgba(26, 15, 10, 0.4);
+    border: 1.5px solid rgba(245, 230, 211, 0.15);
+    border-radius: 20px;
+    padding: 32px;
+    backdrop-filter: blur(10px);
+}
+
+.table-title {
+    color: #d4a373;
+    font-weight: 700;
+    font-size: 1.3rem;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sales-table-container {
+    border: 1.5px solid rgba(245, 230, 211, 0.15);
+    border-radius: 16px;
+    overflow: hidden;
+    background: rgba(26, 15, 10, 0.3);
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+/* =========================================================
+   TABLE STYLES
+========================================================= */
+
+.sales-table {
+    width: 100%;
+    margin: 0;
+    border-collapse: collapse;
+}
+
+.sales-table thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.sales-table thead th {
+    background: linear-gradient(180deg, rgba(93, 64, 55, 0.9) 0%, rgba(93, 64, 55, 0.7) 100%) !important;
+    color: #f5e6d3 !important;
+    padding: 18px 16px !important;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border: none;
+    text-align: center;
+}
+
+.sales-table tbody tr {
+    background: rgba(44, 24, 16, 0.3);
+    border-bottom: 1px solid rgba(245, 230, 211, 0.08);
+    transition: all 0.3s ease;
+}
+
+.sales-table tbody tr:hover {
+    background: rgba(93, 64, 55, 0.4);
+    transform: scale(1.01);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.sales-table tbody td {
+    padding: 16px !important;
+    color: #f5e6d3 !important;
+    vertical-align: middle;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+/* =========================================================
+   TABLE CELL STYLES
+========================================================= */
+
+.date-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: rgba(219, 119, 12, 0.2);
+    border: 1.5px solid rgba(219, 119, 12, 0.3);
+    border-radius: 10px;
+    color: #db770c !important;
+    font-weight: 700;
+}
+
+.orders-badge {
+    display: inline-flex;
+    padding: 8px 16px;
+    background: rgba(255, 167, 38, 0.2);
+    border: 1.5px solid rgba(255, 167, 38, 0.3);
+    border-radius: 10px;
+    color: #ffa726 !important;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.sales-amount {
+    color: #43a047 !important;
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+/* =========================================================
+   PERFORMANCE BAR
+========================================================= */
+
+.performance-bar {
+    width: 100%;
+    height: 12px;
+    background: rgba(26, 15, 10, 0.5);
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+}
+
+.performance-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #43a047 0%, #4caf50 100%);
+    border-radius: 6px;
+    transition: width 0.6s ease;
+    box-shadow: 0 0 10px rgba(67, 160, 71, 0.5);
+}
+
+/* =========================================================
+   FOOTER TOTAL ROW
+========================================================= */
+
+.sales-table tfoot {
+    position: sticky;
+    bottom: 0;
+    z-index: 9;
+}
+
+.total-row {
+    background: linear-gradient(180deg, rgba(93, 64, 55, 0.9) 0%, rgba(93, 64, 55, 0.7) 100%) !important;
+}
+
+.total-row td {
+    padding: 18px 16px !important;
+    font-weight: 700 !important;
+    font-size: 1.1rem !important;
+    color: #f5e6d3 !important;
+    border: none !important;
+}
+
+.total-label {
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.total-orders {
+    color: #ffa726 !important;
+}
+
+.total-sales {
+    color: #43a047 !important;
+    font-size: 1.3rem !important;
+}
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.empty-state {
+    padding: 80px 20px !important;
+    text-align: center;
+}
+
+.empty-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.empty-content i {
+    font-size: 4rem;
+    color: #8d6e63;
+    opacity: 0.5;
+}
+
+.empty-content p {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #d4a373;
+    margin: 0;
+}
+
+.empty-content span {
+    font-size: 0.9rem;
+    color: #a0a0a0;
+}
+
+/* =========================================================
+   SCROLLBAR STYLING
+========================================================= */
+
+.sales-table-container::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.sales-table-container::-webkit-scrollbar-track {
+    background: rgba(26, 15, 10, 0.3);
+    border-radius: 4px;
+}
+
+.sales-table-container::-webkit-scrollbar-thumb {
+    background: rgba(212, 163, 115, 0.5);
+    border-radius: 4px;
+}
+
+.sales-table-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(212, 163, 115, 0.7);
+}
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.sales-row {
+    animation: fadeInUp 0.4s ease-out backwards;
+}
+
+.sales-row:nth-child(1) { animation-delay: 0.05s; }
+.sales-row:nth-child(2) { animation-delay: 0.1s; }
+.sales-row:nth-child(3) { animation-delay: 0.15s; }
+.sales-row:nth-child(4) { animation-delay: 0.2s; }
+.sales-row:nth-child(5) { animation-delay: 0.25s; }
+.sales-row:nth-child(6) { animation-delay: 0.3s; }
+.sales-row:nth-child(7) { animation-delay: 0.35s; }
+.sales-row:nth-child(8) { animation-delay: 0.4s; }
+
+.stat-card:nth-child(1) { animation: fadeInUp 0.5s ease-out 0.2s backwards; }
+.stat-card:nth-child(2) { animation: fadeInUp 0.5s ease-out 0.3s backwards; }
+.stat-card:nth-child(3) { animation: fadeInUp 0.5s ease-out 0.4s backwards; }
+
+/* =========================================================
+   RESPONSIVE DESIGN
+========================================================= */
+
+@media (max-width: 992px) {
+    .chart-container {
+        max-width: 100%;
+        height: 350px;
+    }
+}
+
+@media (max-width: 768px) {
+    .sales-container {
+        padding: 16px;
+    }
+
+    .sales-card-header {
+        padding: 20px !important;
+    }
+
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .sales-card-header h4 {
+        font-size: 1.3rem;
+    }
+
+    .sales-card-body {
+        padding: 20px !important;
+    }
+
+    .stat-card {
+        padding: 16px;
+    }
+
+    .stat-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+
+    .stat-value {
+        font-size: 1.4rem;
+    }
+
+    .chart-section,
+    .table-section {
+        padding: 20px;
+    }
+
+    .chart-container {
+        height: 300px;
+    }
+
+    .sales-table-container {
+        max-height: 400px;
+    }
+
+    .sales-table thead th,
+    .sales-table tbody td {
+        padding: 12px 8px !important;
+        font-size: 0.85rem;
+    }
+
+    .date-badge,
+    .orders-badge {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+    }
+
+    .sales-amount {
+        font-size: 1rem;
+    }
+}

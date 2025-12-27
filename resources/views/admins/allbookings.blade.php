@@ -1,152 +1,184 @@
 @extends('layouts.admin')
 
 @section('content')
-<meta name="csrf-token" content="{{ csrf_token() }}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+<link rel="stylesheet" href="{{ asset('assets/css/booking-admin.css') }}">
 
-<div class="container-fluid mt-4 px-4">
-    <div class="mb-4">
-        <a href="javascript:history.back()" class="btn btn-outline-light fw-bold">
-            <i class="bi bi-arrow-left-circle"></i> Back to Dashboard
-        </a>
-    </div>
+<div class="container-fluid booking-container">
 
-    {{-- ===================== CREATE BOOKING FORM ===================== --}}
-    <div class="card shadow-sm border-0 rounded-4 mb-4" style="background-color: #3e2f2f; color: #f5f5f5;">
-        <div class="card-header text-center" style="background-color: #db770c; color: #fff; font-weight:700;">
-            <h4>Create Booking</h4>
+
+    {{-- Flash Messages --}}
+    @if (Session::has('success'))
+        <div class="alert alert-success alert-dismissible fade show booking-alert" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            {{ Session::get('success') }}
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-        <div class="card-body">
+    @endif
 
-            {{-- Flash Messages --}}
-            @if (Session::has('success'))
-                <div class="alert alert-success alert-dismissible fade show rounded-3" role="alert">
-                    {{ Session::get('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
-            @if ($errors->any())
-                <div class="alert alert-danger alert-dismissible fade show rounded-3" role="alert">
-                    <ul class="mb-0">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
-
-            {{-- Booking Form --}}
-            <form action="{{ route('store.bookings') }}" method="POST">
-                @csrf
-
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold">First Name</label>
-                        <input type="text" name="first_name" value="{{ old('first_name') }}" class="form-control booking-input" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold">Last Name</label>
-                        <input type="text" name="last_name" value="{{ old('last_name') }}" class="form-control booking-input" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold">Date</label>
-                        <input type="date" name="date" value="{{ old('date') }}" class="form-control booking-input" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold">Time</label>
-                        <input type="time" name="time" value="{{ old('time') }}" class="form-control booking-input" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold">Phone</label>
-                        <input type="text" name="phone" value="{{ old('phone') }}" class="form-control booking-input" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold">Message</label>
-                        <textarea name="message" rows="1" class="form-control booking-input">{{ old('message') }}</textarea>
-                    </div>
-                </div>
-
-                <div class="d-flex justify-content-end mt-3">
-                    <button type="submit" class="btn btn-submit-booking">
-                        Submit Booking
-                    </button>
-                </div>
-            </form>
+    @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible fade show booking-alert" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-    </div>
+    @endif
 
-    {{-- ===================== BOOKINGS TABLE ===================== --}}
-    <div class="card shadow-sm border-0 rounded-4" style="background-color: #3e2f2f; color: #f5f5f5; min-height:50vh;">
-        <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #db770cff; color: #fff;">
-            <h4 class="mb-0">All Bookings</h4>
+    <div class="row g-4">
+        {{-- Create Booking Form --}}
+        <div class="col-lg-5">
+            <div class="booking-card booking-form-card">
+                <div class="booking-card-header">
+                    <h4><i class="bi bi-calendar-plus"></i> Create New Booking</h4>
+                </div>
+                <div class="booking-card-body">
+                    <form action="{{ route('store.bookings') }}" method="POST">
+                        @csrf
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="booking-label">
+                                    <i class="bi bi-person"></i> First Name
+                                </label>
+                                <input type="text" name="first_name" value="{{ old('first_name') }}"
+                                       class="booking-input" placeholder="Enter first name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="booking-label">
+                                    <i class="bi bi-person"></i> Last Name
+                                </label>
+                                <input type="text" name="last_name" value="{{ old('last_name') }}"
+                                       class="booking-input" placeholder="Enter last name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="booking-label">
+                                    <i class="bi bi-calendar-event"></i> Date
+                                </label>
+                                <input type="date" name="date" value="{{ old('date') }}"
+                                       class="booking-input" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="booking-label">
+                                    <i class="bi bi-clock"></i> Time
+                                </label>
+                                <input type="time" name="time" value="{{ old('time') }}"
+                                       class="booking-input" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="booking-label">
+                                    <i class="bi bi-telephone"></i> Phone
+                                </label>
+                                <input type="tel" name="phone" value="{{ old('phone') }}"
+                                       class="booking-input" placeholder="Enter phone number" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="booking-label">
+                                    <i class="bi bi-chat-left-text"></i> Message (Optional)
+                                </label>
+                                <textarea name="message" rows="3" class="booking-input booking-textarea"
+                                          placeholder="Add a message or special request">{{ old('message') }}</textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-submit-booking">
+                            <i class="bi bi-check-circle"></i> Create Booking
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
-        <div class="card-body">
-            <div class="table-responsive mt-3" style="max-height:60vh; overflow-y:auto;">
-                <table class="table table-hover align-middle text-white mb-0" style="border:1px solid #6b4c3b;">
-                    <thead style="background-color: #5a3d30;" class="text-center sticky-top">
-                        <tr>
-                            <th>No.</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Date</th>
-                            <th>Time</th>
-                            <th>Phone</th>
-                            <th>Message</th>
-                            <th>Status</th>
-                            <th>Change Status</th>
-                            <th>Created At</th>
-                            <th>Delete</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-center">
-                        @forelse ($bookings as $booking)
-                            <tr id="booking-{{ $booking->id }}" style="border-bottom:1px solid #6b4c3b;">
-                                <td>{{ $loop->iteration }}</td> {{-- ✅ Sequential number --}}
-                                <td>{{ $booking->first_name }}</td>
-                                <td>{{ $booking->last_name }}</td>
-                                <td>{{ $booking->date }}</td>
-                                <td>{{ $booking->time }}</td>
-                                <td>{{ $booking->phone }}</td>
-                                <td>{{ $booking->message }}</td>
-                                <td>
-                                    <span class="badge bg-{{ $booking->status == 'Pending' ? 'warning' : ($booking->status == 'Confirmed' ? 'success' : 'secondary') }}">
-                                        {{ $booking->status }}
-                                    </span>
-                                </td>
-                                <td>
-                                    <button type="button"
-                                        class="btn btn-sm btn-warning btn-edit-booking-status"
-                                        data-id="{{ $booking->id }}"
-                                        data-status="{{ $booking->status }}">
-                                        Change Status
-                                    </button>
-                                </td>
-                                <td>{{ $booking->created_at }}</td>
-                                <td>
-                                    <button type="button"
-                                        class="btn btn-sm btn-danger btn-delete-booking"
-                                        data-id="{{ $booking->id }}">
-                                        Delete
-                                    </button>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="11" class="text-center text-muted py-3">
-                                    No bookings found.
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+
+        {{-- Bookings Table --}}
+        <div class="col-lg-7">
+            <div class="booking-card booking-table-card">
+                <div class="booking-card-header">
+                    <h4><i class="bi bi-list-check"></i> All Bookings</h4>
+                </div>
+                <div class="booking-card-body">
+                    <div class="booking-table-container">
+                        <table class="booking-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Date & Time</th>
+                                    <th>Phone</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($bookings as $booking)
+                                    <tr id="booking-{{ $booking->id }}" class="booking-row">
+                                        <td class="booking-number">{{ $loop->iteration }}</td>
+                                        <td class="booking-name">
+                                            <div class="name-wrapper">
+                                                <i class="bi bi-person-circle"></i>
+                                                <span>{{ $booking->first_name }} {{ $booking->last_name }}</span>
+                                            </div>
+                                        </td>
+                                        <td class="booking-datetime">
+                                            <div class="datetime-wrapper">
+                                                <span class="date-text">
+                                                    <i class="bi bi-calendar3"></i>
+                                                    {{ \Carbon\Carbon::parse($booking->date)->format('M d, Y') }}
+                                                </span>
+                                                <span class="time-text">
+                                                    <i class="bi bi-clock"></i>
+                                                    {{ \Carbon\Carbon::parse($booking->time)->format('h:i A') }}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td class="booking-phone">
+                                            <i class="bi bi-telephone"></i>
+                                            {{ $booking->phone }}
+                                        </td>
+                                        <td class="booking-status">
+                                            <span class="status-badge status-{{ strtolower($booking->status) }}">
+                                                <i class="bi bi-{{ $booking->status == 'Pending' ? 'hourglass-split' : ($booking->status == 'Confirmed' ? 'check-circle' : 'x-circle') }}"></i>
+                                                {{ $booking->status }}
+                                            </span>
+                                        </td>
+                                        <td class="booking-actions">
+                                            <div class="action-buttons">
+                                                <button type="button"
+                                                    class="btn-action btn-edit"
+                                                    data-id="{{ $booking->id }}"
+                                                    data-status="{{ $booking->status }}"
+                                                    title="Change Status">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </button>
+                                                <button type="button"
+                                                    class="btn-action btn-delete"
+                                                    data-id="{{ $booking->id }}"
+                                                    title="Delete">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="6" class="empty-state">
+                                            <div class="empty-content">
+                                                <i class="bi bi-inbox"></i>
+                                                <p>No bookings found</p>
+                                                <span>Create your first booking to get started</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-{{-- ===================== SCRIPTS ===================== --}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{{ asset('assets/js/booking-admin.js') }}"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-<link rel="stylesheet" href="{{ asset('assets/css/booking-admin.css') }}">
 @endsection

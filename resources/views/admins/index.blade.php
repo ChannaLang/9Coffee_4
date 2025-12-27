@@ -7,65 +7,112 @@
 
 <div class="dashboard-container">
 
+    {{-- Welcome Banner --}}
+    <div class="welcome-banner">
+        <div class="welcome-content">
+            <h1 class="welcome-title">
+                <i class="lucide-sparkles"></i>
+                Welcome Back, Admin!
+            </h1>
+            <p class="welcome-subtitle">Here's what's happening with your coffee shop today</p>
+        </div>
+        <div class="welcome-date">
+            <i class="lucide-calendar-days"></i>
+            <span id="currentDate"></span>
+        </div>
+    </div>
+
     {{-- Stats Cards --}}
     <div class="cardBox">
-        <a href="{{ route('all.bookings') }}" class="card">
-            <div>
-                <div class="numbers">{{ $productsCount }}</div>
-                <div class="cardName">
-                    <i class="lucide-calendar"></i>
-                    Total Bookings
+        <a href="{{ route('all.bookings') }}" class="stat-card stat-card-bookings">
+            <div class="stat-content">
+                <div class="stat-header">
+                    <div class="stat-icon-wrapper">
+                        <i class="lucide-calendar-check"></i>
+                    </div>
+                    <div class="stat-trend trend-up">
+                        <i class="lucide-trending-up"></i>
+                        <span>+12%</span>
+                    </div>
                 </div>
-            </div>
-            <div class="iconBx">
-                <i class="lucide-calendar-check"></i>
+                <div class="stat-details">
+                    <div class="stat-label">
+                        <i class="lucide-calendar"></i>
+                        Total Bookings
+                    </div>
+                    <div class="stat-number">{{ $productsCount }}</div>
+                    <div class="stat-footer">Updated just now</div>
+                </div>
             </div>
         </a>
 
-        <a href="{{ route('all.orders') }}" class="card">
-            <div>
-                <div class="numbers">{{ $ordersCount }}</div>
-                <div class="cardName">
-                    <i class="lucide-shopping-cart"></i>
-                    Total Orders
+        <a href="{{ route('all.orders') }}" class="stat-card stat-card-orders">
+            <div class="stat-content">
+                <div class="stat-header">
+                    <div class="stat-icon-wrapper">
+                        <i class="lucide-shopping-bag"></i>
+                    </div>
+                    <div class="stat-trend trend-up">
+                        <i class="lucide-trending-up"></i>
+                        <span>+8%</span>
+                    </div>
                 </div>
-            </div>
-            <div class="iconBx">
-                <i class="lucide-shopping-bag"></i>
+                <div class="stat-details">
+                    <div class="stat-label">
+                        <i class="lucide-shopping-cart"></i>
+                        Total Orders
+                    </div>
+                    <div class="stat-number">{{ $ordersCount }}</div>
+                    <div class="stat-footer">Active orders tracking</div>
+                </div>
             </div>
         </a>
 
-        <a href="{{ route('all.orders') }}" class="card">
-            <div>
-                <div class="numbers">${{ number_format($earning, 2) }}</div>
-                <div class="cardName">
-                    <i class="lucide-dollar-sign"></i>
-                    Total Earnings
+        <a href="{{ route('all.orders') }}" class="stat-card stat-card-earnings">
+            <div class="stat-content">
+                <div class="stat-header">
+                    <div class="stat-icon-wrapper">
+                        <i class="lucide-wallet"></i>
+                    </div>
+                    <div class="stat-trend trend-up">
+                        <i class="lucide-trending-up"></i>
+                        <span>+15%</span>
+                    </div>
                 </div>
-            </div>
-            <div class="iconBx">
-                <i class="lucide-wallet"></i>
+                <div class="stat-details">
+                    <div class="stat-label">
+                        <i class="lucide-dollar-sign"></i>
+                        Total Earnings
+                    </div>
+                    <div class="stat-number">${{ number_format($earning, 2) }}</div>
+                    <div class="stat-footer">Revenue generated</div>
+                </div>
             </div>
         </a>
     </div>
 
     {{-- Recent Orders & Analytics --}}
-    <div class="details row">
+    <div class="details">
         {{-- Recent Orders Table --}}
-        <div class="recentOrders card flex-fill" id="recentOrdersCard">
-            <div class="cardHeader recent-orders-header">
-                <h2 class="fw-bold mb-0">
-                    <i class="lucide-receipt"></i>
-                    Recent Orders
-                </h2>
+        <div class="recentOrders" id="recentOrdersCard">
+            <div class="section-header">
+                <div class="section-title">
+                    <div class="section-icon">
+                        <i class="lucide-receipt"></i>
+                    </div>
+                    <div>
+                        <h2>Recent Orders</h2>
+                        <p class="section-subtitle">Latest transactions from your customers</p>
+                    </div>
+                </div>
                 <a href="{{ route('all.orders') }}" class="btn-view-all">
                     View All
                     <i class="lucide-arrow-right"></i>
                 </a>
             </div>
 
-            <div class="recent-orders-table mt-0">
-                <table class="table table-hover text-white mb-0">
+            <div class="recent-orders-table">
+                <table class="orders-table">
                     <thead>
                         <tr>
                             <th>
@@ -86,35 +133,46 @@
                             </th>
                             <th>
                                 <i class="lucide-clock"></i>
-                                Order Date
+                                Date & Time
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($recentOrders as $order)
-                        <tr>
-                            <td>
-                                <i class="lucide-coffee"></i>
-                                {{ $order->product->name ?? 'N/A' }}
+                        <tr class="order-row">
+                            <td class="product-cell">
+                                <div class="product-info">
+                                    <div class="product-icon">
+                                        <i class="lucide-coffee"></i>
+                                    </div>
+                                    <span>{{ $order->product->name ?? 'N/A' }}</span>
+                                </div>
                             </td>
-                            <td>${{ number_format($order->price, 2) }}</td>
-                            <td>{{ $order->payment_status ?? 'Pending' }}</td>
-                            <td>
-                                <span class="badge
-                                    @if(strtolower($order->status)=='pending') bg-warning
-                                    @elseif(strtolower($order->status)=='cancelled') bg-danger
-                                    @else bg-success
-                                    @endif px-3 py-1 rounded-pill">
+                            <td class="price-cell">${{ number_format($order->price, 2) }}</td>
+                            <td class="payment-cell">
+                                <span class="payment-badge">{{ $order->payment_status ?? 'Pending' }}</span>
+                            </td>
+                            <td class="status-cell">
+                                <span class="status-badge status-{{ strtolower($order->status) }}">
+                                    <i class="lucide-{{ strtolower($order->status) == 'pending' ? 'clock' : (strtolower($order->status) == 'cancelled' ? 'x-circle' : 'check-circle') }}"></i>
                                     {{ ucfirst($order->status) }}
                                 </span>
                             </td>
-                            <td>{{ $order->created_at->timezone('Asia/Phnom_Penh')->format('d M Y H:i') }}</td>
+                            <td class="date-cell">
+                                <div class="datetime-wrapper">
+                                    <span class="date-text">{{ $order->created_at->timezone('Asia/Phnom_Penh')->format('d M Y') }}</span>
+                                    <span class="time-text">{{ $order->created_at->timezone('Asia/Phnom_Penh')->format('H:i') }}</span>
+                                </div>
+                            </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="5" class="text-center text-muted py-4">
-                                <i class="lucide-inbox"></i>
-                                No recent orders
+                            <td colspan="5" class="empty-state">
+                                <div class="empty-content">
+                                    <i class="lucide-inbox"></i>
+                                    <p>No recent orders</p>
+                                    <span>Orders will appear here once customers start ordering</span>
+                                </div>
                             </td>
                         </tr>
                         @endforelse
@@ -124,14 +182,19 @@
         </div>
 
         {{-- Analytics Chart --}}
-        <div class="analytics card flex-fill" id="analyticsCard">
-            <div class="card-header">
-                <h4 class="mb-0">
-                    <i class="lucide-bar-chart-3"></i>
-                    Analytics Overview
-                </h4>
+        <div class="analytics" id="analyticsCard">
+            <div class="section-header">
+                <div class="section-title">
+                    <div class="section-icon">
+                        <i class="lucide-bar-chart-3"></i>
+                    </div>
+                    <div>
+                        <h2>Analytics Overview</h2>
+                        <p class="section-subtitle">Performance metrics at a glance</p>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
+            <div class="chart-body">
                 <canvas id="analyticsChart"></canvas>
             </div>
         </div>
@@ -144,6 +207,11 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         lucide.createIcons();
+
+        // Update current date
+        const dateElement = document.getElementById('currentDate');
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        dateElement.textContent = new Date().toLocaleDateString('en-US', options);
     });
 </script>
 
@@ -178,42 +246,71 @@
                     {{ $earning ?? 0 }}
                 ],
                 backgroundColor: [
-                    'rgba(66, 165, 245, 0.8)',
-                    'rgba(255, 167, 38, 0.8)',
-                    'rgba(239, 83, 80, 0.8)',
-                    'rgba(67, 160, 71, 0.8)'
+                    '#42a5f5',
+                    '#ffa726',
+                    '#ef5350',
+                    '#43a047'
                 ],
-                borderColor: 'rgba(245, 230, 211, 0.3)',
-                borderWidth: 2
+                borderColor: 'rgba(26, 15, 10, 0.5)',
+                borderWidth: 3,
+                hoverBorderWidth: 4,
+                hoverBorderColor: '#f5e6d3'
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: true,
+            cutout: '65%',
             plugins: {
                 legend: {
                     position: 'bottom',
                     labels: {
                         font: {
                             size: 13,
-                            family: "'Inter', 'Segoe UI', sans-serif"
+                            family: "'Inter', 'Segoe UI', sans-serif",
+                            weight: '600'
                         },
                         color: '#f5e6d3',
-                        padding: 16,
+                        padding: 20,
                         usePointStyle: true,
-                        pointStyle: 'circle'
+                        pointStyle: 'circle',
+                        boxWidth: 12,
+                        boxHeight: 12
                     }
                 },
                 tooltip: {
                     backgroundColor: 'rgba(44, 24, 16, 0.95)',
                     titleColor: '#d4a373',
                     bodyColor: '#f5e6d3',
-                    borderColor: 'rgba(212, 163, 115, 0.3)',
-                    borderWidth: 1,
-                    padding: 12,
-                    cornerRadius: 8,
-                    displayColors: true
+                    borderColor: 'rgba(212, 163, 115, 0.5)',
+                    borderWidth: 2,
+                    padding: 16,
+                    cornerRadius: 12,
+                    displayColors: true,
+                    titleFont: {
+                        size: 14,
+                        weight: 'bold'
+                    },
+                    bodyFont: {
+                        size: 13
+                    },
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            label += '$' + context.parsed.toFixed(2);
+                            return label;
+                        }
+                    }
                 }
+            },
+            animation: {
+                animateRotate: true,
+                animateScale: true,
+                duration: 1000,
+                easing: 'easeInOutQuart'
             }
         }
     });

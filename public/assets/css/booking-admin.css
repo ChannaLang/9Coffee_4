@@ -1,31 +1,573 @@
-html, body {
-    height: 100%;
-    background-color: #2e2424;
+/* =========================================================
+   MODERN BOOKING MANAGEMENT SYSTEM - ELEGANT DARK THEME
+========================================================= */
+
+:root {
+    --primary-dark: #2c1810;
+    --primary-medium: #5d4037;
+    --primary-light: #8d6e63;
+    --accent: #db770c;
+    --accent-dark: #b8845e;
+    --cream: #f5e6d3;
+    --espresso: #1a0f0a;
+    --success: #43a047;
+    --warning: #ffa726;
+    --danger: #ef5350;
 }
 
-.table-responsive {
-    scrollbar-width: thin;
-    scrollbar-color: #db770c #3e2f2f;
+* {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.table-responsive::-webkit-scrollbar {
+body {
+    background: linear-gradient(135deg, #2c1810 0%, #1a0f0a 100%);
+    min-height: 100vh;
+}
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.booking-container {
+    padding: 28px;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+.btn-back {
+    background: rgba(93, 64, 55, 0.3) !important;
+    border: 1.5px solid rgba(245, 230, 211, 0.2) !important;
+    color: #f5e6d3 !important;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.btn-back:hover {
+    background: rgba(212, 163, 115, 0.3) !important;
+    border-color: rgba(212, 163, 115, 0.4) !important;
+    color: #ffffff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* =========================================================
+   ALERTS
+========================================================= */
+
+.booking-alert {
+    background: linear-gradient(135deg, rgba(67, 160, 71, 0.2) 0%, rgba(46, 125, 50, 0.2) 100%) !important;
+    border: 1.5px solid rgba(67, 160, 71, 0.4) !important;
+    border-radius: 16px !important;
+    padding: 16px 20px !important;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    color: #f5e6d3 !important;
+}
+
+.booking-alert.alert-danger {
+    background: linear-gradient(135deg, rgba(239, 83, 80, 0.2) 0%, rgba(198, 40, 40, 0.2) 100%) !important;
+    border-color: rgba(239, 83, 80, 0.4) !important;
+}
+
+/* =========================================================
+   BOOKING CARDS
+========================================================= */
+
+.booking-card {
+    background: rgba(93, 64, 55, 0.15) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(245, 230, 211, 0.1) !important;
+    border-radius: 24px !important;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.booking-form-card {
+    position: sticky;
+    top: 20px;
+}
+
+.booking-table-card {
+    min-height: 600px;
+}
+
+.booking-card-header {
+    background: linear-gradient(135deg, #db770c 0%, #b8845e 100%) !important;
+    padding: 20px 28px !important;
+    margin: 0;
+    border-radius: 0 !important;
+}
+
+.booking-card-header h4 {
+    color: white !important;
+    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: -0.02em;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.booking-card-body {
+    padding: 28px !important;
+}
+
+/* =========================================================
+   FORM STYLES
+========================================================= */
+
+.booking-label {
+    color: #db770c !important;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.booking-input,
+.booking-textarea {
+    background: rgba(26, 15, 10, 0.6) !important;
+    border: 1.5px solid rgba(245, 230, 211, 0.2) !important;
+    color: #f5e6d3 !important;
+    border-radius: 12px !important;
+    padding: 12px 16px !important;
+    font-weight: 500;
+    width: 100%;
+    backdrop-filter: blur(5px);
+}
+
+.booking-input:focus,
+.booking-textarea:focus {
+    background: rgba(44, 24, 16, 0.6) !important;
+    border-color: #db770c !important;
+    color: #f5e6d3 !important;
+    box-shadow: 0 0 0 3px rgba(219, 119, 12, 0.2) !important;
+    outline: none;
+}
+
+.booking-input::placeholder,
+.booking-textarea::placeholder {
+    color: #a0a0a0 !important;
+    opacity: 1;
+}
+
+.booking-textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* =========================================================
+   SUBMIT BUTTON
+========================================================= */
+
+.btn-submit-booking {
+    background: linear-gradient(135deg, #43a047 0%, #2e7d32 100%) !important;
+    border: none !important;
+    color: white !important;
+    border-radius: 14px !important;
+    padding: 14px 28px !important;
+    font-weight: 700 !important;
+    font-size: 1.05rem !important;
+    width: 100%;
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 6px 20px rgba(67, 160, 71, 0.4);
+    cursor: pointer;
+}
+
+.btn-submit-booking:hover {
+    background: linear-gradient(135deg, #4caf50 0%, #43a047 100%) !important;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(67, 160, 71, 0.6);
+}
+
+.btn-submit-booking:active {
+    transform: translateY(0);
+}
+
+/* =========================================================
+   TABLE CONTAINER
+========================================================= */
+
+.booking-table-container {
+    border: 1.5px solid rgba(245, 230, 211, 0.15) !important;
+    border-radius: 16px;
+    overflow: hidden;
+    background: rgba(26, 15, 10, 0.4);
+    max-height: 65vh;
+    overflow-y: auto;
+}
+
+/* =========================================================
+   TABLE STYLES
+========================================================= */
+
+.booking-table {
+    width: 100%;
+    margin: 0;
+    border-collapse: collapse;
+}
+
+.booking-table thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.booking-table thead th {
+    background: linear-gradient(180deg, rgba(93, 64, 55, 0.9) 0%, rgba(93, 64, 55, 0.7) 100%) !important;
+    color: #f5e6d3 !important;
+    padding: 16px 12px !important;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border: none;
+    text-align: left;
+}
+
+.booking-table tbody tr {
+    background: rgba(44, 24, 16, 0.3);
+    border-bottom: 1px solid rgba(245, 230, 211, 0.08);
+    transition: all 0.3s ease;
+}
+
+.booking-table tbody tr:hover {
+    background: rgba(93, 64, 55, 0.4);
+    transform: scale(1.01);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.booking-table tbody td {
+    padding: 16px 12px !important;
+    color: #f5e6d3 !important;
+    vertical-align: middle;
+    font-size: 0.9rem;
+}
+
+/* =========================================================
+   TABLE CELL STYLES
+========================================================= */
+
+.booking-number {
+    font-weight: 700;
+    color: #db770c !important;
+    font-size: 1rem;
+}
+
+.name-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.name-wrapper i {
+    color: #db770c;
+    font-size: 1.2rem;
+}
+
+.datetime-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.date-text,
+.time-text {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+}
+
+.date-text i,
+.time-text i {
+    color: #ffa726;
+}
+
+.booking-phone {
+    font-weight: 600;
+}
+
+.booking-phone i {
+    color: #ffa726;
+    margin-right: 6px;
+}
+
+/* =========================================================
+   STATUS BADGES
+========================================================= */
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.status-pending {
+    background: linear-gradient(135deg, rgba(255, 167, 38, 0.2) 0%, rgba(251, 140, 0, 0.2) 100%);
+    color: #ffa726 !important;
+    border: 1.5px solid rgba(255, 167, 38, 0.4);
+}
+
+.status-confirmed {
+    background: linear-gradient(135deg, rgba(67, 160, 71, 0.2) 0%, rgba(46, 125, 50, 0.2) 100%);
+    color: #43a047 !important;
+    border: 1.5px solid rgba(67, 160, 71, 0.4);
+}
+
+.status-cancelled {
+    background: linear-gradient(135deg, rgba(239, 83, 80, 0.2) 0%, rgba(198, 40, 40, 0.2) 100%);
+    color: #ef5350 !important;
+    border: 1.5px solid rgba(239, 83, 80, 0.4);
+}
+
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.btn-action {
+    background: rgba(212, 163, 115, 0.2) !important;
+    border: 1.5px solid rgba(212, 163, 115, 0.3) !important;
+    color: #f5e6d3 !important;
+    border-radius: 10px !important;
+    width: 36px;
+    height: 36px;
+    padding: 0 !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+}
+
+.btn-action:hover {
+    transform: scale(1.15) rotate(5deg);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.btn-edit {
+    background: rgba(255, 167, 38, 0.2) !important;
+    border-color: rgba(255, 167, 38, 0.4) !important;
+    color: #ffa726 !important;
+}
+
+.btn-edit:hover {
+    background: rgba(255, 167, 38, 0.4) !important;
+    border-color: #ffa726 !important;
+}
+
+.btn-delete {
+    background: rgba(239, 83, 80, 0.2) !important;
+    border-color: rgba(239, 83, 80, 0.4) !important;
+    color: #ef5350 !important;
+}
+
+.btn-delete:hover {
+    background: rgba(239, 83, 80, 0.4) !important;
+    border-color: #ef5350 !important;
+}
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.empty-state {
+    padding: 80px 20px !important;
+    text-align: center;
+}
+
+.empty-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.empty-content i {
+    font-size: 4rem;
+    color: #8d6e63;
+    opacity: 0.5;
+}
+
+.empty-content p {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #d4a373;
+    margin: 0;
+}
+
+.empty-content span {
+    font-size: 0.9rem;
+    color: #a0a0a0;
+}
+
+/* =========================================================
+   SCROLLBAR STYLING
+========================================================= */
+
+.booking-table-container::-webkit-scrollbar {
     width: 8px;
+    height: 8px;
 }
 
-.table-responsive::-webkit-scrollbar-track {
-    background: #3e2f2f;
-}
-
-.table-responsive::-webkit-scrollbar-thumb {
-    background-color: #db770c;
+.booking-table-container::-webkit-scrollbar-track {
+    background: rgba(26, 15, 10, 0.3);
     border-radius: 4px;
 }
 
-.table-hover tbody tr:hover {
-    background-color: rgba(219, 119, 12, 0.2);
+.booking-table-container::-webkit-scrollbar-thumb {
+    background: rgba(212, 163, 115, 0.5);
+    border-radius: 4px;
 }
 
-.card-header h4,
-.btn {
-    font-weight: 500;
+.booking-table-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(212, 163, 115, 0.7);
+}
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.booking-row {
+    animation: fadeInUp 0.4s ease-out backwards;
+}
+
+.booking-row:nth-child(1) { animation-delay: 0.05s; }
+.booking-row:nth-child(2) { animation-delay: 0.1s; }
+.booking-row:nth-child(3) { animation-delay: 0.15s; }
+.booking-row:nth-child(4) { animation-delay: 0.2s; }
+.booking-row:nth-child(5) { animation-delay: 0.25s; }
+.booking-row:nth-child(6) { animation-delay: 0.3s; }
+.booking-row:nth-child(7) { animation-delay: 0.35s; }
+.booking-row:nth-child(8) { animation-delay: 0.4s; }
+
+/* =========================================================
+   SWEETALERT2 CUSTOMIZATION
+========================================================= */
+
+.swal2-popup {
+    background: linear-gradient(135deg, #3e2723 0%, #2c1810 100%) !important;
+    border: 1.5px solid rgba(245, 230, 211, 0.2);
+    border-radius: 24px;
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
+}
+
+.swal2-title {
+    color: #f5e6d3 !important;
+    font-weight: 700;
+}
+
+.swal2-html-container {
+    color: #d7ccc8 !important;
+}
+
+.swal2-confirm {
+    background: linear-gradient(135deg, #db770c 0%, #b8845e 100%) !important;
+    border-radius: 12px !important;
+    font-weight: 600 !important;
+    padding: 12px 28px !important;
+}
+
+.swal2-cancel {
+    background: rgba(239, 83, 80, 0.2) !important;
+    border: 1.5px solid rgba(239, 83, 80, 0.5) !important;
+    border-radius: 12px !important;
+    font-weight: 600 !important;
+    padding: 12px 28px !important;
+}
+
+/* =========================================================
+   RESPONSIVE DESIGN
+========================================================= */
+
+@media (max-width: 992px) {
+    .booking-form-card {
+        position: static;
+    }
+}
+
+@media (max-width: 768px) {
+    .booking-container {
+        padding: 16px;
+    }
+
+    .booking-card-header {
+        padding: 16px 20px !important;
+    }
+
+    .booking-card-header h4 {
+        font-size: 1.2rem;
+    }
+
+    .booking-card-body {
+        padding: 20px !important;
+    }
+
+    .booking-table-container {
+        max-height: 50vh;
+    }
+
+    .booking-table thead th,
+    .booking-table tbody td {
+        padding: 12px 8px !important;
+        font-size: 0.8rem;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .btn-action {
+        width: 32px;
+        height: 32px;
+    }
+
+    .datetime-wrapper {
+        font-size: 0.75rem;
+    }
 }

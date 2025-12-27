@@ -2,10 +2,10 @@
 
 @section('content')
 <link rel="stylesheet" href="{{ asset('assets/css/staff-sell.css') }}">
-<!-- Add Lucide Icons -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@latest/font/lucide.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
-<div class="container-fluid mt-4 px-4">
+<div class="container-fluid staff-sell-container">
     <div class="row">
 
         {{-- ========== Left: Products ========== --}}
@@ -14,18 +14,18 @@
 
                 {{-- Header --}}
                 <div class="card-header text-center d-flex align-items-center justify-content-center gap-2">
-                    <i class="lucide-coffee" style="width: 28px; height: 28px;"></i>
+                    <i class="lucide-coffee header-icon"></i>
                     <h4 class="mb-0">Point of Sale</h4>
                 </div>
 
                 {{-- Type Filters --}}
                 <div class="mb-3">
                     <div class="d-flex align-items-center flex-wrap gap-2">
-                        <strong class="text-warning me-2" style="min-width: 100px;">
-                            <i class="lucide-filter" style="width: 16px; height: 16px;"></i> Type:
+                        <strong class="filter-label">
+                            <i class="lucide-filter filter-icon"></i> Type:
                         </strong>
                         <button class="btn filter-type-btn active" data-type="all">
-                            <i class="lucide-grid-3x3" style="width: 16px; height: 16px;"></i> All
+                            <i class="lucide-grid-3x3 btn-icon"></i> All
                         </button>
                         @foreach(App\Models\Product\ProductType::all() as $type)
                             <button class="btn filter-type-btn" data-type="{{ strtolower($type->name) }}">
@@ -38,11 +38,11 @@
                 {{-- Sub-Type Filters --}}
                 <div class="mb-4">
                     <div class="d-flex align-items-center flex-wrap gap-2">
-                        <strong class="text-warning me-2" style="min-width: 100px;">
-                            <i class="lucide-layers" style="width: 16px; height: 16px;"></i> Menu:
+                        <strong class="filter-label">
+                            <i class="lucide-layers filter-icon"></i> Menu:
                         </strong>
                         <button class="btn filter-sub-btn active" data-subtype="all">
-                            <i class="lucide-circle-dot" style="width: 16px; height: 16px;"></i> All
+                            <i class="lucide-circle-dot btn-icon"></i> All
                         </button>
                         @foreach(App\Models\Product\SubType::all() as $sub)
                             <button class="btn filter-sub-btn" data-subtype="{{ strtolower($sub->name) }}">
@@ -66,15 +66,15 @@
                                 data-type="{{ strtolower($product->type->name ?? 'food') }}">
 
                                 {{-- Product Image --}}
-                                <div style="position: relative;">
+                                <div class="product-image-wrapper">
                                     <img src="{{ asset('assets/images/'.$product->image) }}"
-                                         class="img-fluid"
+                                         class="img-fluid product-image"
                                          alt="{{ $product->name }}">
                                 </div>
 
                                 {{-- Product Info --}}
-                                <div class="text-center">
-                                    <div class="fw-bold mb-1">{{ $product->name }}</div>
+                                <div class="text-center product-info">
+                                    <div class="fw-bold mb-1 product-name">{{ $product->name }}</div>
                                     <div class="product-price">${{ $product->price }}</div>
                                 </div>
 
@@ -108,7 +108,7 @@
                                 {{-- Add to Cart Button --}}
                                 <div class="mt-3">
                                     <button type="button" class="btn btn-add-to-cart">
-                                        <i class="lucide-shopping-cart" style="width: 18px; height: 18px;"></i>
+                                        <i class="lucide-shopping-cart cart-icon"></i>
                                         Add to Cart
                                     </button>
                                 </div>
@@ -123,27 +123,27 @@
 
         {{-- ========== Right: Cart & Checkout ========== --}}
         <div class="col-md-4">
-            <div class="card shadow-lg border-0">
-                <h4 class="text-center mb-3">
-                    <i class="lucide-shopping-bag" style="width: 28px; height: 28px;"></i>
+            <div class="card shadow-lg border-0 cart-section">
+                <h4 class="text-center mb-3 cart-title">
+                    <i class="lucide-shopping-bag cart-bag-icon"></i>
                     Shopping Cart
                 </h4>
 
                 {{-- Wallet Balance --}}
-                <div class="card mb-3">
+                <div class="card mb-3 wallet-card">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <div style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 4px;">Wallet Balance</div>
-                            <div id="wallet-balance" data-balance="{{ $earning }}">
+                            <div class="wallet-label">Wallet Balance</div>
+                            <div id="wallet-balance" class="wallet-amount" data-balance="{{ $earning }}">
                                 ${{ number_format($earning, 2) }}
                             </div>
                         </div>
-                        <i class="bi bi-wallet2 fs-2 text-warning"></i>
+                        <i class="bi bi-wallet2 wallet-icon"></i>
                     </div>
                 </div>
 
                 {{-- Cart Table --}}
-                <div class="table-responsive">
+                <div class="table-responsive cart-table-wrapper">
                     <table class="table align-middle mb-0" id="cart-table">
                         <thead class="text-center">
                             <tr>
@@ -151,7 +151,7 @@
                                 <th>Size</th>
                                 <th>Sugar</th>
                                 <th>Qty</th>
-                                <th style="text-align: right;">Price</th>
+                                <th class="text-right">Price</th>
                             </tr>
                         </thead>
                         <tbody class="text-center"></tbody>
@@ -159,12 +159,12 @@
                 </div>
 
                 {{-- Payment Method --}}
-                <div class="mt-3">
-                    <label for="payment_method" class="form-label">
-                        <i class="lucide-credit-card" style="width: 18px; height: 18px;"></i>
+                <div class="mt-3 payment-method-section">
+                    <label for="payment_method" class="form-label payment-label">
+                        <i class="lucide-credit-card payment-icon"></i>
                         Payment Method
                     </label>
-                    <select name="payment_method" id="payment_method" class="form-select" required>
+                    <select name="payment_method" id="payment_method" class="form-select payment-select" required>
                         <option value="cash" selected>💵 Cash</option>
                         <option value="card">💳 Credit/Debit Card</option>
                         <option value="mobile">📱 Mobile Payment</option>
@@ -175,8 +175,8 @@
                 <form id="checkout-form" action="{{ route('staff.checkout') }}" method="POST">
                     @csrf
                     <input type="hidden" name="cart_data" id="cart_data">
-                    <button type="button" id="checkout" class="btn w-100">
-                        <i class="lucide-receipt" style="width: 22px; height: 22px;"></i>
+                    <button type="button" id="checkout" class="btn w-100 checkout-btn">
+                        <i class="lucide-receipt checkout-icon"></i>
                         Checkout & Print
                     </button>
                 </form>
@@ -188,9 +188,7 @@
 {{-- Receipt Preview Modal --}}
 <div class="modal fade" id="receiptModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content" id="receipt-content"
-             style="font-family: 'Khmer OS', sans-serif; background-color:#fff; color:#000;">
-        </div>
+        <div class="modal-content receipt-modal-content" id="receipt-content"></div>
     </div>
 </div>
 
@@ -209,5 +207,4 @@
     });
 </script>
 <script src="{{ asset('assets/js/staff-sell.js') }}"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 @endsection

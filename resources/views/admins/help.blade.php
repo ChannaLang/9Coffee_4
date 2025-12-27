@@ -9,9 +9,6 @@
 <div class="help-container">
     <div class="help-main">
         <div class="card-header">
-            <a href="{{ route('admins.dashboard') }}" class="btn-back">
-                <i class="lucide lucide-arrow-left"></i> Back to Dashboard
-            </a>
             <h4 class="mb-0">Help Center</h4>
             <div style="width: 180px;"></div>
         </div>
