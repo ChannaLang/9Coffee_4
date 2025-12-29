@@ -11,13 +11,13 @@
     <div class="welcome-banner">
         <div class="welcome-content">
             <h1 class="welcome-title">
-                <i class="lucide-sparkles"></i>
+                <span class="emoji">✨</span>
                 Welcome Back, Admin!
             </h1>
-            <p class="welcome-subtitle">Here's what's happening with your coffee shop today</p>
+            <p class="welcome-subtitle">☕ Here's what's happening with your coffee shop today</p>
         </div>
         <div class="welcome-date">
-            <i class="lucide-calendar-days"></i>
+            <span class="emoji">📅</span>
             <span id="currentDate"></span>
         </div>
     </div>
@@ -28,21 +28,25 @@
             <div class="stat-content">
                 <div class="stat-header">
                     <div class="stat-icon-wrapper">
-                        <i class="lucide-calendar-check"></i>
+                        <span class="emoji stat-emoji">📆</span>
                     </div>
                     <div class="stat-trend trend-up">
-                        <i class="lucide-trending-up"></i>
+                        <span class="emoji">📈</span>
                         <span>+12%</span>
                     </div>
                 </div>
                 <div class="stat-details">
                     <div class="stat-label">
-                        <i class="lucide-calendar"></i>
+                        
                         Total Bookings
                     </div>
                     <div class="stat-number">{{ $productsCount }}</div>
-                    <div class="stat-footer">Updated just now</div>
+                    <div class="stat-footer">📈 Updated just now</div>
                 </div>
+            </div>
+            <div class="stat-decoration">
+                <span class="decoration-emoji">🎉</span>
+                <span class="decoration-emoji">⭐</span>
             </div>
         </a>
 
@@ -50,21 +54,25 @@
             <div class="stat-content">
                 <div class="stat-header">
                     <div class="stat-icon-wrapper">
-                        <i class="lucide-shopping-bag"></i>
+                        <span class="emoji stat-emoji">🛍️</span>
                     </div>
                     <div class="stat-trend trend-up">
-                        <i class="lucide-trending-up"></i>
+                        <span class="emoji">📈</span>
                         <span>+8%</span>
                     </div>
                 </div>
                 <div class="stat-details">
                     <div class="stat-label">
-                        <i class="lucide-shopping-cart"></i>
+
                         Total Orders
                     </div>
                     <div class="stat-number">{{ $ordersCount }}</div>
-                    <div class="stat-footer">Active orders tracking</div>
+                    <div class="stat-footer"> Active orders tracking</div>
                 </div>
+            </div>
+            <div class="stat-decoration">
+                <span class="decoration-emoji">🎯</span>
+                <span class="decoration-emoji">✨</span>
             </div>
         </a>
 
@@ -72,21 +80,25 @@
             <div class="stat-content">
                 <div class="stat-header">
                     <div class="stat-icon-wrapper">
-                        <i class="lucide-wallet"></i>
+                        <span class="emoji stat-emoji">💰</span>
                     </div>
                     <div class="stat-trend trend-up">
-                        <i class="lucide-trending-up"></i>
+                        <span class="emoji">📈</span>
                         <span>+15%</span>
                     </div>
                 </div>
                 <div class="stat-details">
                     <div class="stat-label">
-                        <i class="lucide-dollar-sign"></i>
+                        <span class="emoji"></span>
                         Total Earnings
                     </div>
                     <div class="stat-number">${{ number_format($earning, 2) }}</div>
-                    <div class="stat-footer">Revenue generated</div>
+                    <div class="stat-footer">💵 Revenue generated</div>
                 </div>
+            </div>
+            <div class="stat-decoration">
+                <span class="decoration-emoji">💎</span>
+                <span class="decoration-emoji">🌟</span>
             </div>
         </a>
     </div>
@@ -98,16 +110,16 @@
             <div class="section-header">
                 <div class="section-title">
                     <div class="section-icon">
-                        <i class="lucide-receipt"></i>
+                        <span class="emoji section-emoji">🧾</span>
                     </div>
                     <div>
-                        <h2>Recent Orders</h2>
+                        <h2> Recent Orders</h2>
                         <p class="section-subtitle">Latest transactions from your customers</p>
                     </div>
                 </div>
                 <a href="{{ route('all.orders') }}" class="btn-view-all">
                     View All
-                    <i class="lucide-arrow-right"></i>
+                    <span class="emoji">➡️</span>
                 </a>
             </div>
 
@@ -143,7 +155,7 @@
                             <td class="product-cell">
                                 <div class="product-info">
                                     <div class="product-icon">
-                                        <i class="lucide-coffee"></i>
+                                        <span class="emoji">☕</span>
                                     </div>
                                     <span>{{ $order->product->name ?? 'N/A' }}</span>
                                 </div>
@@ -154,7 +166,15 @@
                             </td>
                             <td class="status-cell">
                                 <span class="status-badge status-{{ strtolower($order->status) }}">
-                                    <i class="lucide-{{ strtolower($order->status) == 'pending' ? 'clock' : (strtolower($order->status) == 'cancelled' ? 'x-circle' : 'check-circle') }}"></i>
+                                    <span class="emoji">
+                                        @if(strtolower($order->status) == 'pending')
+                                            ⏳
+                                        @elseif(strtolower($order->status) == 'cancelled')
+                                            ❌
+                                        @else
+                                            ✅
+                                        @endif
+                                    </span>
                                     {{ ucfirst($order->status) }}
                                 </span>
                             </td>
@@ -169,7 +189,7 @@
                         <tr>
                             <td colspan="5" class="empty-state">
                                 <div class="empty-content">
-                                    <i class="lucide-inbox"></i>
+                                    <span class="emoji large-emoji">📭</span>
                                     <p>No recent orders</p>
                                     <span>Orders will appear here once customers start ordering</span>
                                 </div>
@@ -186,10 +206,10 @@
             <div class="section-header">
                 <div class="section-title">
                     <div class="section-icon">
-                        <i class="lucide-bar-chart-3"></i>
+                        <span class="emoji section-emoji">📈</span>
                     </div>
                     <div>
-                        <h2>Analytics Overview</h2>
+                        <h2> Analytics Overview</h2>
                         <p class="section-subtitle">Performance metrics at a glance</p>
                     </div>
                 </div>
@@ -206,12 +226,23 @@
 <script src="https://unpkg.com/lucide@latest"></script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+        // Initialize Lucide icons
         lucide.createIcons();
+
+        // Re-initialize icons after a short delay to catch any dynamically loaded content
+        setTimeout(() => {
+            lucide.createIcons();
+        }, 100);
 
         // Update current date
         const dateElement = document.getElementById('currentDate');
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         dateElement.textContent = new Date().toLocaleDateString('en-US', options);
+    });
+
+    // Reinitialize icons after page fully loads
+    window.addEventListener('load', () => {
+        lucide.createIcons();
     });
 </script>
 

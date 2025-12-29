@@ -38,6 +38,29 @@ body {
 }
 
 /* =========================================================
+   EMOJI STYLES
+========================================================= */
+
+.emoji {
+    font-size: 1.2em;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1;
+}
+
+.large-emoji {
+    font-size: 4rem !important;
+}
+
+.product-icon .emoji {
+    font-size: 1.5rem;
+}
+
+.status-badge .emoji {
+    font-size: 1rem;
+}
+
+/* =========================================================
    WELCOME BANNER
 ========================================================= */
 
@@ -77,6 +100,10 @@ body {
     color: #ffa726;
 }
 
+.welcome-title .emoji {
+    font-size: 2rem;
+}
+
 .welcome-subtitle {
     color: #d4a373;
     font-size: 1.05rem;
@@ -98,6 +125,10 @@ body {
     width: 20px;
     height: 20px;
     color: #ffa726;
+}
+
+.welcome-date .emoji {
+    font-size: 1.3rem;
 }
 
 /* =========================================================
@@ -122,6 +153,34 @@ body {
     position: relative;
     overflow: hidden;
     display: block;
+}
+
+.stat-decoration {
+    position: absolute;
+    bottom: 10px;
+    right: 15px;
+    display: flex;
+    gap: 8px;
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+.decoration-emoji {
+    font-size: 2.5rem;
+    animation: float 3s ease-in-out infinite;
+}
+
+.decoration-emoji:nth-child(2) {
+    animation-delay: 0.5s;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
 }
 
 .stat-card::before {
@@ -198,6 +257,10 @@ body {
     height: 32px;
 }
 
+.stat-icon-wrapper .stat-emoji {
+    font-size: 2rem;
+}
+
 .stat-trend {
     display: flex;
     align-items: center;
@@ -216,6 +279,10 @@ body {
 .trend-up i {
     width: 16px;
     height: 16px;
+}
+
+.trend-up .emoji {
+    font-size: 0.9rem;
 }
 
 .stat-details {
@@ -306,6 +373,10 @@ body {
     color: #ffa726;
 }
 
+.section-icon .section-emoji {
+    font-size: 1.5rem;
+}
+
 .section-title h2 {
     color: #f5e6d3;
     font-weight: 700;
@@ -336,6 +407,10 @@ body {
 .btn-view-all i {
     width: 16px;
     height: 16px;
+}
+
+.btn-view-all .emoji {
+    font-size: 1rem;
 }
 
 .btn-view-all:hover {
@@ -542,6 +617,10 @@ body {
     width: 64px;
     height: 64px;
     color: #8d6e63;
+    opacity: 0.5;
+}
+
+.empty-content .large-emoji {
     opacity: 0.5;
 }
 
