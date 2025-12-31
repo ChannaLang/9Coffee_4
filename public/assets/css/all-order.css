@@ -68,6 +68,11 @@
     transform: translateX(-4px);
 }
 
+/* Header Spacer */
+.header-spacer {
+    width: 100px;
+}
+
 /* Stats Cards */
 .stats-row {
     display: grid;
@@ -101,7 +106,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 28px;
+    font-size: 32px;
 }
 
 .stat-icon.total {
@@ -233,6 +238,12 @@
     color: var(--primary-orange);
 }
 
+/* Quantity Badge */
+.quantity-badge {
+    color: var(--primary-orange);
+    font-weight: 600;
+}
+
 /* Status Badges */
 .status-badge {
     padding: 8px 16px;
@@ -275,6 +286,14 @@
     50% { opacity: 0.5; }
 }
 
+/* Action Buttons Container */
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
 /* Action Buttons */
 .btn-action {
     padding: 8px 16px;
@@ -287,7 +306,6 @@
     gap: 6px;
     transition: all 0.3s;
     cursor: pointer;
-    margin: 0 4px;
 }
 
 .btn-action i {
@@ -325,6 +343,11 @@
     font-weight: 700;
     font-size: 16px;
     padding: 20px 16px;
+}
+
+/* Text Alignment */
+.text-right {
+    text-align: right;
 }
 
 /* Pagination */
@@ -435,6 +458,10 @@
         text-align: center;
     }
 
+    .header-spacer {
+        display: none;
+    }
+
     .orders-title {
         font-size: 22px;
     }
@@ -455,6 +482,10 @@
     .btn-action {
         padding: 6px 12px;
         font-size: 11px;
+    }
+
+    .action-buttons {
+        gap: 2px;
     }
 
     .bottom-actions {

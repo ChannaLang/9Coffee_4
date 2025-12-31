@@ -515,9 +515,41 @@ body {
     border: 1.5px solid rgba(245, 230, 211, 0.2) !important;
     color: #f5e6d3 !important;
     border-radius: 12px !important;
-    padding: 12px 16px !important;
-    font-weight: 500;
+    padding: 14px 40px 14px 16px !important;
+    font-weight: 600 !important;
+    font-size: 1.05rem !important;
     width: 100%;
+    line-height: 1.5 !important;
+    min-height: 48px !important;
+}
+
+.form-select {
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23d4a373' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 12px center !important;
+    background-size: 20px !important;
+}
+
+.form-select option {
+    background: #2c1810 !important;
+    color: #f5e6d3 !important;
+    padding: 14px 16px !important;
+    font-size: 1.05rem !important;
+    font-weight: 600 !important;
+    line-height: 1.6 !important;
+    min-height: 48px !important;
+}
+
+/* Firefox specific styles */
+@-moz-document url-prefix() {
+    .form-select option {
+        background-color: #2c1810 !important;
+        color: #f5e6d3 !important;
+    }
 }
 
 .form-control:focus,
@@ -599,6 +631,26 @@ body {
 .checkbox-item:has(input:checked) {
     background: rgba(212, 163, 115, 0.3);
     border-color: #d4a373;
+}
+
+.checkbox-item.checkbox-disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: rgba(26, 15, 10, 0.2) !important;
+}
+
+.checkbox-item.checkbox-disabled:hover {
+    background: rgba(26, 15, 10, 0.2) !important;
+    border-color: rgba(245, 230, 211, 0.1) !important;
+}
+
+.checkbox-item.checkbox-disabled input[type="checkbox"] {
+    cursor: not-allowed;
+}
+
+.checkbox-item.checkbox-disabled .checkbox-label {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 .checkbox-label {

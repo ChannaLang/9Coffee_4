@@ -34,49 +34,57 @@ function initAddSubtypeModal() {
                 const tabContent = document.getElementById(`type-${subtype.product_type_id}`);
 
                 if (tabContent) {
-                    // Check if there's a "No subtypes yet" message and remove it
-                    const emptyMessage = tabContent.querySelector('p');
-                    if (emptyMessage) {
-                        emptyMessage.remove();
+                    // Check if there's an empty state and remove it
+                    const emptyState = tabContent.querySelector('.empty-state');
+                    if (emptyState) {
+                        emptyState.remove();
                     }
 
-                    // Check if row exists, if not create it
-                    let rowContainer = tabContent.querySelector('.row');
-                    if (!rowContainer) {
-                        rowContainer = document.createElement('div');
-                        rowContainer.className = 'row';
-                        tabContent.appendChild(rowContainer);
+                    // Check if subtypes grid exists, if not create it
+                    let gridContainer = tabContent.querySelector('.subtypes-grid');
+                    if (!gridContainer) {
+                        gridContainer = document.createElement('div');
+                        gridContainer.className = 'subtypes-grid';
+                        tabContent.appendChild(gridContainer);
                     }
 
-                    // Create new subtype card with updated HTML structure
-                    const div = document.createElement('div');
-                    div.className = 'col-xxl-2 col-xl-3 col-lg-4 col-md-6 mb-4';
-                    div.innerHTML = `
-                        <div class="card category-card" data-product-count="0">
-                            <div class="card-header">
-                                <i class="lucide-tag" style="width: 20px; height: 20px; vertical-align: middle;"></i>
-                                ${subtype.name}
+                    // Create new subtype card with clean HTML structure
+                    const cardWrapper = document.createElement('div');
+                    cardWrapper.innerHTML = `
+                        <div class="subtype-card">
+                            <div class="subtype-header">
+                                <div class="subtype-title">
+                                    <span class="emoji">🏷️</span>
+                                    <h3>${subtype.name}</h3>
+                                </div>
+                                <div class="product-count-badge">
+                                    <span class="emoji">📦</span>
+                                    0
+                                </div>
                             </div>
-                            <div class="card-body">
-                                <ul class="list-group mb-2">
-                                    <li class="list-group-item text-muted">
-                                        <i class="lucide-package-x" style="width: 16px; height: 16px; vertical-align: middle;"></i>
-                                        No products yet.
-                                    </li>
-                                </ul>
-                                <form action="/admin/categories/delete-subtype/${subtype.id}" method="POST" class="mt-2 delete-subtype-form">
+
+                            <div class="subtype-body">
+                                <div class="products-list">
+                                    <div class="empty-products">
+                                        <span class="emoji empty-emoji">📭</span>
+                                        <p>No products yet</p>
+                                        <span class="empty-hint">Add products to this category</span>
+                                    </div>
+                                </div>
+
+                                <form action="/admin/categories/delete-subtype/${subtype.id}" method="POST" class="delete-form">
                                     <input type="hidden" name="_token" value="${document.querySelector('meta[name="csrf-token"]').getAttribute('content')}">
                                     <input type="hidden" name="_method" value="DELETE">
-                                    <button class="btn btn-sm btn-danger w-100">
-                                        <i class="lucide-trash-2" style="width: 16px; height: 16px;"></i>
-                                        Delete Subtype
+                                    <button type="submit" class="btn-delete-subtype">
+                                        <span class="emoji">🗑️</span>
+                                        Delete Category
                                     </button>
                                 </form>
                             </div>
                         </div>
                     `;
 
-                    rowContainer.appendChild(div);
+                    gridContainer.appendChild(cardWrapper.firstElementChild);
 
                     // Reinitialize Lucide icons for new content
                     if (typeof lucide !== 'undefined') {
@@ -86,12 +94,13 @@ function initAddSubtypeModal() {
 
                 Swal.fire({
                     icon: 'success',
-                    title: 'Subtype added!',
-                    timer: 1500,
+                    title: 'Subtype Created!',
+                    text: `${data.subtype.name} has been added successfully`,
+                    timer: 2000,
                     showConfirmButton: false,
                     background: 'linear-gradient(135deg, #3e2723 0%, #2c1810 100%)',
                     color: '#f5e6d3',
-                    confirmButtonColor: '#d4a373'
+                    iconColor: '#43a047'
                 });
             } else {
                 Swal.fire({
@@ -108,7 +117,7 @@ function initAddSubtypeModal() {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: err.message,
+                text: err.message || 'Something went wrong. Please try again.',
                 background: 'linear-gradient(135deg, #3e2723 0%, #2c1810 100%)',
                 color: '#f5e6d3',
                 confirmButtonColor: '#d4a373'
@@ -119,19 +128,42 @@ function initAddSubtypeModal() {
     // Prevent deletion if subtype has products
     document.addEventListener('submit', function(e) {
         const form = e.target;
-        if (form.matches('.delete-subtype-form')) {
-            const card = form.closest('.card');
-            const productCount = parseInt(card.getAttribute('data-product-count') || 0);
+        if (form.matches('.delete-form')) {
+            e.preventDefault();
+
+            // Get product count from badge
+            const card = form.closest('.subtype-card');
+            const countBadge = card.querySelector('.product-count-badge');
+            const productCount = parseInt(countBadge.textContent.trim()) || 0;
 
             if (productCount > 0) {
-                e.preventDefault();
                 Swal.fire({
                     icon: 'warning',
                     title: 'Cannot Delete',
-                    text: 'Cannot delete this subtype because it has products.',
+                    text: `This subtype has ${productCount} product(s). Please remove all products before deleting.`,
                     background: 'linear-gradient(135deg, #3e2723 0%, #2c1810 100%)',
                     color: '#f5e6d3',
-                    confirmButtonColor: '#d4a373'
+                    confirmButtonColor: '#d4a373',
+                    iconColor: '#ffa726'
+                });
+            } else {
+                // Confirm deletion
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "This subtype will be permanently deleted!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'Cancel',
+                    background: 'linear-gradient(135deg, #3e2723 0%, #2c1810 100%)',
+                    color: '#f5e6d3',
+                    confirmButtonColor: '#ef5350',
+                    cancelButtonColor: '#6c757d',
+                    iconColor: '#ffa726'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
                 });
             }
         }

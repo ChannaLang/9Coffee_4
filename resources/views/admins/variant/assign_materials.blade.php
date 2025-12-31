@@ -8,34 +8,31 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@latest/font/lucide.min.css">
 <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
 
-<div class="container mt-4">
+<div class="recipe-container">
 
     {{-- Page Header --}}
     <div class="page-header">
         <h1 class="page-title">
-            <i class="lucide-chef-hat" style="width: 32px; height: 32px; vertical-align: middle;"></i>
-            Recipe Builder
+            <i class="lucide-chef-hat icon-lg"></i>
+            Creating recipe for: <strong class="variant-name">{{ $variant->name }}</strong>
         </h1>
-        <p class="page-subtitle">
-            <i class="lucide-tag" style="width: 20px; height: 20px; vertical-align: middle;"></i>
-            Creating recipe for: <strong style="color: #d4a373;">{{ $variant->name }}</strong>
-        </p>
+
     </div>
 
     <div class="row">
 
         {{-- LEFT SIDE: Ingredient List --}}
         <div class="col-lg-4 col-md-5">
-            <div class="card shadow-lg border-0">
-                <div class="card-header">
-                    <i class="lucide-package" style="width: 22px; height: 22px;"></i>
+            <div class="recipe-card">
+                <div class="recipe-card-header">
+                    <i class="lucide-package icon-md"></i>
                     Available Ingredients
                 </div>
-                <div class="card-body">
+                <div class="recipe-card-body">
 
                     {{-- TomSelect Dropdown --}}
                     <label for="ingredientDropdown" class="ingredient-section-label">
-                        <i class="lucide-search" style="width: 18px; height: 18px; vertical-align: middle;"></i>
+                        <i class="lucide-search icon-sm"></i>
                         Search & Add
                     </label>
                     <select id="ingredientDropdown" placeholder="Type to search ingredients...">
@@ -56,7 +53,7 @@
                     </select>
 
                     {{-- Clickable Ingredient List --}}
-                    <div id="ingredientList" class="mt-3">
+                    <div id="ingredientList" class="ingredient-list-container">
                         @php $hasUnassigned = false; @endphp
                         @foreach($rawMaterials as $material)
                             @php
@@ -69,22 +66,21 @@
                                      data-name="{{ $material->name }}"
                                      data-qty="{{ $material->quantity }}"
                                      data-unit="{{ $material->unit }}">
-                                    <strong>
-                                        <i class="lucide-circle-dot" style="width: 14px; height: 14px; vertical-align: middle;"></i>
-                                        {{ $material->name }}
-                                    </strong>
-                                    <br>
-                                    <small>
-                                        <i class="lucide-archive" style="width: 12px; height: 12px; vertical-align: middle;"></i>
+                                    <div class="ingredient-item-title">
+                                        <i class="lucide-circle-dot icon-xs"></i>
+                                        <strong>{{ $material->name }}</strong>
+                                    </div>
+                                    <div class="ingredient-item-stock">
+                                        <i class="lucide-archive icon-xs"></i>
                                         Stock: {{ $material->quantity }} {{ $material->unit }}
-                                    </small>
+                                    </div>
                                 </div>
                             @endif
                         @endforeach
 
                         @if(!$hasUnassigned)
                             <div class="ingredient-empty">
-                                <i class="lucide-check-circle" style="width: 48px; height: 48px; display: block; margin: 0 auto 12px;"></i>
+                                <i class="lucide-check-circle icon-xl"></i>
                                 All ingredients have been assigned!
                             </div>
                         @endif
@@ -96,34 +92,34 @@
 
         {{-- RIGHT SIDE: Selected Materials Table --}}
         <div class="col-lg-8 col-md-7">
-            <div class="card shadow-lg border-0">
-                <div class="card-header">
-                    <i class="lucide-clipboard-list" style="width: 22px; height: 22px;"></i>
+            <div class="recipe-card">
+                <div class="recipe-card-header">
+                    <i class="lucide-clipboard-list icon-md"></i>
                     Recipe Ingredients
                 </div>
-                <div class="card-body">
+                <div class="recipe-card-body">
 
                     <form action="{{ route('admin.product.variants.storeMaterials', $variant->id) }}" method="POST">
                         @csrf
 
                         <div class="table-responsive">
-                            <table class="table table-bordered align-middle" id="materialTable">
+                            <table class="material-table" id="materialTable">
                                 <thead>
                                     <tr>
-                                        <th style="text-align: left; padding-left: 20px;">
-                                            <i class="lucide-package" style="width: 16px; height: 16px; vertical-align: middle;"></i>
+                                        <th class="text-left">
+                                            <i class="lucide-package icon-sm"></i>
                                             Material
                                         </th>
                                         <th>
-                                            <i class="lucide-database" style="width: 16px; height: 16px; vertical-align: middle;"></i>
+                                            <i class="lucide-database icon-sm"></i>
                                             Available
                                         </th>
                                         <th>
-                                            <i class="lucide-beaker" style="width: 16px; height: 16px; vertical-align: middle;"></i>
+                                            <i class="lucide-beaker icon-sm"></i>
                                             Qty Required
                                         </th>
                                         <th>
-                                            <i class="lucide-settings" style="width: 16px; height: 16px; vertical-align: middle;"></i>
+                                            <i class="lucide-settings icon-sm"></i>
                                             Action
                                         </th>
                                     </tr>
@@ -131,14 +127,14 @@
                                 <tbody>
                                     @forelse($variant->rawMaterials as $material)
                                     <tr data-id="{{ $material->id }}">
-                                        <td class="fw-semibold" style="text-align: left; padding-left: 20px;">
-                                            <i class="lucide-circle-dot" style="width: 14px; height: 14px; vertical-align: middle;"></i>
+                                        <td class="text-left material-name">
+                                            <i class="lucide-circle-dot icon-xs"></i>
                                             {{ $material->name }}
                                         </td>
                                         <td>{{ $material->quantity }} {{ $material->unit }}</td>
                                         <td>
                                             <input type="number"
-                                                   class="form-control"
+                                                   class="material-input"
                                                    step="0.01"
                                                    min="0"
                                                    name="materials[{{ $material->id }}]"
@@ -146,16 +142,16 @@
                                                    placeholder="0.00">
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-danger btn-sm remove-btn">
-                                                <i class="lucide-x" style="width: 14px; height: 14px;"></i>
+                                            <button type="button" class="btn-remove">
+                                                <i class="lucide-x icon-xs"></i>
                                                 Remove
                                             </button>
                                         </td>
                                     </tr>
                                     @empty
-                                    <tr>
-                                        <td colspan="4" style="text-align: center; padding: 48px 20px; color: rgba(245, 230, 211, 0.5); font-style: italic;">
-                                            <i class="lucide-chef-hat" style="width: 48px; height: 48px; display: block; margin: 0 auto 12px; opacity: 0.3;"></i>
+                                    <tr class="empty-state">
+                                        <td colspan="4">
+                                            <i class="lucide-chef-hat icon-xl"></i>
                                             No ingredients selected yet. Choose from the list on the left.
                                         </td>
                                     </tr>
@@ -164,9 +160,9 @@
                             </table>
                         </div>
 
-                        <div class="text-end mt-3">
-                            <button type="submit" class="btn btn-primary px-4 py-2">
-                                <i class="lucide-save" style="width: 20px; height: 20px;"></i>
+                        <div class="form-actions">
+                            <button type="submit" class="btn-save">
+                                <i class="lucide-save icon-md"></i>
                                 Save Recipe
                             </button>
                         </div>
@@ -221,25 +217,25 @@ document.addEventListener("DOMContentLoaded", function () {
         if (document.querySelector(`#materialTable tbody tr[data-id="${id}"]`)) return;
 
         // Remove empty state if exists
-        const emptyRow = document.querySelector('#materialTable tbody tr td[colspan="4"]');
+        const emptyRow = document.querySelector('#materialTable tbody tr.empty-state');
         if (emptyRow) {
-            emptyRow.closest('tr').remove();
+            emptyRow.remove();
         }
 
         document.querySelector("#materialTable tbody").insertAdjacentHTML("beforeend", `
             <tr data-id="${id}">
-                <td class="fw-semibold" style="text-align: left; padding-left: 20px;">
-                    <i class="lucide-circle-dot" style="width: 14px; height: 14px; vertical-align: middle;"></i>
+                <td class="text-left material-name">
+                    <i class="lucide-circle-dot icon-xs"></i>
                     ${name}
                 </td>
                 <td>${qty} ${unit}</td>
                 <td>
-                    <input type="number" class="form-control" step="0.01" min="0"
+                    <input type="number" class="material-input" step="0.01" min="0"
                            name="materials[${id}]" placeholder="0.00" value="0">
                 </td>
                 <td>
-                    <button type="button" class="btn btn-danger btn-sm remove-btn">
-                        <i class="lucide-x" style="width: 14px; height: 14px;"></i>
+                    <button type="button" class="btn-remove">
+                        <i class="lucide-x icon-xs"></i>
                         Remove
                     </button>
                 </td>
@@ -273,7 +269,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (document.querySelectorAll('#ingredientList .ingredient-item').length === 0) {
             document.getElementById('ingredientList').innerHTML = `
                 <div class="ingredient-empty">
-                    <i class="lucide-check-circle" style="width: 48px; height: 48px; display: block; margin: 0 auto 12px;"></i>
+                    <i class="lucide-check-circle icon-xl"></i>
                     All ingredients have been assigned!
                 </div>
             `;
@@ -297,7 +293,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (document.querySelectorAll('#ingredientList .ingredient-item').length === 0) {
             document.getElementById('ingredientList').innerHTML = `
                 <div class="ingredient-empty">
-                    <i class="lucide-check-circle" style="width: 48px; height: 48px; display: block; margin: 0 auto 12px;"></i>
+                    <i class="lucide-check-circle icon-xl"></i>
                     All ingredients have been assigned!
                 </div>
             `;
@@ -311,7 +307,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // --- Remove button in table ---
     function attachRemoveHandlers() {
-        document.querySelectorAll(".remove-btn").forEach(btn => {
+        document.querySelectorAll(".btn-remove").forEach(btn => {
             btn.onclick = function () {
                 let row = this.closest("tr");
                 let id = row.dataset.id;
@@ -340,15 +336,14 @@ document.addEventListener("DOMContentLoaded", function () {
                          data-name="${name}"
                          data-qty="${qty}"
                          data-unit="${unit}">
-                        <strong>
-                            <i class="lucide-circle-dot" style="width: 14px; height: 14px; vertical-align: middle;"></i>
-                            ${name}
-                        </strong>
-                        <br>
-                        <small>
-                            <i class="lucide-archive" style="width: 12px; height: 12px; vertical-align: middle;"></i>
+                        <div class="ingredient-item-title">
+                            <i class="lucide-circle-dot icon-xs"></i>
+                            <strong>${name}</strong>
+                        </div>
+                        <div class="ingredient-item-stock">
+                            <i class="lucide-archive icon-xs"></i>
                             Stock: ${qty} ${unit}
-                        </small>
+                        </div>
                     </div>
                 `);
 
@@ -361,9 +356,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Check if table is empty
                 if (document.querySelectorAll('#materialTable tbody tr[data-id]').length === 0) {
                     document.querySelector('#materialTable tbody').innerHTML = `
-                        <tr>
-                            <td colspan="4" style="text-align: center; padding: 48px 20px; color: rgba(245, 230, 211, 0.5); font-style: italic;">
-                                <i class="lucide-chef-hat" style="width: 48px; height: 48px; display: block; margin: 0 auto 12px; opacity: 0.3;"></i>
+                        <tr class="empty-state">
+                            <td colspan="4">
+                                <i class="lucide-chef-hat icon-xl"></i>
                                 No ingredients selected yet. Choose from the list on the left.
                             </td>
                         </tr>

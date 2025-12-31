@@ -1,5 +1,5 @@
 /* =========================================================
-   MODERN COFFEE SHOP PRODUCT MANAGEMENT - CLEANED
+   MODERN COFFEE SHOP PRODUCT MANAGEMENT
 ========================================================= */
 
 :root {
@@ -21,12 +21,12 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body {
     background: linear-gradient(135deg, #2c1810 0%, #1a0f0a 100%);
     min-height: 100vh;
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
 }
 
 .container-fluid {
@@ -40,6 +40,7 @@ body {
     font-size: 2rem;
     letter-spacing: -0.02em;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    margin-bottom: 24px;
 }
 
 /* BUTTONS */
@@ -55,6 +56,7 @@ body {
     gap: 8px;
     position: relative;
     overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .btn::before {
@@ -90,15 +92,55 @@ body {
     box-shadow: 0 6px 20px rgba(212, 163, 115, 0.5);
 }
 
+/* Table Action Buttons */
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    min-width: 70px;
+}
+
+.btn-info {
+    background: linear-gradient(135deg, var(--info) 0%, #1e88e5 100%);
+    color: white;
+}
+
+.btn-info:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(66, 165, 245, 0.4);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, var(--danger) 0%, #e53935 100%);
+    color: white;
+}
+
+.btn-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(239, 83, 80, 0.4);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, var(--success) 0%, #388e3c 100%);
+    color: white;
+}
+
+.btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(67, 160, 71, 0.4);
+}
+
 /* SEARCH INPUT */
 #productSearch {
     background: rgba(26, 15, 10, 0.6);
     border: 1.5px solid rgba(245, 230, 211, 0.2);
     color: var(--cream);
     border-radius: 12px;
-    padding: 10px 16px;
+    padding: 12px 16px;
     font-weight: 500;
     backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 400px;
 }
 
 #productSearch:focus {
@@ -120,6 +162,7 @@ body {
     border-radius: 24px;
     padding: 32px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    margin-bottom: 24px;
 }
 
 /* ALERTS */
@@ -129,6 +172,13 @@ body {
     font-weight: 500;
     backdrop-filter: blur(10px);
     border: none;
+    margin-bottom: 20px;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .alert-success {
@@ -148,11 +198,13 @@ body {
     border-radius: 16px;
     overflow: hidden;
     background: rgba(26, 15, 10, 0.4);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
 
 .table {
     margin: 0;
     color: var(--cream);
+    width: 100%;
 }
 
 .table thead {
@@ -170,12 +222,14 @@ body {
     letter-spacing: 0.05em;
     padding: 16px 12px;
     border: none;
+    text-align: center;
+    white-space: nowrap;
 }
 
 .table tbody tr {
     background: rgba(44, 24, 16, 0.3);
     border-bottom: 1px solid rgba(245, 230, 211, 0.05);
-    animation: fadeInUp 0.4s ease-out backwards;
+    transition: all 0.3s ease;
 }
 
 .table tbody tr:hover {
@@ -189,6 +243,12 @@ body {
     padding: 16px 12px;
     vertical-align: middle;
     border: none;
+    text-align: center;
+}
+
+.table tbody td:first-child {
+    font-weight: 600;
+    color: var(--caramel);
 }
 
 .table tbody td:nth-child(2) {
@@ -204,7 +264,8 @@ body {
     border-radius: 12px;
     border: 1.5px solid rgba(212, 163, 115, 0.3);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
 }
 
 .table img:hover {
@@ -213,7 +274,7 @@ body {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
 }
 
-/* SWEETALERT2 */
+/* SWEETALERT2 CUSTOMIZATION */
 .swal2-popup {
     background: linear-gradient(135deg, #3e2723 0%, #2c1810 100%);
     border: 1.5px solid rgba(245, 230, 211, 0.2);
@@ -223,8 +284,15 @@ body {
     font-family: 'Inter', 'Segoe UI', sans-serif;
 }
 
-.swal2-title { color: var(--caramel); font-weight: 700; font-size: 1.5rem; }
-.swal2-html-container { color: #d7ccc8; }
+.swal2-title {
+    color: var(--caramel);
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.swal2-html-container {
+    color: #d7ccc8;
+}
 
 .swal2-input,
 .swal2-textarea,
@@ -237,6 +305,7 @@ body {
     padding: 12px 16px !important;
     font-weight: 500;
     margin: 8px 0;
+    width: 100%;
 }
 
 .swal2-input:focus,
@@ -247,10 +316,20 @@ body {
     outline: none;
 }
 
-.swal2-select option { background: #2c1810; color: var(--cream); }
+.swal2-select option {
+    background: #2c1810;
+    color: var(--cream);
+}
 
-.swal2-file { padding: 8px 12px !important; cursor: pointer; }
-.swal2-textarea { min-height: 80px !important; resize: vertical; }
+.swal2-file {
+    padding: 8px 12px !important;
+    cursor: pointer;
+}
+
+.swal2-textarea {
+    min-height: 80px !important;
+    resize: vertical;
+}
 
 .swal2-confirm {
     background: linear-gradient(135deg, var(--caramel) 0%, var(--caramel-dark) 100%) !important;
@@ -259,6 +338,12 @@ body {
     padding: 12px 28px !important;
     font-weight: 600 !important;
     box-shadow: 0 4px 12px rgba(212, 163, 115, 0.3);
+    border: none !important;
+}
+
+.swal2-confirm:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(212, 163, 115, 0.5) !important;
 }
 
 .swal2-cancel {
@@ -270,10 +355,19 @@ body {
     font-weight: 600 !important;
 }
 
+.swal2-cancel:hover {
+    background: rgba(239, 83, 80, 0.3) !important;
+}
+
 .swal2-validation-message {
     background: rgba(239, 83, 80, 0.2) !important;
     color: #ff6b6b !important;
     border-color: rgba(239, 83, 80, 0.4) !important;
+    border-radius: 8px !important;
+}
+
+.hidden {
+    display: none !important;
 }
 
 /* ANIMATIONS */
@@ -283,22 +377,85 @@ body {
 }
 
 /* SCROLLBAR */
-.table-responsive::-webkit-scrollbar { width: 8px; height: 8px; }
-.table-responsive::-webkit-scrollbar-track { background: rgba(26, 15, 10, 0.3); border-radius: 4px; }
-.table-responsive::-webkit-scrollbar-thumb { background: rgba(212, 163, 115, 0.5); border-radius: 4px; }
-.table-responsive::-webkit-scrollbar-thumb:hover { background: rgba(212, 163, 115, 0.7); }
+.table-responsive::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: rgba(26, 15, 10, 0.3);
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: rgba(212, 163, 115, 0.5);
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background: rgba(212, 163, 115, 0.7);
+}
 
 /* RESPONSIVE DESIGN */
 @media (max-width: 768px) {
-    .text-cafe-title { font-size: 1.6rem; }
-    .cafe-card { padding: 20px; }
-    .btn-create, #btnAddProduct, #productSearch { width: 100%; margin-bottom: 16px; }
-    .table thead th, .table tbody td, .table tbody th { padding: 12px 8px; font-size: 0.85rem; }
-    .table img { width: 50px; height: 50px; }
-    .btn-sm { font-size: 0.75rem; padding: 4px 10px; min-width: 60px; }
+    .text-cafe-title {
+        font-size: 1.6rem;
+    }
+
+    .cafe-card {
+        padding: 20px;
+    }
+
+    .btn-create,
+    #btnAddProduct,
+    #productSearch {
+        width: 100%;
+        margin-bottom: 16px;
+        max-width: 100%;
+    }
+
+    .table thead th,
+    .table tbody td,
+    .table tbody th {
+        padding: 12px 8px;
+        font-size: 0.85rem;
+    }
+
+    .table img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .btn-sm {
+        font-size: 0.75rem;
+        padding: 4px 10px;
+        min-width: 60px;
+    }
 }
 
 @media (max-width: 576px) {
-    .table thead th, .table tbody td { padding: 10px 6px; font-size: 0.8rem; }
-    .btn-sm { font-size: 0.7rem; padding: 3px 8px; min-width: 50px; }
+    .text-cafe-title {
+        font-size: 1.4rem;
+    }
+
+    .cafe-card {
+        padding: 16px;
+    }
+
+    .table thead th,
+    .table tbody td {
+        padding: 10px 6px;
+        font-size: 0.8rem;
+    }
+
+    .btn-sm {
+        font-size: 0.7rem;
+        padding: 3px 8px;
+        min-width: 50px;
+    }
+
+    .table img {
+        width: 40px;
+        height: 40px;
+    }
 }

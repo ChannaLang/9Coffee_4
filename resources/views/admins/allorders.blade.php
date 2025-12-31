@@ -6,24 +6,13 @@
 <link rel="stylesheet" href="{{ asset('assets/css/all-order.css') }}">
 
 <div class="orders-container">
-    <!-- Header -->
-    <div class="orders-header">
-        <a href="javascript:history.back()" class="btn-back">
-            <i class="lucide lucide-arrow-left"></i>
-            Back
-        </a>
-        <h1 class="orders-title">
-            <i class="lucide lucide-receipt"></i>
-            Orders Management
-        </h1>
-        <div style="width: 100px;"></div>
-    </div>
+
 
     <!-- Stats Cards -->
     <div class="stats-row">
         <div class="stat-card">
             <div class="stat-icon total">
-                <i class="lucide lucide-shopping-bag"></i>
+                📦
             </div>
             <div class="stat-content">
                 <h4>Total Orders</h4>
@@ -32,7 +21,7 @@
         </div>
         <div class="stat-card">
             <div class="stat-icon revenue">
-                <i class="lucide lucide-dollar-sign"></i>
+                💰
             </div>
             <div class="stat-content">
                 <h4>Total Revenue</h4>
@@ -41,7 +30,7 @@
         </div>
         <div class="stat-card">
             <div class="stat-icon pending">
-                <i class="lucide lucide-clock"></i>
+                ⏳
             </div>
             <div class="stat-content">
                 <h4>Pending Orders</h4>
@@ -88,7 +77,7 @@
                             <td>
                                 {{ $order->product->name ?? 'N/A' }}
                                 @if($order->quantity > 1)
-                                    <span style="color: var(--primary-orange);">(×{{ $order->quantity }})</span>
+                                    <span class="quantity-badge">(×{{ $order->quantity }})</span>
                                 @endif
                             </td>
                             <td><strong>${{ number_format($order->price, 2) }}</strong></td>
@@ -99,24 +88,20 @@
                                 </span>
                             </td>
                             <td>
-                                <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 4px;">
+                                <div class="action-buttons">
                                     <button type="button" class="btn-action info btn-edit-status"
                                         data-id="{{ $order->id }}"
                                         data-status="{{ $order->status }}">
                                         <i class="lucide lucide-edit"></i>
                                         Change
                                     </button>
-                                    <form action="{{ route('delete.orders', $order->id) }}" method="POST" style="display: inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="button" class="btn-action danger btn-delete"
-                                            data-name="{{ $order->first_name ?? '' }}"
-                                            data-price="{{ number_format($order->price, 2) }}"
-                                            data-id="{{ $order->id }}">
-                                            <i class="lucide lucide-trash-2"></i>
-                                            Delete
-                                        </button>
-                                    </form>
+                                    <button type="button" class="btn-action danger btn-delete"
+                                        data-name="{{ $order->first_name ?? '' }}"
+                                        data-price="{{ number_format($order->price, 2) }}"
+                                        data-id="{{ $order->id }}">
+                                        <i class="lucide lucide-trash-2"></i>
+                                        Delete
+                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -125,7 +110,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="5" style="text-align: right;">
+                        <td colspan="5" class="text-right">
                             <strong>Total Revenue:</strong>
                         </td>
                         <td colspan="2">
@@ -143,19 +128,20 @@
 
         <!-- Bottom Actions -->
         <div class="bottom-actions">
-            <form action="{{ route('delete.all.orders') }}" method="POST" style="margin: 0;">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn-bulk delete-all" onclick="return confirm('Are you sure you want to delete ALL orders?');">
-                    <i class="lucide lucide-trash-2"></i>
-                    Delete All Orders
-                </button>
-            </form>
+            <button type="button" class="btn-bulk delete-all">
+                <i class="lucide lucide-trash-2"></i>
+                Delete All Orders
+            </button>
 
             <a href="{{ route('orders.export') }}" class="btn-bulk export">
                 <i class="lucide lucide-download"></i>
                 Export to Excel
             </a>
+
+            <form action="{{ route('delete.all.orders') }}" method="POST" style="display: none;">
+                @csrf
+                @method('DELETE')
+            </form>
         </div>
     </div>
 </div>
