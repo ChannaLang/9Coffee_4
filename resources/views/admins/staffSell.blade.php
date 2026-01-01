@@ -151,7 +151,7 @@
                                 <th>Size</th>
                                 <th>Sugar</th>
                                 <th>Qty</th>
-                                <th class="text-right">Price</th>
+                                <th>Price</th>
                             </tr>
                         </thead>
                         <tbody class="text-center"></tbody>

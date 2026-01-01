@@ -1,5 +1,5 @@
 /* =========================================================
-   MODERN COFFEE SHOP POS CHECKOUT - REDESIGNED
+   MODERN COFFEE SHOP POS CHECKOUT - FIXED VERSION
 ========================================================= */
 
 :root {
@@ -175,15 +175,23 @@ body {
 
 .product-image-wrapper {
     position: relative;
+    width: 100%;
+    padding-top: 100%; /* 1:1 Aspect Ratio (Square) */
+    overflow: hidden;
+    border-radius: 14px;
+    margin-bottom: 14px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    background: rgba(26, 15, 10, 0.3);
 }
 
 .product-image {
-    height: 140px !important;
-    width: 100%;
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
     object-fit: cover;
     border-radius: 14px !important;
-    margin-bottom: 14px !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .product-name {
@@ -238,11 +246,16 @@ body {
 }
 
 /* =========================================================
-   SUGAR SELECTOR
+   SUGAR SELECTOR - FIXED
 ========================================================= */
 
 .sugar-wrapper {
     margin-top: 12px;
+    display: none; /* Hidden by default */
+}
+
+.sugar-wrapper.show {
+    display: block !important;
 }
 
 .sugar-select {
@@ -305,7 +318,7 @@ body {
 }
 
 /* =========================================================
-   CART SECTION (RIGHT SIDE)
+   CART SECTION (RIGHT SIDE) - FIXED
 ========================================================= */
 
 .cart-section {
@@ -320,6 +333,8 @@ body {
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
     position: sticky;
     top: 20px;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
 }
 
 .cart-title {
@@ -371,20 +386,21 @@ body {
 }
 
 /* =========================================================
-   CART TABLE
+   CART TABLE - FIXED
 ========================================================= */
 
 .cart-table-wrapper {
     border: 1.5px solid rgba(245, 230, 211, 0.15) !important;
     border-radius: 16px;
-    overflow: hidden;
+    overflow-y: auto; /* FIXED: Added auto scroll */
+    overflow-x: hidden;
     background: rgba(26, 15, 10, 0.4);
-    max-height: 50vh !important;
+    max-height: 40vh; /* FIXED: Reduced from 50vh for better layout */
 }
 
 #cart-table {
     margin: 0;
-    table-layout: fixed;
+    table-layout: auto; /* FIXED: Changed from fixed to auto */
     width: 100%;
 }
 
@@ -403,6 +419,7 @@ body {
     text-transform: uppercase;
     letter-spacing: 0.05em;
     border: none;
+    white-space: nowrap; /* FIXED: Prevent header wrapping */
 }
 
 #cart-table tbody td {
@@ -412,6 +429,7 @@ body {
     border-bottom: 1px solid rgba(245, 230, 211, 0.05);
     vertical-align: middle;
     font-size: 0.9rem;
+    word-wrap: break-word; /* FIXED: Allow text wrapping */
 }
 
 #cart-table tbody tr:hover td {
@@ -426,21 +444,25 @@ body {
     padding: 16px 8px !important;
 }
 
+#cart-table tbody tr.fw-bold td:last-child {
+    text-align: center !important;
+}
+
 #cart-table tbody tr .text-warning {
     color: #ffa726 !important;
 }
 
-/* Column widths */
+/* Column widths - FIXED */
 #cart-table th:nth-child(1),
-#cart-table td:nth-child(1) { width: 25%; text-align: center; }
+#cart-table td:nth-child(1) { width: 30%; text-align: left; padding-left: 12px !important; }
 #cart-table th:nth-child(2),
-#cart-table td:nth-child(2) { width: 18%; text-align: center; }
+#cart-table td:nth-child(2) { width: 15%; text-align: center; }
 #cart-table th:nth-child(3),
-#cart-table td:nth-child(3) { width: 15%; text-align: center; }
+#cart-table td:nth-child(3) { width: 12%; text-align: center; }
 #cart-table th:nth-child(4),
-#cart-table td:nth-child(4) { width: auto; text-align: center; white-space: nowrap; min-width: 120px; }
+#cart-table td:nth-child(4) { width: 20%; text-align: center; white-space: nowrap; }
 #cart-table th:nth-child(5),
-#cart-table td:nth-child(5) { width: 20%; text-align: center !important; }
+#cart-table td:nth-child(5) { width: 23%; text-align: center !important; }
 
 /* =========================================================
    QUANTITY BUTTONS
@@ -552,7 +574,7 @@ body {
     gap: 10px;
 }
 
-.checkout-btn:hover {
+.checkout-btn:hover:not(:disabled) {
     background: linear-gradient(135deg, #ffb74d 0%, #ffa726 100%) !important;
     transform: translateY(-3px);
     box-shadow: 0 10px 30px rgba(255, 167, 38, 0.6);
@@ -560,6 +582,11 @@ body {
 
 .checkout-btn:active {
     transform: translateY(0);
+}
+
+.checkout-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 .checkout-icon {
@@ -673,18 +700,33 @@ body {
     animation: fadeInUp 0.6s ease-out;
 }
 
-.product-wrapper:nth-child(1) { animation-delay: 0.05s; }
-.product-wrapper:nth-child(2) { animation-delay: 0.1s; }
-.product-wrapper:nth-child(3) { animation-delay: 0.15s; }
-.product-wrapper:nth-child(4) { animation-delay: 0.2s; }
-.product-wrapper:nth-child(5) { animation-delay: 0.25s; }
-.product-wrapper:nth-child(6) { animation-delay: 0.3s; }
-.product-wrapper:nth-child(7) { animation-delay: 0.35s; }
-.product-wrapper:nth-child(8) { animation-delay: 0.4s; }
+/* FIXED: Reduced animation delays to reasonable numbers */
+.product-wrapper:nth-child(n+1):nth-child(-n+12) { animation-delay: calc(0.05s * (var(--index, 1))); }
+.product-wrapper:nth-child(1) { --index: 1; }
+.product-wrapper:nth-child(2) { --index: 2; }
+.product-wrapper:nth-child(3) { --index: 3; }
+.product-wrapper:nth-child(4) { --index: 4; }
+.product-wrapper:nth-child(5) { --index: 5; }
+.product-wrapper:nth-child(6) { --index: 6; }
+.product-wrapper:nth-child(7) { --index: 7; }
+.product-wrapper:nth-child(8) { --index: 8; }
+.product-wrapper:nth-child(9) { --index: 9; }
+.product-wrapper:nth-child(10) { --index: 10; }
+.product-wrapper:nth-child(11) { --index: 11; }
+.product-wrapper:nth-child(12) { --index: 12; }
 
 /* =========================================================
-   RESPONSIVE DESIGN
+   RESPONSIVE DESIGN - FIXED
 ========================================================= */
+
+@media (max-width: 991px) {
+    .cart-section {
+        position: relative; /* FIXED: Remove sticky on tablets */
+        top: auto;
+        max-height: none;
+        margin-top: 1rem;
+    }
+}
 
 @media (max-width: 768px) {
     .staff-sell-container {
@@ -728,8 +770,8 @@ body {
         padding: 16px !important;
     }
 
-    .product-image {
-        height: 110px !important;
+    .product-image-wrapper {
+        padding-top: 100%; /* Maintain 1:1 ratio on mobile */
     }
 
     #cart-table {
@@ -738,7 +780,7 @@ body {
 
     #cart-table thead th,
     #cart-table tbody td {
-        padding: 10px 6px !important;
+        padding: 8px 4px !important;
     }
 
     .qty-btn {
@@ -756,6 +798,10 @@ body {
         width: 20px;
         height: 20px;
     }
+
+    .cart-table-wrapper {
+        max-height: 35vh; /* FIXED: Adjusted for mobile */
+    }
 }
 
 /* =========================================================
@@ -763,24 +809,40 @@ body {
 ========================================================= */
 
 .cart-table-wrapper::-webkit-scrollbar,
-#products-container::-webkit-scrollbar {
+#products-container::-webkit-scrollbar,
+.cart-section::-webkit-scrollbar {
     width: 8px;
     height: 8px;
 }
 
 .cart-table-wrapper::-webkit-scrollbar-track,
-#products-container::-webkit-scrollbar-track {
+#products-container::-webkit-scrollbar-track,
+.cart-section::-webkit-scrollbar-track {
     background: rgba(26, 15, 10, 0.3);
     border-radius: 4px;
 }
 
 .cart-table-wrapper::-webkit-scrollbar-thumb,
-#products-container::-webkit-scrollbar-thumb {
+#products-container::-webkit-scrollbar-thumb,
+.cart-section::-webkit-scrollbar-thumb {
     background: rgba(212, 163, 115, 0.5);
     border-radius: 4px;
 }
 
 .cart-table-wrapper::-webkit-scrollbar-thumb:hover,
-#products-container::-webkit-scrollbar-thumb:hover {
+#products-container::-webkit-scrollbar-thumb:hover,
+.cart-section::-webkit-scrollbar-thumb:hover {
     background: rgba(212, 163, 115, 0.7);
+}
+
+/* =========================================================
+   UTILITY CLASSES
+========================================================= */
+
+.d-none {
+    display: none !important;
+}
+
+.text-right {
+    text-align: right !important;
 }

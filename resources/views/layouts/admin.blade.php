@@ -368,13 +368,13 @@
 </style>
 
 </head>
-<body style="background-image: url('{{ asset('assets/images/bg_1.jpg') }}');
+<body >
+
+<div id="wrapper" style="background-image: url('{{ asset('assets/images/bg_1.jpg') }}');
              background-size: cover;
              background-position: center;
              background-attachment: fixed;
              min-height: 100vh;">
-
-<div id="wrapper">
 
 @auth('admin')
     <!-- Sidebar Navigation -->
@@ -416,12 +416,6 @@
                 <a href="{{ route('all.products') }}">
                     <span class="icon"><ion-icon name="cart-outline"></ion-icon></span>
                     <span class="title">Products Management</span>
-                </a>
-            </li>
-            <li class="{{ Request::routeIs('admin.categories') ? 'active' : '' }}">
-                <a href="{{ route('admin.categories') }}">
-                    <span class="icon"><ion-icon name="layers-outline"></ion-icon></span>
-                    <span class="title">Categories</span>
                 </a>
             </li>
 

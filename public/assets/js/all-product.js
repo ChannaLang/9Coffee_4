@@ -1,23 +1,148 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const tableBody = document.querySelector('table tbody');
+    const tableBody = document.getElementById('product-table-body');
     const btnAddProduct = document.getElementById('btnAddProduct');
     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 
     if (!tableBody || !btnAddProduct || !csrfToken) {
-        console.warn('Essential DOM elements or CSRF token missing.');
+        console.error('Essential DOM elements or CSRF token missing:', {
+            tableBody: !!tableBody,
+            btnAddProduct: !!btnAddProduct,
+            csrfToken: !!csrfToken
+        });
         return;
     }
 
-    // --- SEARCH FILTER ---
+    // --- HELPER: Sync folder card with table row ---
+    function syncFolderCardWithTable(productId) {
+        const tableRow = document.querySelector(`#product-table-body tr[data-product-id="${productId}"]`);
+        const folderCard = document.querySelector(`.products-folder-grid .product-folder-card[data-product-id="${productId}"]`);
+
+        if (!tableRow || !folderCard) return;
+
+        const name = tableRow.children[1].textContent;
+        const price = tableRow.children[3].textContent;
+        const type = tableRow.children[4].textContent;
+        const subtype = tableRow.children[5].textContent;
+        const image = tableRow.children[2].querySelector('img').src;
+
+        folderCard.querySelector('.product-name-text').textContent = name;
+        folderCard.querySelector('.product-price-text').textContent = price;
+        folderCard.querySelector('.product-type-text').textContent = type;
+        folderCard.querySelector('.product-subtype-text').textContent = subtype;
+        folderCard.querySelector('.product-folder-img').src = image;
+        folderCard.setAttribute('data-product-name', name.toLowerCase());
+
+        const editBtn = folderCard.querySelector('.btn-edit');
+        const deleteBtn = folderCard.querySelector('.btn-delete');
+        const tableEditBtn = tableRow.querySelector('.btn-edit');
+        const tableDeleteBtn = tableRow.querySelector('.btn-delete');
+
+        if (editBtn && tableEditBtn) {
+            editBtn.dataset.name = tableEditBtn.dataset.name;
+            editBtn.dataset.price = tableEditBtn.dataset.price;
+            editBtn.dataset.typeId = tableEditBtn.dataset.typeId;
+            editBtn.dataset.subtypeId = tableEditBtn.dataset.subtypeId;
+        }
+        if (deleteBtn && tableDeleteBtn) {
+            deleteBtn.dataset.name = tableDeleteBtn.dataset.name;
+            deleteBtn.dataset.price = tableDeleteBtn.dataset.price;
+        }
+    }
+
+    // --- HELPER: Add product to folder grid ---
+    function addProductToFolderGrid(product) {
+        const grid = document.getElementById('products-folder-grid');
+        if (!grid) return;
+
+        const card = document.createElement('div');
+        card.className = 'product-folder-card';
+        card.setAttribute('data-product-id', product.id);
+        card.setAttribute('data-product-name', product.name.toLowerCase());
+        card.innerHTML = `
+            <div class="product-folder-image">
+                <img src="/assets/images/${product.image}" alt="${product.name}" class="product-folder-img">
+                <div class="product-folder-overlay">
+                    <button type="button" class="product-action-btn btn-view-detail" data-product-id="${product.id}">
+                        <i class="lucide-eye"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="product-folder-content">
+                <div class="product-folder-header">
+                    <h5 class="product-folder-name">
+                        <i class="lucide-coffee"></i>
+                        <span class="product-name-text">${product.name}</span>
+                    </h5>
+                    <span class="product-folder-price product-price-text">$${Number(product.price).toFixed(2)}</span>
+                </div>
+                <div class="product-folder-meta">
+                    <div class="meta-item">
+                        <i class="lucide-layers"></i>
+                        <span class="product-type-text">${product.product_type_name}</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="lucide-folder"></i>
+                        <span class="product-subtype-text">${product.sub_type_name || 'N/A'}</span>
+                    </div>
+                </div>
+                <div class="product-folder-actions">
+                    <button type="button" class="btn-product-action btn-edit-product btn-edit"
+                            data-id="${product.id}"
+                            data-name="${product.name}"
+                            data-price="${product.price}"
+                            data-type-id="${product.product_type_id}"
+                            data-subtype-id="${product.sub_type_id || ''}">
+                        <i class="lucide-edit"></i> Edit
+                    </button>
+                    <button type="button" class="btn-product-action btn-options-product btn-create-variant"
+                            data-id="${product.id}">
+                        <i class="lucide-settings"></i> Options
+                    </button>
+                    <button type="button" class="btn-product-action btn-delete-product btn-delete"
+                            data-id="${product.id}"
+                            data-name="${product.name}"
+                            data-price="${product.price}">
+                        <i class="lucide-trash-2"></i> Delete
+                    </button>
+                </div>
+            </div>
+        `;
+        grid.appendChild(card);
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    // --- HELPER: Remove product from folder grid ---
+    function removeProductFromFolderGrid(productId) {
+        const card = document.querySelector(`.products-folder-grid .product-folder-card[data-product-id="${productId}"]`);
+        if (card) card.remove();
+    }
+
+    // --- SEARCH FILTER (works with both table and folder cards) ---
     const searchInput = document.getElementById('productSearch');
     if (searchInput) {
         searchInput.addEventListener('keyup', () => {
             const search = searchInput.value.toLowerCase();
+
+            // Filter table rows
             tableBody.querySelectorAll('tr').forEach(row => {
                 const name = row.children[1]?.textContent.toLowerCase() || "";
                 const type = row.children[4]?.textContent.toLowerCase() || "";
                 const subtype = row.children[5]?.textContent.toLowerCase() || "";
                 row.style.display = (name.includes(search) || type.includes(search) || subtype.includes(search)) ? "" : "none";
+            });
+
+            // Filter folder cards
+            const productCards = document.querySelectorAll('.product-folder-card');
+            productCards.forEach(card => {
+                const productName = card.getAttribute('data-product-name') || '';
+                const type = card.querySelector('.product-type-text')?.textContent.toLowerCase() || '';
+                const subtype = card.querySelector('.product-subtype-text')?.textContent.toLowerCase() || '';
+
+                if (productName.includes(search) || type.includes(search) || subtype.includes(search)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
             });
         });
     }
@@ -103,6 +228,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // --- CREATE ROW DYNAMICALLY ---
                 const newRow = document.createElement('tr');
+                newRow.setAttribute('data-product-id', p.id);
                 newRow.innerHTML = `
                     <td>${tableBody.rows.length + 1}</td>
                     <td>${p.name}</td>
@@ -142,13 +268,17 @@ document.addEventListener('DOMContentLoaded', function () {
                     row.cells[0].textContent = index + 1;
                 });
 
+                // Add to folder grid
+                addProductToFolderGrid(p);
+
                 Swal.fire('Success', 'Product added!', 'success');
             }
         });
     });
 
     // --- TABLE BUTTON DELEGATION (EDIT, DELETE, CREATE VARIANT) ---
-    tableBody.addEventListener('click', async e => {
+    // Use document delegation to catch clicks from both table and folder cards
+    document.addEventListener('click', async e => {
         const btn = e.target.closest('button');
         if (!btn) return;
         const id = btn.dataset.id;
@@ -219,19 +349,35 @@ document.addEventListener('DOMContentLoaded', function () {
                     const data = await r.json();
                     if (data.success) {
                         Swal.fire('Updated!', data.message, 'success');
-                        const row = btn.closest('tr');
-                        row.children[1].textContent = res.value.name;
-                        row.children[3].textContent = `$${Number(res.value.price).toFixed(2)}`;
-                        row.children[4].textContent = window.productTypes.find(t => t.id == res.value.product_type_id)?.name || 'N/A';
-                        row.children[5].textContent = res.value.sub_type_id
-                            ? window.subTypes[res.value.product_type_id]?.find(s => s.id == res.value.sub_type_id)?.name || 'N/A'
-                            : 'N/A';
 
-                        // Update data attributes
-                        btn.dataset.name = res.value.name;
-                        btn.dataset.price = res.value.price;
-                        btn.dataset.typeId = res.value.product_type_id;
-                        btn.dataset.subtypeId = res.value.sub_type_id;
+                        // Update table row
+                        const row = tableBody.querySelector(`tr[data-product-id="${id}"]`);
+                        if (row) {
+                            row.children[1].textContent = res.value.name;
+                            row.children[3].textContent = `$${Number(res.value.price).toFixed(2)}`;
+                            row.children[4].textContent = window.productTypes.find(t => t.id == res.value.product_type_id)?.name || 'N/A';
+                            row.children[5].textContent = res.value.sub_type_id
+                                ? window.subTypes[res.value.product_type_id]?.find(s => s.id == res.value.sub_type_id)?.name || 'N/A'
+                                : 'N/A';
+
+                            // Update button data attributes in table
+                            const tableEditBtn = row.querySelector('.btn-edit');
+                            if (tableEditBtn) {
+                                tableEditBtn.dataset.name = res.value.name;
+                                tableEditBtn.dataset.price = res.value.price;
+                                tableEditBtn.dataset.typeId = res.value.product_type_id;
+                                tableEditBtn.dataset.subtypeId = res.value.sub_type_id;
+                            }
+
+                            const tableDeleteBtn = row.querySelector('.btn-delete');
+                            if (tableDeleteBtn) {
+                                tableDeleteBtn.dataset.name = res.value.name;
+                                tableDeleteBtn.dataset.price = res.value.price;
+                            }
+                        }
+
+                        // Sync folder card
+                        syncFolderCardWithTable(id);
                     } else Swal.fire('Error', data.message, 'error');
                 } catch {
                     Swal.fire('Error', 'Request failed.', 'error');
@@ -257,11 +403,18 @@ document.addEventListener('DOMContentLoaded', function () {
                     const data = await res.json();
                     if (data.success) {
                         Swal.fire('Deleted!', data.message, 'success');
-                        btn.closest('tr')?.remove();
+
+                        // Remove from table
+                        const row = tableBody.querySelector(`tr[data-product-id="${id}"]`);
+                        if (row) row.remove();
+
                         // Update row numbers
                         Array.from(tableBody.rows).forEach((row, index) => {
                             row.cells[0].textContent = index + 1;
                         });
+
+                        // Remove from folder grid
+                        removeProductFromFolderGrid(id);
                     } else Swal.fire('Error', data.message, 'error');
                 } catch {
                     Swal.fire('Error', 'Request failed.', 'error');
@@ -275,3 +428,190 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+    document.addEventListener('DOMContentLoaded', () => {
+        lucide.createIcons();
+
+        // Sync folder cards with table updates
+        window.syncFolderCardWithTable = function(productId) {
+            const tableRow = document.querySelector(`#product-table-body tr[data-product-id="${productId}"]`);
+            const folderCard = document.querySelector(`.products-folder-grid .product-folder-card[data-product-id="${productId}"]`);
+
+            if (!tableRow || !folderCard) return;
+
+            // Update folder card content from table
+            const name = tableRow.children[1].textContent;
+            const price = tableRow.children[3].textContent;
+            const type = tableRow.children[4].textContent;
+            const subtype = tableRow.children[5].textContent;
+            const image = tableRow.children[2].querySelector('img').src;
+
+            folderCard.querySelector('.product-name-text').textContent = name;
+            folderCard.querySelector('.product-price-text').textContent = price;
+            folderCard.querySelector('.product-type-text').textContent = type;
+            folderCard.querySelector('.product-subtype-text').textContent = subtype;
+            folderCard.querySelector('.product-folder-img').src = image;
+            folderCard.setAttribute('data-product-name', name.toLowerCase());
+
+            // Update button data attributes
+            const editBtn = folderCard.querySelector('.btn-edit');
+            const deleteBtn = folderCard.querySelector('.btn-delete');
+            if (editBtn && tableRow.querySelector('.btn-edit')) {
+                const tableEditBtn = tableRow.querySelector('.btn-edit');
+                editBtn.dataset.name = tableEditBtn.dataset.name;
+                editBtn.dataset.price = tableEditBtn.dataset.price;
+                editBtn.dataset.typeId = tableEditBtn.dataset.typeId;
+                editBtn.dataset.subtypeId = tableEditBtn.dataset.subtypeId;
+            }
+            if (deleteBtn && tableRow.querySelector('.btn-delete')) {
+                const tableDeleteBtn = tableRow.querySelector('.btn-delete');
+                deleteBtn.dataset.name = tableDeleteBtn.dataset.name;
+                deleteBtn.dataset.price = tableDeleteBtn.dataset.price;
+            }
+        };
+
+        // Add new product to folder grid
+        window.addProductToFolderGrid = function(product) {
+            const grid = document.getElementById('products-folder-grid');
+            if (!grid) return;
+
+            const card = document.createElement('div');
+            card.className = 'product-folder-card';
+            card.setAttribute('data-product-id', product.id);
+            card.setAttribute('data-product-name', product.name.toLowerCase());
+            card.innerHTML = `
+                <div class="product-folder-image">
+                    <img src="/assets/images/${product.image}" alt="${product.name}" class="product-folder-img">
+                    <div class="product-folder-overlay">
+                        <button type="button" class="product-action-btn btn-view-detail" data-product-id="${product.id}">
+                            <i class="lucide-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="product-folder-content">
+                    <div class="product-folder-header">
+                        <h5 class="product-folder-name">
+                            <i class="lucide-coffee"></i>
+                            <span class="product-name-text">${product.name}</span>
+                        </h5>
+                        <span class="product-folder-price product-price-text">${Number(product.price).toFixed(2)}</span>
+                    </div>
+                    <div class="product-folder-meta">
+                        <div class="meta-item">
+                            <i class="lucide-layers"></i>
+                            <span class="product-type-text">${product.product_type_name}</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="lucide-folder"></i>
+                            <span class="product-subtype-text">${product.sub_type_name || 'N/A'}</span>
+                        </div>
+                    </div>
+                    <div class="product-folder-actions">
+                        <button type="button" class="btn-product-action btn-edit-product btn-edit"
+                                data-id="${product.id}"
+                                data-name="${product.name}"
+                                data-price="${product.price}"
+                                data-type-id="${product.product_type_id}"
+                                data-subtype-id="${product.sub_type_id || ''}">
+                            <i class="lucide-edit"></i> Edit
+                        </button>
+                        <button type="button" class="btn-product-action btn-options-product btn-create-variant"
+                                data-id="${product.id}">
+                            <i class="lucide-settings"></i> Options
+                        </button>
+                        <button type="button" class="btn-product-action btn-delete-product btn-delete"
+                                data-id="${product.id}"
+                                data-name="${product.name}"
+                                data-price="${product.price}">
+                            <i class="lucide-trash-2"></i> Delete
+                        </button>
+                    </div>
+                </div>
+            `;
+            grid.appendChild(card);
+            lucide.createIcons();
+        };
+
+        // Remove product from folder grid
+        window.removeProductFromFolderGrid = function(productId) {
+            const card = document.querySelector(`.products-folder-grid .product-folder-card[data-product-id="${productId}"]`);
+            if (card) card.remove();
+        };
+
+        // Override table update to also update folder cards
+        const originalTableUpdates = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.type === 'childList' || mutation.type === 'characterData') {
+                    const row = mutation.target.closest('tr[data-product-id]');
+                    if (row) {
+                        const productId = row.getAttribute('data-product-id');
+                        syncFolderCardWithTable(productId);
+                    }
+                }
+            });
+        });
+
+        const tableBody = document.getElementById('product-table-body');
+        if (tableBody) {
+            originalTableUpdates.observe(tableBody, {
+                childList: true,
+                subtree: true,
+                characterData: true
+            });
+        }
+
+        // Product search functionality for folder cards
+        const productSearch = document.getElementById('productSearch');
+        if (productSearch) {
+            productSearch.addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase();
+                const productCards = document.querySelectorAll('.product-folder-card');
+
+                productCards.forEach(card => {
+                    const productName = card.getAttribute('data-product-name');
+                    const type = card.querySelector('.product-type-text')?.textContent.toLowerCase() || '';
+                    const subtype = card.querySelector('.product-subtype-text')?.textContent.toLowerCase() || '';
+
+                    if (productName.includes(searchTerm) || type.includes(searchTerm) || subtype.includes(searchTerm)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        }
+
+        // Add event listeners for folder view/close buttons
+        document.querySelectorAll('.btn-view-folder').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const subtypeId = this.getAttribute('data-subtype-id');
+                toggleFolder(subtypeId);
+            });
+        });
+
+        document.querySelectorAll('.btn-close-folder').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const subtypeId = this.getAttribute('data-subtype-id');
+                toggleFolder(subtypeId);
+            });
+        });
+    });
+
+    // Toggle folder view
+    function toggleFolder(subtypeId) {
+        const folderOverlay = document.getElementById(`folder-products-${subtypeId}`);
+
+        if (!folderOverlay) {
+            console.error('Folder overlay not found for subtype:', subtypeId);
+            return;
+        }
+
+        if (folderOverlay.style.display === 'none') {
+            folderOverlay.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        } else {
+            folderOverlay.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        setTimeout(() => lucide.createIcons(), 50);
+    }
