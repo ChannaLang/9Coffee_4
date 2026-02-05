@@ -5,33 +5,30 @@
 <link rel="stylesheet" href="{{ asset('assets/css/variant.css') }}">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@latest/font/lucide.min.css">
 
-<h2>
-    <i class="lucide-layers-3" style="width: 32px; height: 32px; vertical-align: middle;"></i>
-    Create Variant for {{ $product->name }}
-</h2>
+
 
 {{-- Flash Messages --}}
 @if(session('success'))
     <div class="alert alert-success">
-        <i class="lucide-check-circle" style="width: 18px; height: 18px; vertical-align: middle;"></i>
+        <i class="lucide-check-circle" ></i>
         {{ session('success') }}
     </div>
 @endif
 @if(session('delete'))
     <div class="alert alert-danger">
-        <i class="lucide-alert-circle" style="width: 18px; height: 18px; vertical-align: middle;"></i>
+        <i class="lucide-alert-circle" ></i>
         {{ session('delete') }}
     </div>
 @endif
 
 {{-- Add Variant Button --}}
 <button id="btnShowForm" class="btn btn-success mb-3">
-    <i class="lucide-plus-circle" style="width: 20px; height: 20px;"></i>
+    <i class="lucide-plus-circle" ></i>
     Add Variant
 </button>
 
 {{-- Hidden Form --}}
-<div id="variantForm" style="display: none;">
+<div id="variantForm" >
     <form action="{{ route('admin.product.variants.store', $product->id) }}"
           method="POST"
           class="variant-form-card">
@@ -47,12 +44,12 @@
 
         <div class="d-flex gap-2">
             <button type="submit" class="btn btn-primary">
-                <i class="lucide-save" style="width: 18px; height: 18px;"></i>
+                <i class="lucide-save"></i>
                 Save Variant
             </button>
 
             <button type="button" id="btnHideForm" class="btn btn-outline-secondary">
-                <i class="lucide-x" style="width: 18px; height: 18px;"></i>
+                <i class="lucide-x"></i>
                 Cancel
             </button>
         </div>
@@ -83,7 +80,7 @@ document.getElementById('btnHideForm').addEventListener('click', function () {
 </script>
 
 <h3>
-    <i class="lucide-package" style="width: 24px; height: 24px; vertical-align: middle;"></i>
+    <i class="lucide-package" ></i>
     Available Variants
 </h3>
 
@@ -93,7 +90,7 @@ document.getElementById('btnHideForm').addEventListener('click', function () {
             <div class="variant-card">
 
                 <div class="variant-title">
-                    <i class="lucide-tag" style="width: 20px; height: 20px;"></i>
+                    <i class="lucide-tag" ></i>
                     {{ $variant->name }}
                 </div>
                 <div class="variant-price">${{ number_format($variant->price, 2) }}</div>
@@ -102,7 +99,7 @@ document.getElementById('btnHideForm').addEventListener('click', function () {
                 @if($variant->rawMaterials->count() > 0)
                     <div class="assigned-materials">
                         <strong>
-                            <i class="lucide-utensils" style="width: 16px; height: 16px; vertical-align: middle;"></i>
+                            <i class="lucide-utensils" ></i>
                             Recipe Ingredients:
                         </strong>
                         <ul class="mb-0">
@@ -110,13 +107,13 @@ document.getElementById('btnHideForm').addEventListener('click', function () {
                                 <li>{{ $material->name }}: {{ $material->pivot->quantity_required }} {{ $material->unit }}</li>
                             @endforeach
                             @if($variant->rawMaterials->count() > 5)
-                                <li style="color: #d4a373; font-weight: 600;">+{{ $variant->rawMaterials->count() - 5 }} more ingredients...</li>
+                                <li>+{{ $variant->rawMaterials->count() - 5 }} more ingredients...</li>
                             @endif
                         </ul>
                     </div>
                 @else
                     <div class="assigned-materials text-muted">
-                        <i class="lucide-alert-triangle" style="width: 18px; height: 18px; vertical-align: middle; display: inline-block; margin-bottom: 4px;"></i>
+                        <i class="lucide-alert-triangle" ></i>
                         No ingredients assigned yet.
                     </div>
                 @endif
@@ -126,14 +123,14 @@ document.getElementById('btnHideForm').addEventListener('click', function () {
                         @csrf
                         @method('DELETE')
                         <button class="btn btn-danger btn-sm w-100">
-                            <i class="lucide-trash-2" style="width: 16px; height: 16px;"></i>
+                            <i class="lucide-trash-2" ></i>
                             Delete
                         </button>
                     </form>
 
                     <a href="{{ route('admin.product.variants.assignMaterials', $variant->id) }}"
                        class="btn btn-primary btn-sm w-10">
-                        <i class="lucide-chef-hat" style="width: 16px; height: 16px;"></i>
+                        <i class="lucide-chef-hat" ></i>
                         Recipe
                     </a>
                 </div>
@@ -142,9 +139,9 @@ document.getElementById('btnHideForm').addEventListener('click', function () {
         </div>
     @empty
         <div class="col-12">
-            <div class="variant-card text-center" style="padding: 48px;">
-                <i class="lucide-package-x" style="width: 64px; height: 64px; color: rgba(245, 230, 211, 0.3); display: block; margin: 0 auto 16px;"></i>
-                <p style="color: rgba(245, 230, 211, 0.5); font-size: 1.1rem; margin: 0;">
+            <div class="variant-card text-center" >
+                <i class="lucide-package-x" ></i>
+                <p>
                     No variants created yet. Click "Add Variant" to get started!
                 </p>
             </div>

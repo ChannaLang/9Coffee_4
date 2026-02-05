@@ -148,7 +148,7 @@
                         <thead class="text-center">
                             <tr>
                                 <th>Product</th>
-                                <th>Size</th>
+                                <th>Option</th>
                                 <th>Sugar</th>
                                 <th>Qty</th>
                                 <th>Price</th>
